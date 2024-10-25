@@ -23,6 +23,7 @@ module Example1 = struct
   *)
 
   (* executes the same test but lacks one of the precondition, "sampled d t_n" *)
+  (* This program is INCORRECT and so its verification FAILS *)
   let example1' (d : float list dataset) : float =
     exec_ttest_1samp t_n 1.0 d Two
   (*@ p = example1 d

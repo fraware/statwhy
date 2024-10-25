@@ -9,6 +9,7 @@ module Example5 = struct
   let fmlA = Atom (Pred ("=!", [ RealT (mean t_n); RealT (Real (Const 1.0)) ]))
 
   (* Example of p-value hacking *)
+  (* This program is INCORRECT and so its verification FAILS *)
   let example5 d1 d2 =
     let p1 = exec_ttest_1samp t_n 1.0 d1 Two in
     let p2 = exec_ttest_1samp t_n 1.0 d2 Two in

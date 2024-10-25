@@ -1,6 +1,8 @@
 MIT License
 
-Copyright (c) 2024 fm4stats
+Copyright (c) 2024 Kentaro Kobayashi and Yusuke Kawamoto at National Institute of Advanced Industrial Science and Technology (AIST)
+
+This software includes a modified version of Cameleer with MIT license included in the cameleer directory.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,0 +1,32 @@
+module CameleerBHL
+  use export int.Int
+  use export option.Option
+  use export list.ListRich
+  use export ref.Ref
+  use export cameleerReal.CameleerReal
+  use export logicalFormula.LanguageData
+  use export statBHL.StorePV
+  use export statBHL.LanguageProg
+  use export statBHL.HypothesisTest
+  use export statELHT.LanguageELTH
+  use export atomicFormulas.Real
+  use export atomicFormulas.Ppl
+  use export atomicFormulas.Paired 
+  use export utility.Utility
+
+  let predicate pvalue (r:real) = 0.0 <=. r <=. 1.0
+
+  lemma lem_non_nil_implies_existence:
+    forall l:(list 'a).
+      length l > 0 /\ (exists x : 'a. true) -> exists x : 'a, xs : list 'a. l = Cons x xs
+
+  let rec function nth_p (n : int) (l : list real) : real =
+    match l with
+    | Nil -> -1.0
+    | Cons x r -> if n = 0 then x else nth_p (n - 1) r
+    end
+    
+  val st : ref store
+  val function interp : interpretation
+end
+

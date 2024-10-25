@@ -1,0 +1,33 @@
+module Fisher_cumulant_test
+  use cameleerBHL.CameleerBHL
+
+  val exec_fisher_cumulant_test (p : population) (y : dataset (list real)) : real
+  writes { st }
+  requires {
+    sampled y p /\
+    length y > 50 /\
+    (World !st interp) |= Possible (is_normal p)
+  } ensures {
+    let pv = result in
+    pvalue result /\
+    exists m v : real_number.
+      Real m = mean p /\ Real v = mean p /\
+    !st = Cons ("fisher_cumulant_test", (p =^! (NormalD m v)), Eq pv) !(old st)
+  }
+end
+
+module Ws_test
+  use cameleerBHL.CameleerBHL
+
+  val exec_ws_test (p : population) (y : dataset (list real)) : real
+  writes { st }
+  requires {
+    sampled y p /\
+    length y > 50 /\
+    (World !st interp) |= Possible (Not (is_normal p))
+  } ensures {
+    let pv = result in
+    pvalue result /\
+    !st = Cons ("ws_test", (Not (is_normal p)), Eq pv) !(old st)
+  }
+end

@@ -1,0 +1,8 @@
+module Parcomp
+
+  predicate nsf (f: 'a -> 'b)
+
+  let (|||) f g a
+    requires { (nsf f) /\ (nsf g) }
+  = let (x, y) = a in (f x, g y)
+end

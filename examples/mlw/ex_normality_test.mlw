@@ -1,0 +1,43 @@
+module Fisher_cumulant_test
+  use cameleerBHL.CameleerBHL
+  use normality_test.Fisher_cumulant_test
+
+  let function p1 = UnknownD "p1"
+  let function p2 = NormalD (Param "m") (Param "v")
+
+  let ex_fisher_cumulant_test (d : list real) : real
+  requires {
+    is_empty !st /\
+    sampled d p1 /\
+    length d > 50 /\
+    eq_variance p1 p2 /\ eq_mean p1 p2 /\
+    (World !st interp) |= Possible (p1 =!^ p2)
+  } ensures {
+    let p = result in    
+    Eq p = compose_pvs (p1 =!^ p2) !st &&
+    (World !st interp) |= StatB (Eq p) (p1 =!^ p2)
+  }
+  = exec_fisher_cumulant_test p1 d
+end
+
+module Ws_test
+  use cameleerBHL.CameleerBHL
+  use normality_test.Ws_test
+
+  let function p1 = UnknownD "p1"
+  let function p2 = NormalD (Param "m") (Param "v")
+
+  let ex_ws_test (d : list real) : real
+  requires {
+    is_empty !st /\
+    sampled d p1 /\
+    length d > 50 /\
+    (* eq_variance p1 p2 /\ eq_mean p1 p2 /\ *)
+    (World !st interp) |= Possible (p1 =!^ p2)
+  } ensures {
+    let p = result in
+    Eq p = compose_pvs (p1 =!^ p2) !st &&
+    (World !st interp) |= StatB (Eq p) (p1 =!^ p2)
+  }
+  = exec_ws_test p1 p2 d
+end

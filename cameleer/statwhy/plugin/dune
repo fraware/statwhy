@@ -1,0 +1,18 @@
+(include_subdirs no)
+
+(executables
+ (libraries why3)
+ (names plugin_statwhy computation)
+ (modes plugin))
+
+(install
+ (section lib_root)
+ (files
+  (plugin_statwhy.cmxs as why3/plugins/plugin_statwhy.cmxs)
+  (computation.cmxs as why3/plugins/computation.cmxs))
+ (package cameleer))
+
+(env
+ (dev
+  (flags (:standard -warn-error -a)))
+)

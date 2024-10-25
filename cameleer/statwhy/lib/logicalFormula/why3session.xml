@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"https://www.why3.org/why3session.dtd">
+<why3session shape_version="6">
+<prover id="2" name="CVC5" version="1.0.6" timelimit="1" steplimit="0" memlimit="1000"/>
+<file format="whyml" proved="true">
+<path name=".."/><path name="logicalFormula.mlw"/>
+<theory name="LanguageData" proved="true">
+ <goal name="Eq_param.Refl" proved="true">
+ <proof prover="2"><result status="valid" time="0.018978" steps="16303"/></proof>
+ </goal>
+ <goal name="Eq_param.Trans" proved="true">
+ <proof prover="2"><result status="valid" time="0.015627" steps="16367"/></proof>
+ </goal>
+ <goal name="Eq_param.Symm" proved="true">
+ <proof prover="2"><result status="valid" time="0.015713" steps="16394"/></proof>
+ </goal>
+ <goal name="Eq_real_number.Refl" proved="true">
+ <proof prover="2"><result status="valid" time="0.028088" steps="17564"/></proof>
+ </goal>
+ <goal name="Eq_real_number.Trans" proved="true">
+ <proof prover="2"><result status="valid" time="0.030277" steps="17837"/></proof>
+ </goal>
+ <goal name="Eq_real_number.Symm" proved="true">
+ <proof prover="2"><result status="valid" time="0.022979" steps="17847"/></proof>
+ </goal>
+ <goal name="Eq_real_number_list.Refl" proved="true">
+ <transf name="induction_ty_lex" proved="true" >
+  <goal name="Refl.0" proved="true">
+  <transf name="split_vc" proved="true" >
+   <goal name="Refl.0.0" proved="true">
+   <proof prover="2"><result status="valid" time="0.031725" steps="22468"/></proof>
+   </goal>
+   <goal name="Refl.0.1" proved="true">
+   <transf name="rewrite" proved="true" arg1="H1">
+    <goal name="Refl.0.1.0" proved="true">
+    <proof prover="2"><result status="valid" time="0.035142" steps="22613"/></proof>
+    </goal>
+   </transf>
+   </goal>
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="Eq_real_number_list.Trans" proved="true">
+ <transf name="intros" proved="true" arg1="x">
+  <goal name="Trans.0" proved="true">
+  <transf name="induction_arg_ty_lex" proved="true" arg1="x">
+   <goal name="Trans.0.0" proved="true">
+   <proof prover="2"><result status="valid" time="0.358701" steps="70474"/></proof>
+   </goal>
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="Eq_real_number_list.Symm" proved="true">
+ <transf name="intros" proved="true" arg1="x">
+  <goal name="Symm.0" proved="true">
+  <transf name="induction_arg_ty_lex" proved="true" arg1="x">
+   <goal name="Symm.0.0" proved="true">
+   <proof prover="2"><result status="valid" time="0.071806" steps="31188"/></proof>
+   </goal>
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="Eq_population.Refl" proved="true">
+ <proof prover="2"><result status="valid" time="0.031132" steps="19567"/></proof>
+ </goal>
+ <goal name="Eq_population.Trans" proved="true">
+ <proof prover="2"><result status="valid" time="0.036627" steps="20686"/></proof>
+ </goal>
+ <goal name="Eq_population.Symm" proved="true">
+ <proof prover="2"><result status="valid" time="0.031405" steps="20239"/></proof>
+ </goal>
+ <goal name="Eq_term.Refl" proved="true">
+ <proof prover="2"><result status="valid" time="0.033322" steps="20976"/></proof>
+ </goal>
+ <goal name="Eq_term.Trans" proved="true">
+ <proof prover="2"><result status="valid" time="0.043154" steps="22296"/></proof>
+ </goal>
+ <goal name="Eq_term.Symm" proved="true">
+ <proof prover="2"><result status="valid" time="0.040801" steps="21721"/></proof>
+ </goal>
+ <goal name="Eq_term_list.Refl" proved="true">
+ <transf name="intros" proved="true" arg1="x">
+  <goal name="Refl.0" proved="true">
+  <transf name="induction_arg_ty_lex" proved="true" arg1="x">
+   <goal name="Refl.0.0" proved="true">
+   <proof prover="2"><result status="valid" time="0.043134" steps="26562"/></proof>
+   </goal>
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="Eq_term_list.Trans" proved="true">
+ <transf name="intros" proved="true" arg1="x">
+  <goal name="Trans.0" proved="true">
+  <transf name="induction_arg_ty_lex" proved="true" arg1="x">
+   <goal name="Trans.0.0" proved="true">
+   <proof prover="2"><result status="valid" time="0.164543" steps="50272"/></proof>
+   </goal>
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="Eq_term_list.Symm" proved="true">
+ <transf name="intros" proved="true" arg1="x">
+  <goal name="Symm.0" proved="true">
+  <transf name="induction_arg_ty_lex" proved="true" arg1="x">
+   <goal name="Symm.0.0" proved="true">
+   <proof prover="2"><result status="valid" time="0.082692" steps="34978"/></proof>
+   </goal>
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="Eq_atom.Refl" proved="true">
+ <proof prover="2"><result status="valid" time="0.034550" steps="21402"/></proof>
+ </goal>
+ <goal name="Eq_atom.Trans" proved="true">
+ <proof prover="2"><result status="valid" time="0.038422" steps="21764"/></proof>
+ </goal>
+ <goal name="Eq_atom.Symm" proved="true">
+ <proof prover="2"><result status="valid" time="0.036679" steps="21794"/></proof>
+ </goal>
+ <goal name="eq_atom_neq_pred" proved="true">
+ <proof prover="2"><result status="valid" time="0.024991" steps="21424"/></proof>
+ </goal>
+ <goal name="eq_atom_neq_tl" proved="true">
+ <proof prover="2"><result status="valid" time="0.025425" steps="21499"/></proof>
+ </goal>
+</theory>
+</file>
+</why3session>

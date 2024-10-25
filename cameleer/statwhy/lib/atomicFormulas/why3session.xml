@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"https://www.why3.org/why3session.dtd">
+<why3session shape_version="6">
+<prover id="0" name="Z3" version="4.12.2" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="1" name="Alt-Ergo" version="2.5.4" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="2" name="CVC5" version="1.0.6" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="3" name="Coq" version="8.18.0" timelimit="0" steplimit="0" memlimit="0"/>
+<file format="whyml">
+<path name=".."/><path name="atomicFormulas.mlw"/>
+<theory name="Real" proved="true">
+ <goal name="Real_equal_refl" proved="true">
+ <proof prover="0"><result status="valid" time="0.033609" steps="187331"/></proof>
+ </goal>
+ <goal name="Real_equal_symm" proved="true">
+ <proof prover="2"><result status="valid" time="0.437216" steps="55979"/></proof>
+ </goal>
+ <goal name="Real_equal_trans" proved="true">
+ <proof prover="2"><result status="valid" time="0.102030" steps="51253"/></proof>
+ </goal>
+ <goal name="Real_interp_leq" proved="true">
+ <proof prover="2"><result status="valid" time="0.032847" steps="36555"/></proof>
+ </goal>
+ <goal name="Real_le_leq" proved="true">
+ <proof prover="2"><result status="valid" time="0.154390" steps="66998"/></proof>
+ </goal>
+ <goal name="neq_tautology" proved="true">
+ <proof prover="2"><result status="valid" time="0.078344" steps="50418"/></proof>
+ </goal>
+ <goal name="not_neq_implies_eq" proved="true">
+ <proof prover="2"><result status="valid" time="0.079689" steps="50321"/></proof>
+ </goal>
+ <goal name="leq_or_eq_or_geq" proved="true">
+ <proof prover="2"><result status="valid" time="0.079908" steps="51109"/></proof>
+ </goal>
+ <goal name="not_eq_implies_leq_or_geq" proved="true">
+ <proof prover="2"><result status="valid" time="0.036524" steps="41028"/></proof>
+ </goal>
+ <goal name="neq_implies_leq_or_geq" proved="true">
+ <proof prover="2"><result status="valid" time="0.079445" steps="51512"/></proof>
+ </goal>
+</theory>
+<theory name="Ppl">
+ <goal name="Ppl_check_variance_normald_const" proved="true">
+ <proof prover="2"><result status="valid" time="0.105953" steps="51992"/></proof>
+ </goal>
+ <goal name="Ppl_check_variance_normald_param" proved="true">
+ <proof prover="0"><result status="timeout" time="1.000000" steps="1704307"/></proof>
+ <proof prover="1"><result status="timeout" time="1.000000" steps="11057"/></proof>
+ <proof prover="2"><result status="timeout" time="1.000000" steps="79128"/></proof>
+ <proof prover="3"><path name="atomicFormulas_Ppl_Ppl_check_variance_normald_param_1.v"/><result status="unknown" time="0.491661"/></proof>
+ <transf name="split_vc" proved="true" >
+  <goal name="Ppl_check_variance_normald_param.0" proved="true">
+  <proof prover="0" timelimit="30" memlimit="4000"><undone/></proof>
+  <proof prover="1" timelimit="30" memlimit="4000"><undone/></proof>
+  <proof prover="2" timelimit="30" memlimit="4000"><undone/></proof>
+  <transf name="assert" proved="true" arg1="(w |= check_variance (NormalD mean (Param s)) -&gt; false)">
+   <goal name="Ppl_check_variance_normald_param.0.0" expl="asserted formula" proved="true">
+   <transf name="intros" proved="true" arg1="H">
+    <goal name="Ppl_check_variance_normald_param.0.0.0" expl="asserted formula" proved="true">
+    <transf name="assert" proved="true" arg1="(exists r:real. w |= Know (var (NormalD mean (Param s)) =&#39; const_term r))">
+     <goal name="Ppl_check_variance_normald_param.0.0.0.0" expl="asserted formula" proved="true">
+     <proof prover="2"><result status="valid" time="0.068156" steps="46639"/></proof>
+     </goal>
+     <goal name="Ppl_check_variance_normald_param.0.0.0.1" expl="asserted formula" proved="true">
+     <proof prover="0" timelimit="5" memlimit="2000"><result status="timeout" time="5.000000" steps="5463594"/></proof>
+     <proof prover="1" timelimit="5" memlimit="2000"><result status="timeout" time="5.000000" steps="53882"/></proof>
+     <proof prover="2" timelimit="5" memlimit="2000"><result status="timeout" time="5.000000" steps="257860"/></proof>
+     <transf name="destruct" proved="true" arg1="h1">
+      <goal name="Ppl_check_variance_normald_param.0.0.0.1.0" expl="asserted formula" proved="true">
+      <transf name="destruct_term" proved="true" arg1="w">
+       <goal name="Ppl_check_variance_normald_param.0.0.0.1.0.0" expl="asserted formula" proved="true">
+       <transf name="subst_all" proved="true" >
+        <goal name="Ppl_check_variance_normald_param.0.0.0.1.0.0.0" expl="asserted formula" proved="true">
+        <transf name="assert" proved="true" arg1="(forall j : interpretation. (World x1 j) |= (var (NormalD mean (Param s)) =&#39; const_term r))">
+         <goal name="Ppl_check_variance_normald_param.0.0.0.1.0.0.0.0" expl="asserted formula" proved="true">
+         <proof prover="2"><result status="valid" time="0.038900" steps="42993"/></proof>
+         </goal>
+         <goal name="Ppl_check_variance_normald_param.0.0.0.1.0.0.0.1" expl="asserted formula" proved="true">
+         <proof prover="0" timelimit="120" memlimit="10000"><undone/></proof>
+         <proof prover="1" timelimit="120" memlimit="10000"><undone/></proof>
+         <proof prover="2" timelimit="120" memlimit="10000"><undone/></proof>
+         <transf name="inst_rem" proved="true" arg1="h1" arg2="(fun z -&gt; x z + 1.0)">
+          <goal name="Ppl_check_variance_normald_param.0.0.0.1.0.0.0.1.0" expl="asserted formula" proved="true">
+          <proof prover="2"><result status="valid" time="0.110032" steps="50901"/></proof>
+          </goal>
+         </transf>
+         </goal>
+        </transf>
+        </goal>
+       </transf>
+       </goal>
+      </transf>
+      </goal>
+     </transf>
+     </goal>
+    </transf>
+    </goal>
+   </transf>
+   </goal>
+   <goal name="Ppl_check_variance_normald_param.0.1" proved="true">
+   <proof prover="2"><result status="valid" time="0.022892" steps="36628"/></proof>
+   </goal>
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="Eq_variance_ref" proved="true">
+ <proof prover="0"><result status="valid" time="0.041830" steps="243013"/></proof>
+ </goal>
+ <goal name="Eq_variance_sym" proved="true">
+ <proof prover="2"><result status="valid" time="0.192165" steps="61306"/></proof>
+ </goal>
+ <goal name="Eq_variance_assoc" proved="true">
+ <proof prover="0"><result status="valid" time="0.157289" steps="931613"/></proof>
+ </goal>
+ <goal name="Eq_variance_same_var" proved="true">
+ <proof prover="0"><result status="timeout" time="1.000000" steps="2417978"/></proof>
+ <proof prover="1"><result status="timeout" time="1.000000" steps="12422"/></proof>
+ <proof prover="2"><result status="timeout" time="1.000000" steps="92763"/></proof>
+ <transf name="split_vc" proved="true" >
+  <goal name="Eq_variance_same_var.0" proved="true">
+  <proof prover="2"><result status="valid" time="0.038803" steps="43339"/></proof>
+  </goal>
+  <goal name="Eq_variance_same_var.1" proved="true">
+  <proof prover="2"><result status="valid" time="0.039098" steps="43356"/></proof>
+  </goal>
+  <goal name="Eq_variance_same_var.2" proved="true">
+  <proof prover="2"><result status="valid" time="0.095246" steps="47954"/></proof>
+  </goal>
+  <goal name="Eq_variance_same_var.3" proved="true">
+  <proof prover="2"><result status="valid" time="0.070749" steps="49770"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="Eq_mean.Refl" proved="true">
+ <proof prover="2"><result status="valid" time="0.095505" steps="46589"/></proof>
+ </goal>
+ <goal name="Eq_mean.Trans" proved="true">
+ <proof prover="2"><result status="valid" time="0.160762" steps="52604"/></proof>
+ </goal>
+ <goal name="Eq_mean.Symm" proved="true">
+ <proof prover="2"><result status="valid" time="0.086701" steps="47744"/></proof>
+ </goal>
+ <goal name="Eq_variance_same_mean" proved="true">
+ <proof prover="0"><result status="timeout" time="1.000000" steps="1929910"/></proof>
+ <proof prover="1"><result status="timeout" time="1.000000" steps="9948"/></proof>
+ <proof prover="2"><result status="timeout" time="1.000000" steps="85051"/></proof>
+ <transf name="split_vc" proved="true" >
+  <goal name="Eq_variance_same_mean.0" proved="true">
+  <proof prover="2"><result status="valid" time="0.038538" steps="43533"/></proof>
+  </goal>
+  <goal name="Eq_variance_same_mean.1" proved="true">
+  <proof prover="2"><result status="valid" time="0.038542" steps="43550"/></proof>
+  </goal>
+  <goal name="Eq_variance_same_mean.2" proved="true">
+  <proof prover="2"><result status="valid" time="0.090447" steps="48148"/></proof>
+  </goal>
+  <goal name="Eq_variance_same_mean.3" proved="true">
+  <proof prover="2"><result status="valid" time="0.066498" steps="47261"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="is_prob_dist_const_implies_is_prob_dist_const">
+ <proof prover="0"><result status="timeout" time="1.000000" steps="679305"/></proof>
+ <proof prover="1"><result status="timeout" time="1.000000" steps="14784"/></proof>
+ <proof prover="2"><result status="timeout" time="1.000000" steps="195857"/></proof>
+ <transf name="split_vc" >
+  <goal name="is_prob_dist_const_implies_is_prob_dist_const.0">
+  <proof prover="0" timelimit="5" memlimit="2000"><result status="timeout" time="5.000000" steps="4838259"/></proof>
+  <proof prover="1"><result status="timeout" time="1.000000" steps="15735"/></proof>
+  <proof prover="2"><result status="timeout" time="1.000000" steps="193705"/></proof>
+  </goal>
+  <goal name="is_prob_dist_const_implies_is_prob_dist_const.1">
+  <proof prover="0" timelimit="5" memlimit="2000"><result status="timeout" time="4.354440" steps="4941872"/></proof>
+  <proof prover="1" timelimit="5" memlimit="2000"><result status="timeout" time="5.000000" steps="48424"/></proof>
+  <proof prover="2" timelimit="5" memlimit="2000"><result status="timeout" time="4.399340" steps="214265"/></proof>
+  </goal>
+  <goal name="is_prob_dist_const_implies_is_prob_dist_const.2">
+  <proof prover="0" timelimit="5" memlimit="2000"><result status="timeout" time="4.341446" steps="4923286"/></proof>
+  <proof prover="1" timelimit="5" memlimit="2000"><result status="timeout" time="5.000000" steps="101275"/></proof>
+  <proof prover="2" timelimit="5" memlimit="2000"><result status="timeout" time="5.000000" steps="581852"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="test_prob_dist" proved="true">
+ <proof prover="2"><result status="valid" time="0.246979" steps="83093"/></proof>
+ </goal>
+ <goal name="is_not_normal_interp" proved="true">
+ <proof prover="2"><result status="valid" time="0.155409" steps="57457"/></proof>
+ </goal>
+</theory>
+<theory name="Paired" proved="true">
+ <goal name="non_paired_symm" proved="true">
+ <proof prover="2"><result status="valid" time="0.003947" steps="1146"/></proof>
+ </goal>
+</theory>
+</file>
+</why3session>

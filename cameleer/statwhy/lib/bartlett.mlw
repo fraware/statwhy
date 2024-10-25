@@ -1,0 +1,28 @@
+module Bartlett
+  use cameleerBHL.CameleerBHL
+  
+  function bartlett_hypothesis (ppls : list population) : formula =
+  let terms = map (fun t -> RealT (var t)) ppls in
+  let res = combinations terms "=!" in
+    match res with
+    | Cons hd tl -> fold (fun acc t -> acc \/+ t) hd tl
+    | Nil -> Atom (Pred "nil" Nil)
+    end
+
+  val exec_bartlett (ppls : list population) (ys : dataset (list (list real))) : real
+  writes { st }
+  requires {
+    length ppls = length ys /\
+    length ppls >= 2 /\ length ys >= 2 /\
+    for_all2 (fun p y -> match p with NormalD _ _ -> sampled y p | _ -> false end) ppls ys /\
+    for_all (fun x -> let (s, t) = x in
+      ((World !st interp) |= Possible (var s <' var t) /\
+       (World !st interp) |= Possible (var s >' var t)))
+      (combinations_poly ppls)
+  } ensures {
+    let pv = result in
+    pvalue pv /\
+    let h = bartlett_hypothesis ppls in
+    !st = !(old st) ++ Cons ("bartlett", h, Eq pv) Nil
+  }
+end

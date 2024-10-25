@@ -1,0 +1,387 @@
+(* Assetion language ELTH  *)
+module LanguageELTH
+  use bool.Bool
+  use int.Int
+  use real.Real
+  use option.Option
+  use logicalFormula.SetAppReal
+  use list.List
+  use list.Mem
+  use export logicalFormula.LanguageData
+  use export statBHL.StorePV
+  (* use export statBHL.HistoryActions *)
+  use export statBHL.HypothesisTest
+
+  type interpretation = real_term -> real
+
+  axiom interp_const:
+    forall r : real, i : interpretation. i (Real (Const r)) = r
+
+  type world = World store interpretation
+
+  predicate (|=) (w : world) (h: formula)
+
+(* the interpretation of atomic formulas depends only on that of invisible variables *)
+  axiom interpretation_afml_invariance:
+    forall afml : atomic_formula, st st' : store, i : interpretation.
+    (World st i) |= (Atom afml) -> (World st' i) |= (Atom afml)
+
+  axiom interpretation_neg:
+    forall w : world. forall h1: formula.
+    w |= Not h1 <-> not w |= h1
+
+  axiom interpretation_disj:
+    forall w : world. forall h1: formula. forall h2: formula.
+    w |= Disj h1 h2 <-> (w |= h1 \/ w |= h2)
+
+  axiom interpretation_conj:
+    forall w : world. forall h1: formula. forall h2: formula.
+    w |= Conj h1 h2 <-> (w |= h1 /\ w |= h2)
+
+  axiom interpretation_impl:
+    forall w : world. forall h1: formula. forall h2: formula.
+    w |= Impl h1 h2 <-> (w |= h1 -> w |= h2)
+
+  axiom interpretation_equiv:
+    forall w : world. forall h1: formula. forall h2: formula.
+    w |= Equiv h1 h2 <-> (w |= Impl h1 h2 /\ w |= Impl h1 h2)
+
+  (* tautology for double negation *)
+  lemma tautology_double_negation:
+    forall w : world. forall h: formula.
+      w |= Equiv h (Not (Not h))
+
+  (* tautology for excluded middle *)
+  lemma tautology_excluded_middle:
+    forall w : world. forall h: formula.
+      w |= Disj h (Not h)
+
+  (* tautology for material implication *)
+  lemma tautology_implication:
+    forall w : world. forall h1: formula. forall h2: formula.
+      w |= Equiv (Impl h1 h2) (Disj (Not h1) h2)
+
+  (* tautology for associativity *)
+  lemma tautology_assoc_c:
+    forall w : world. forall h1: formula. forall h2: formula. forall h3: formula.
+      w |= Equiv (Conj h1 (Conj h2 h3)) (Conj (Conj h1 h2) h3)
+  lemma tautology_assoc_d:
+    forall w : world. forall h1: formula. forall h2: formula. forall h3: formula.
+      w |= Equiv (Disj h1 (Disj h2 h3)) (Disj (Disj h1 h2) h3)
+  
+  (* tautology for commutativity *)
+  lemma tautology_commut_c:
+    forall w : world. forall h1: formula. forall h2: formula.
+      w |= Equiv (Conj h1 h2) (Conj h2 h1)
+  lemma tautology_commut_d:
+    forall w : world. forall h1: formula. forall h2: formula.
+      w |= Equiv (Disj h1 h2) (Disj h2 h1)
+  
+  (* tautology for distributivity *)
+  lemma tautology_distr_cd:
+    forall w : world. forall h1: formula. forall h2: formula. forall h3: formula.
+      w |= Equiv (Conj h1 (Disj h2 h3)) (Disj (Conj h1 h2) (Conj h1 h3))
+  lemma tautology_distr_dc:
+    forall w : world. forall h1: formula. forall h2: formula. forall h3: formula.
+      w |= Equiv (Disj h1 (Conj h2 h3)) (Conj (Disj h1 h2) (Disj h1 h3))
+  
+  (* tautology for de Morgan's law *)
+  lemma tautology_de_Morgan_nc:
+    forall w : world. forall h1: formula. forall h2: formula.
+      w |= Equiv (Not (Conj h1 h2)) (Disj (Not h1) (Not h2))
+  lemma tautology_de_Morgan_nd:
+    forall w : world. forall h1: formula. forall h2: formula.
+      w |= Equiv (Not (Disj h1 h2)) (Conj (Not h1) (Not h2))
+  
+  (* tautology for transposition *)
+  lemma tautology_transposition:
+    forall w : world. forall h1: formula. forall h2: formula.
+      w |= Equiv (Impl h1 h2) (Impl (Not h2) (Not h1))
+
+  (* tautology for exportation  *)
+  lemma tautology_exportation:
+    forall w : world. forall h1: formula. forall h2: formula. forall h3: formula.
+      w |= Equiv (Impl (Conj h1 h2) h3) (Impl h1 (Impl h2 h3))
+
+  (* tautology for absorption *)
+  lemma tautology_absorption_cd:
+    forall w : world. forall h1: formula. forall h2: formula.
+      w |= Equiv (Conj h1 (Disj h1 h2)) h1
+  lemma tautology_absorption_dc:
+    forall w : world. forall h1: formula. forall h2: formula.
+      w |= Equiv (Disj h1 (Conj h1 h2)) h1
+  
+  (* axioms for modality K and P *)
+  axiom ax_p_interpretation:
+    forall st : store, i : interpretation, h : formula.
+      (World st i) |= Possible h <-> exists j : interpretation. (World st j) |= h
+
+  axiom ax_k_interpretation:
+    forall st : store, i : interpretation, h : formula.
+      (World st i) |= Know h <-> forall j : interpretation. (World st j) |= h
+
+  lemma rule_N:
+    forall h: formula.
+    ( forall w1 : world. w1 |= h ) -> ( forall w2 : world. w2 |= Know h )
+  lemma ax_K:
+    forall w : world. forall h1: formula. forall h2: formula.
+    w |= Know (Impl h1 h2) -> w |= Know h1 -> w |= Know h2
+  lemma ax_T:
+    forall w : world. forall h: formula.
+    w |= Know h -> w |= h
+  lemma ax_5:
+    forall w : world. forall h: formula.
+    w |= Possible h -> w |= Know (Possible h)
+    
+
+  lemma lem_not_possible:
+    forall st : store, i : interpretation, h : formula.
+      (World st i) |= Not (Possible h) <-> forall j : interpretation. (World st j) |= Not h
+
+  lemma lem_know_not:
+    forall st : store, i : interpretation, h : formula.
+      (World st i) |= Know (Not h) <->
+      (forall j : interpretation. (World st j) |= Not h)
+              
+  lemma lem_not_know:
+    forall st : store, i : interpretation, h : formula.
+      (World st i) |= Not (Know h) <-> exists j : interpretation. (World st j) |= Not h
+
+  lemma lem_possible_not:
+    forall st : store, i : interpretation, h : formula.
+      (World st i) |= Possible (Not h) <->
+      (exists j : interpretation. (World st j) |= Not h)
+
+  (* duality betweem modality K and P *)
+  lemma ax_duality_p_k':
+    forall st : store, i : interpretation, h: formula.
+    (World st i) |= Not (Possible h) <-> (World st i) |= Know (Not h)
+  lemma ax_duality_k_p':
+    forall st : store, i : interpretation, h: formula.
+    (World st i) |= Not (Know h) <-> (World st i) |= Possible (Not h)
+
+    lemma ax_duality_p_k'':
+    forall w : world. forall h: formula.
+    (w |= Not (Possible h) <->
+    (match w with | World st i -> (World st i) |= Not (Possible h) end)) &&
+    ((match w with | World st i -> (World st i) |= Not (Possible h) end) <->
+    (match w with | World st i -> (World st i) |= Know (Not h) end)) &&
+    ((match w with | World st i -> (World st i) |= Know (Not h) end) <->
+    w |= Know (Not h)) &&
+    (w |= Not (Possible h) <-> w |= Know (Not h))
+
+  lemma ax_duality_k_p'':
+    forall w : world. forall h: formula.
+    (w |= Not (Know h) <->
+    (match w with | World st i -> (World st i) |= Not (Know h) end)) &&
+    ((match w with | World st i -> (World st i) |= Not (Know h) end) <->
+    (match w with | World st i -> (World st i) |= Possible (Not h) end)) &&
+    ((match w with | World st i -> (World st i) |= Possible (Not h) end) <->
+    w |= Possible (Not h)) &&
+    (w |= Not (Know h) <-> w |= Possible (Not h))
+    
+
+  lemma ax_duality_p_k:
+    forall w : world. forall h: formula.
+    w |= Not (Possible h) <-> w |= Know (Not h)
+  lemma ax_duality_k_p:
+    forall w : world. forall h: formula.
+    w |= Not (Know h) <-> w |= Possible (Not h)
+    
+
+  (* axiom B, derived from S5 *)
+  lemma ax_B:
+    forall w : world. forall h: formula.
+    w |= h -> w |= Know (Possible h)
+
+  (* dual of axiom T, dervied from S5 *)
+  lemma ax_T_dual:
+    forall w : world. forall h: formula.
+    w |= h -> w |= Possible h
+
+  (* dual of axiom 5, dervied from S5 *)
+  lemma lem_duality_1:
+    forall w : world. forall h: formula.
+    w |= Not (Possible (Know h)) <-> w |= Know (Not (Know h))
+  lemma lem_duality_2l:
+    forall w : world. forall h: formula.
+    w |= Know (Impl (Not (Know h)) (Possible (Not h)))
+  lemma lem_duality_2r:
+    forall w : world. forall h: formula.
+    w |= Know (Impl (Possible (Not h)) (Not (Know h)))
+  lemma lem_duality_3l:
+    forall w : world. forall h: formula.
+    w |= Know (Impl (Not (Know h)) (Possible (Not h))) -> w |= Know (Not (Know h)) -> w |= Know (Possible (Not h))
+  lemma lem_duality_3r:
+    forall w : world. forall h: formula.
+    w |= Know (Impl (Possible (Not h)) (Not (Know h))) -> w |= Know (Possible (Not h)) -> w |= Know (Not (Know h))
+  lemma lem_duality_4:
+    forall w : world. forall h: formula.
+    w |= Know (Not (Know h)) <-> w |= Know (Possible (Not h))
+  lemma ax_5_not:
+    forall w : world. forall h: formula.
+    w |= Possible (Not h) -> w |= Know (Possible (Not h))
+  lemma ax_5_not_dual1:
+    forall w : world. forall h: formula.
+    w |= Not (Know h) -> w |= Know (Not (Know h))
+  lemma ax_5_not_dual2:
+    forall w : world. forall h: formula.
+    w |= Not (Know h) -> w |= Not (Possible (Know h))
+  lemma ax_5_dual:
+    forall w : world. forall h: formula.
+    w |= Possible (Know h) -> w |= Know h
+
+  (* axiom 4, dervied from S5 *)
+  lemma ax_B_box:
+    forall w : world. forall h: formula.
+    w |= Possible (Know h) -> w |= Know (Possible (Know h))
+  lemma ax_box_5_box:
+    forall w : world. forall h: formula.
+    let dbid = Impl (Possible (Know h)) (Know h) in
+    w |= Know dbid
+  lemma lem_dist_dbid:
+    forall w : world. forall h: formula.
+    let bdb = Know (Possible (Know h)) in
+    let dbid = Impl (Possible (Know h)) (Know h) in
+    w |= Know dbid -> w |= bdb -> w |= Know (Know h)
+  lemma lem_dbdibb:
+    forall w : world. forall h: formula.
+    let bdb = Know (Possible (Know h)) in
+    w |= Impl bdb (Know (Know h))
+  lemma ax_4:
+    forall w : world. forall h: formula.
+    w |= Know h -> w |= Know (Know h)
+
+  lemma know_impl_l:
+    forall w : world. forall h1: formula. forall h2: formula.
+    w |= Know (Impl h1 (Disj h1 h2))
+  lemma know_impl_r:
+    forall w : world. forall h1: formula. forall h2: formula.
+    w |= Know (Impl h1 (Disj h2 h1))
+  lemma ax_K_disj_l:
+    forall w : world. forall h1: formula. forall h2: formula.
+    w |= Know (Impl h1 (Disj h1 h2)) -> w |= Know h1 -> w |= Know (Disj h1 h2)
+  lemma know_disj_l:
+    forall w : world. forall h1: formula. forall h2: formula.
+    w |= Know h1 -> w |= Know (Disj h1 h2)
+  lemma ax_K_disj_r:
+    forall w : world. forall h1: formula. forall h2: formula.
+    w |= Know (Impl h1 (Disj h2 h1)) -> w |= Know h1 -> w |= Know (Disj h2 h1)
+  lemma know_disj_r:
+    forall w : world. forall h1: formula. forall h2: formula.
+    w |= Know h1 -> w |= Know (Disj h2 h1)
+
+  (* statistical belief K^alpha *)
+  axiom interpretation_stat_tau:
+    forall w : world. forall pvs: pvalue.
+    forall h: formula.
+    match w with
+    | World st _ ->
+        ( w |= StatTau pvs h <-> stat_believe pvs h st )
+    end
+
+  axiom ax_k_stat_tau:
+    forall w : world. forall pvs: pvalue. forall h: formula.
+    w |= StatTau pvs h <-> w |= Know (StatTau pvs h)
+
+  axiom ax_p_stat_tau:
+    forall w : world. forall pvs: pvalue. forall h: formula.
+    w |= StatTau pvs h <-> w |= Possible (StatTau pvs h)
+
+  axiom interpretation_statb:
+    forall w : world. forall pvs: pvalue. forall h: formula.
+    w |= StatB pvs h <-> w |= Know (Disj (StatTau pvs h) h)
+
+  lemma tau_implies_stat_believe:
+    forall w : world, p : pvalue, h : formula.
+    match w with
+    | World st _ ->
+        w |= StatTau p h -> stat_believe p h st
+    end
+
+  (* properties of statistical belief K^alpha in Proposition 3 of [arXiv22] *)
+  lemma BHT:
+    forall w : world. forall h: formula. forall pv: pvalue.
+    (w |= StatTau pv h -> w |= StatB pv h)
+    
+  (* properties of statistical belief K^alpha in Proposition 2 of [arXiv22] *)
+  lemma lem_SB4_sub1:
+    forall w : world. forall h: formula. forall pvs: pvalue.
+    let kdh: formula = Know (Disj (StatTau pvs h) h) in
+    w |= kdh -> w |= Know kdh
+  lemma lem_SB4_sub2:
+    forall w : world. forall h: formula. forall pvs: pvalue.
+    let kdh: formula = Know (Disj (StatTau pvs h) h) in
+    w |= (StatB pvs h) -> w |= Know kdh
+  lemma lem_SB4_sub3:
+    forall w : world. forall h: formula. forall pvs: pvalue.
+    let kdh: formula = Know (Disj (StatTau pvs h) h) in
+    let sbh: formula = StatB pvs h in
+    w |= Equiv kdh sbh
+  lemma lem_SB4_sub4:
+    forall w : world. forall h: formula. forall pvs: pvalue.
+    let kdh: formula = Know (Disj (StatTau pvs h) h) in
+    let sbh: formula = StatB pvs h in
+    w |= Know (Impl kdh sbh)
+  lemma lem_SB4_sub5:
+    forall w : world. forall h: formula. forall pvs: pvalue.
+    let kdh: formula = Know (Disj (StatTau pvs h) h) in
+    let sbh: formula = StatB pvs h in
+    w |= Know (Impl kdh sbh) -> w |= Know kdh -> w |= Know sbh
+  lemma SB4:
+    forall w : world. forall h: formula. forall pvs: pvalue.
+    let sbh: formula = StatB pvs h in
+    w |= sbh -> w |= Know sbh
+
+  lemma lem_tau_implies_StatB:
+    forall w : world. forall h: formula. forall pvs: pvalue.
+    match w with
+    | World st _ ->
+        match pvs with
+        | Eq _  -> pvs = compose_pvs h st -> w |= StatB pvs h
+        | Leq p -> match compose_pvs h st with
+                   | Eq q  -> p >= q -> w |= StatB pvs h
+                   | Leq q -> p >= q -> w |= StatB pvs h
+                   end
+        end
+    end
+
+  lemma stat_believe_implies_StatB:
+    forall w : world. forall h: formula. forall pv: pvalue.
+    match w with
+    | World st _ ->
+      stat_believe pv h st -> w |= StatB pv h
+    end
+    
+  lemma lem_tau_implies_StatB_disj:
+    forall w : world. forall h1 h2: formula. forall pvs: pvalue.
+    match w with
+    | World st _ ->
+        let h12 = Disj h1 h2 in
+        (consistent_fml_store h1 st /\ consistent_fml_store h2 st /\ pvs = compose_pvs h12 st)
+        -> w |= StatB pvs h12
+    end
+
+  lemma lem_tau_implies_StatB_conj:
+    forall w : world. forall h1 h2: formula. forall pvs: pvalue.
+    match w with
+    | World st _ ->
+        let h12 = Conj h1 h2 in
+        (consistent_fml_store h1 st /\ consistent_fml_store h2 st /\ pvs = compose_pvs h12 st)
+        -> w |= StatB pvs h12
+    end
+
+  lemma st_invariant:
+    forall st st' : store, i j : interpretation, afml : atomic_formula.
+    let fmlA = Atom afml in
+    (World st i) |= Possible fmlA /\ (World st j) |= fmlA ->
+      (World st' j) |= fmlA &&
+      (World st' i) |= Possible fmlA
+
+  lemma st_invariant':
+    forall st st' : store, i : interpretation, afml : atomic_formula.
+    let fmlA = Atom afml in
+    (World st i) |= Possible fmlA
+      -> (World st' i) |= Possible fmlA
+
+end

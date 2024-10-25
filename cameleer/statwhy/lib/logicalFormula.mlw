@@ -1,0 +1,226 @@
+(* Finite sets of real numbers *)
+module SetAppReal
+  use real.Real
+  use set.Fset
+
+  type rset = fset real
+
+  val eq_set (s1: rset) (s2: rset) : bool
+    ensures { result = subset s1 s2 && subset s2 s1 }
+end
+
+module Dataset
+  type dataset 'a = 'a
+end
+
+(* Data language *)
+module LanguageData
+  use hof.Hof
+  use int.Int
+  use option.Option
+  use SetAppReal
+  use export list.List
+  use list.ListRich
+  use list.Combine
+  use list.FoldLeft
+  use string.String
+  use string.Char
+  use string.OCaml
+  use real.RealInfix
+  use export Dataset
+
+
+  type vsymb = int
+  type fsymb = string
+  type psymb = string
+  type pvalue = Eq real | Leq real
+
+  type parameter = string
+
+  type real_number = Param parameter | Const real
+
+  type population =
+    | NormalD real_number real_number
+    | BernoulliD real_number
+    | CategoricalD (list real_number)
+    | UnknownD string
+
+  val function ppl : dataset 'a -> population
+
+  type real_term = Real real_number
+
+  type term = RealT real_term | PopulationT population
+
+  val function mean (ppl : population) : real_term
+
+  val function var (ppl : population) : real_term
+
+  val function med (ppl : population) : real_term
+
+  let function const_term (r : real) : real_term
+  = (Real (Const r))
+  meta "rewrite_def" function const_term
+
+  let function param_term (r : real_number) : real_term
+  = (Real r)
+  meta "rewrite_def" function param_term
+
+  predicate eq_param (s t : parameter) = OCaml.(s = t)
+  meta "rewrite_def" predicate eq_param
+
+  scope Eq_param
+  clone export relations.Equivalence with type t = parameter, predicate rel = eq_param
+  end
+
+  predicate eq_real_number (r1 r2 : real_number) =
+    match (r1, r2) with
+    | (Param s, Param t) -> eq_param s t
+    | (Const s, Const t) -> Real.(s = t)
+    | _ -> false
+    end
+  meta "rewrite_def" predicate eq_real_number
+
+  scope Eq_real_number
+  clone export relations.Equivalence with type t = real_number, predicate rel = eq_real_number
+  end
+
+  predicate eq_real_number_list (rs1 rs2 : list real_number) =
+    match (rs1, rs2) with
+    | (Cons h1 t1, Cons h2 t2) -> eq_real_number h1 h2 && eq_real_number_list t1 t2
+    | (Nil, Nil) -> true
+    | _ -> false
+    end
+  meta "rewrite_def" predicate eq_real_number_list
+
+  scope Eq_real_number_list
+  clone export relations.Equivalence with type t = (list real_number), predicate rel = eq_real_number_list
+  end
+
+  predicate eq_population (p1 p2 : population) =
+    match (p1, p2) with
+    | (NormalD s1 s2, NormalD t1 t2) -> eq_real_number s1 t1 && eq_real_number s2 t2
+    | (BernoulliD s, BernoulliD t) -> eq_real_number s t
+    | (UnknownD i, UnknownD j) -> OCaml.(i = j)
+    | (CategoricalD pp, CategoricalD qq) -> eq_real_number_list pp qq
+    | _ -> false
+    end
+  meta "rewrite_def" predicate eq_population
+
+  scope Eq_population
+  clone export relations.Equivalence with type t = population, predicate rel = eq_population
+  end
+
+  (* equality on real_terms is defined on a case-by-case basis *)
+  predicate eq_real_term real_term real_term
+
+  scope Eq_real_term
+  clone export relations.Equivalence with type t = real_term, predicate rel = eq_real_term, axiom Refl, axiom Trans, axiom Symm
+  end
+
+  axiom eq_real_term_refl:
+    forall rt1 : real_term.
+      eq_real_term rt1 rt1
+
+  axiom eq_real_term_sym:
+    forall rt1 rt2: real_term.
+      eq_real_term rt1 rt2 <-> eq_real_term rt2 rt1
+
+  axiom eq_real_term_trans:
+    forall rt1 rt2 rt3: real_term.
+      eq_real_term rt1 rt2 /\ eq_real_term rt2 rt3 -> eq_real_term rt1 rt3
+
+  axiom eq_real_term_real [@rewrite]:
+    forall r1 r2 : real_number.
+      eq_real_term (Real r1) (Real r2) <-> eq_real_number r1 r2
+
+  axiom eq_real_term_mean [@rewrite]:
+    forall p1 p2 : population.
+      eq_real_term (mean p1) (mean p2) <-> eq_population p1 p2
+
+  axiom eq_real_term_var [@rewrite]:
+    forall p1 p2 : population.
+      eq_real_term (var p1) (var p2) <-> eq_population p1 p2
+
+  axiom eq_real_term_med [@rewrite]:
+    forall p1 p2 : population.
+      eq_real_term (med p1) (med p2) <-> eq_population p1 p2
+
+  predicate eq_term (t1 t2 : term)
+  =
+    match (t1, t2) with
+    | (RealT t1, RealT t2) -> eq_real_term t1 t2
+    | (PopulationT p1, PopulationT p2) ->  eq_population p1 p2
+    | _ -> false
+    end
+  meta "rewrite_def" predicate eq_term
+
+  scope Eq_term
+  clone export relations.Equivalence with type t = term, predicate rel = eq_term
+  end
+
+  predicate eq_term_list (t1 t2 : list term)
+  = match (t1, t2) with
+    | (Cons hd1 tl1, Cons hd2 tl2) -> if eq_term hd1 hd2 then eq_term_list tl1 tl2 else false
+    | (Cons _ _, Nil) | (Nil, Cons _ _) -> false
+    | (Nil, Nil) -> true
+    end
+  meta "rewrite_def" predicate eq_term_list
+
+  scope Eq_term_list
+  clone export relations.Equivalence with type t = (list term), predicate rel = eq_term_list
+  end
+
+  type atomic_formula = Pred psymb (list term)
+  type formula = Atom atomic_formula | Not formula
+               | Conj formula formula | Disj formula formula
+	       | Impl formula formula | Equiv formula formula
+	       | Possible formula | Know formula
+	       | StatTau pvalue formula | StatB pvalue formula
+
+  let function ( \/+ ) (h1 h2 : formula) : formula = Disj h1 h2
+  meta "rewrite_def" function ( \/+ )
+  let function ( /\* ) (h1 h2 : formula) : formula = Conj h1 h2
+  meta "rewrite_def" function ( /\* )
+
+  predicate eq_atom (a1: atomic_formula) (a2: atomic_formula)
+  =
+    match (a1, a2) with
+    | (Pred p1 tl1, Pred p2 tl2) ->
+        OCaml.(p1 = p2) && eq_term_list tl1 tl2
+    end
+  meta "rewrite_def" predicate eq_atom
+
+  scope Eq_atom
+  clone export relations.Equivalence with type t = atomic_formula, predicate rel = eq_atom
+  end
+
+  lemma eq_atom_neq_pred:
+    forall s1 s2: string. forall tl1 tl2: list term.
+    s1 <> s2 -> not eq_atom (Pred s1 tl1) (Pred s2 tl2)
+
+  lemma eq_atom_neq_tl:
+    forall s1 s2: string. forall tl1 tl2: list term.
+    not eq_term_list tl1 tl2 -> not eq_atom (Pred s1 tl1) (Pred s2 tl2)
+
+  predicate eq_hypothesis (h1 : formula) (h2 : formula) =
+    match (h1, h2) with
+    | (Disj h11 h12, Disj h21 h22) -> (eq_hypothesis h11 h21) && (eq_hypothesis h12 h22)
+    | (Conj h11 h12, Conj h21 h22) -> (eq_hypothesis h11 h21) && (eq_hypothesis h12 h22)
+    | (Atom ah1, Atom ah2) -> eq_atom ah1 ah2
+    | (Not h1, Not h2) -> eq_hypothesis h1 h2
+    | _ -> false
+    end
+
+  function length_fml (fml: formula) : int =
+    match fml with
+    | Not fml1 -> 1 + length_fml fml1
+    | Disj fml1 fml2 -> 1 + length_fml fml1 + length_fml fml2
+    | Conj fml1 fml2 -> 1 + length_fml fml1 + length_fml fml2
+    | Impl fml1 fml2 -> 1 + length_fml fml1 + length_fml fml2
+    | Equiv fml1 fml2 -> 1 + length_fml fml1 + length_fml fml2
+    | Know fml1 -> 1 + length_fml fml1
+    | StatTau _ fml1 -> 1 + length_fml fml1
+    | StatB _ fml1 -> 1 + length_fml fml1
+    | _ -> 1
+    end
+end

@@ -1,0 +1,305 @@
+module Real
+  use logicalFormula.LanguageData
+  use statBHL.StorePV
+  use statELHT.LanguageELTH
+  use list.List
+  use real.Real
+  
+  let function (<') (t1 : real_term) (t2 : real_term) : formula
+  = Atom (Pred "<" (Cons (RealT t1) (Cons (RealT t2) Nil)))
+  meta "rewrite_def" function (<')
+
+  let function (>') (t1 : real_term) (t2 : real_term) : formula
+  = Atom (Pred ">" (Cons (RealT t1) (Cons (RealT t2) Nil)))
+  meta "rewrite_def" function (>')
+
+  let function (=') (t1 : real_term) (t2 : real_term) : formula
+  = Atom (Pred "=" (Cons (RealT t1) (Cons (RealT t2) Nil)))
+  meta "rewrite_def" function (=')
+
+  let function (=!') (t1 : real_term) (t2 : real_term) : formula
+  = Atom (Pred "=!" (Cons (RealT t1) (Cons (RealT t2) Nil)))
+  meta "rewrite_def" function (=!')
+  
+  let function (<=') (t1 : real_term) (t2 : real_term) : formula
+  = Atom (Pred "<=" (Cons (RealT t1) (Cons (RealT t2) Nil)))
+  meta "rewrite_def" function (<=')
+
+  let function (>=') (t1 : real_term) (t2 : real_term) : formula
+  = Atom (Pred ">=" (Cons (RealT t1) (Cons (RealT t2) Nil)))
+  meta "rewrite_def" function (>=')
+
+  axiom Atom_nil : forall w : world.
+    match w with
+    | World st i ->
+      ((World st i) |= Atom (Pred "nil" Nil)) <-> false
+    end
+
+  axiom Real_equal : forall tx ty : real_term, w : world.
+    match w with
+    | World st i ->
+        ((World st i) |= Atom (Pred "=" (Cons (RealT tx) (Cons (RealT ty) Nil)))) <-> i tx = i ty
+    end
+
+  lemma Real_equal_refl : forall tx : real_term, w : world.
+    w |= (tx =' tx)
+
+  lemma Real_equal_symm : forall tx ty : real_term, w : world.
+    w |= (tx =' ty) <-> w |= (ty =' tx)
+
+  lemma Real_equal_trans : forall tx ty tz: real_term, w : world.
+    w |= (tx =' ty) -> w |= (ty =' tz) -> w |= (tx =' tz)
+
+  axiom Real_neq : forall tx ty : real_term, w : world.
+    match w with
+    | World st i ->
+        ((World st i) |= Atom (Pred "=!" (Cons (RealT tx) (Cons (RealT ty) Nil)))) <-> not (i tx = i ty)
+    end
+    
+  axiom Real_less : forall tx ty : real_term, w : world.
+    match w with
+    | World st i ->
+        ((World st i) |= Atom (Pred "<" (Cons (RealT tx) (Cons (RealT ty) Nil)))) <-> i tx < i ty
+    end
+
+  axiom Real_greater : forall tx ty : real_term, w : world.
+    match w with
+    | World st i ->
+        ((World st i) |= Atom (Pred ">" (Cons (RealT tx) (Cons (RealT ty) Nil)))) <-> i tx > i ty
+    end
+
+  axiom Real_leq : forall tx ty : real_term, w : world.
+    match w with
+    | World st i ->
+        ((World st i) |= Atom (Pred "<=" (Cons (RealT tx) (Cons (RealT ty) Nil)))) <-> i tx <= i ty
+    end
+
+  axiom Real_geq : forall tx ty : real_term, w : world.
+    match w with
+    | World st i ->
+        ((World st i) |= Atom (Pred ">=" (Cons (RealT tx) (Cons (RealT ty) Nil)))) <-> i tx >= i ty
+    end  
+
+  lemma Real_interp_leq:
+    forall x y z : real_number. forall tx ty tz : real_term, i : interpretation.
+      (i tx = i ty \/ i tx < i ty) <-> i tx <= i ty
+
+  lemma Real_le_leq:
+    forall tx ty : real_term, w : world.
+      let tl = Cons (RealT tx) (Cons (RealT ty) Nil) in
+      match w with
+      | World st i ->
+          ((World st i) |= (Atom (Pred "<" tl)) -> i tx < i ty) /\
+          (i tx < i ty -> i tx <= i ty) /\
+          (i tx <= i ty -> w |= Atom (Pred "<=" tl)) /\
+          (w |= (Atom (Pred "<" tl)) -> w |= Atom (Pred "<=" tl))
+      end
+
+  lemma neq_tautology:
+    forall t1 t2 : real_term, w : world.
+      (w |= Atom (Pred "<" (Cons (RealT t1) (Cons (RealT t2) Nil)))) <->
+      (w |= Atom (Pred ">" (Cons (RealT t2) (Cons (RealT t1) Nil))))
+
+  lemma not_neq_implies_eq:
+    forall t1 t2 : real_term, w : world.
+      (w |= Atom (Pred "=!" (Cons (RealT t1) (Cons (RealT t2) Nil)))) <->
+      not (w |= Atom (Pred "=" (Cons (RealT t1) (Cons (RealT t2) Nil))))
+      
+  lemma leq_or_eq_or_geq:
+    forall t1 t2 : real_term, w : world.
+      (w |= Atom (Pred "=" (Cons (RealT t1) (Cons (RealT t2) Nil)))) \/
+      (w |= Atom (Pred "<" (Cons (RealT t1) (Cons (RealT t2) Nil)))) \/
+      (w |= Atom (Pred ">" (Cons (RealT t1) (Cons (RealT t2) Nil))))
+      
+  lemma not_eq_implies_leq_or_geq:
+    forall t1 t2 : real_term, w : world.
+      not (w |= Atom (Pred "=" (Cons (RealT t1) (Cons (RealT t2) Nil)))) ->
+      (w |= Atom (Pred "<" (Cons (RealT t1) (Cons (RealT t2) Nil)))) \/
+      (w |= Atom (Pred ">" (Cons (RealT t1) (Cons (RealT t2) Nil))))
+
+  lemma neq_implies_leq_or_geq:
+    forall t1 t2 : real_term, w : world.
+      (w |= Atom (Pred "=!" (Cons (RealT t1) (Cons (RealT t2) Nil)))) <->
+      ((w |= Atom (Pred "<" (Cons (RealT t1) (Cons (RealT t2) Nil)))) \/
+      (w |= Atom (Pred ">" (Cons (RealT t1) (Cons (RealT t2) Nil)))))
+
+end
+
+module Ppl
+  use logicalFormula.LanguageData
+  use statELHT.LanguageELTH
+  use Real
+
+  predicate sampled (y : dataset 'a) (p : population)
+  = (ppl y) = p
+  (* this is a *meta* predicate (not expressible in BHL) *)
+
+  (* Normal Distribution *)
+  axiom normal_distribution_mean:
+    forall m v : real_number, w : world.
+      w |= (mean (NormalD m v) =' (Real m))
+
+  axiom normal_distribution_var:
+    forall m v : real_number, w : world.
+      w |= (var (NormalD m v) =' Real v)
+
+  (* Bernoulli Distribution *)
+  val function bernoullip (population) : real_term
+
+  axiom bernoullip_def [@rewrite]:
+    forall p : real_number.
+    bernoullip (BernoulliD p) = Real p
+
+
+  (* Predicates related to variance *)
+  
+  let function check_variance (p : population) : formula =
+    Atom (Pred "check_variance" (Cons (PopulationT p) Nil))
+  
+  axiom check_variance_def : forall p : population, s: int, w : world.
+    (w |= check_variance p) <-> exists r : real. w |= Know (var p =' const_term r)
+
+  lemma Ppl_check_variance_normald_const:
+    forall mean : real_number, s : real, w : world.
+      w |= (check_variance (NormalD mean (Const s)))
+
+  lemma Ppl_check_variance_normald_param:
+    forall mean : real_number, s : parameter, w : world.
+      not (w |= check_variance (NormalD mean (Param s)))
+
+  let function eq_variance (p1 p2 : population) : formula =
+    Atom (Pred "eq_variance" 
+           (Cons (PopulationT p1) 
+           (Cons (PopulationT p2) Nil)))
+
+  use Real
+
+  axiom eq_variance_def : forall p1 p2 : population, w : world.
+    w |= eq_variance p1 p2 <-> w |= Know (var p1 =' var p2)
+
+  lemma Eq_variance_ref:
+    forall p : population, w : world.
+    w |= eq_variance p p
+
+  lemma Eq_variance_sym:
+    forall p1 p2 : population, w : world.
+    w |= eq_variance p1 p2 -> w |= eq_variance p2 p1
+
+  lemma Eq_variance_assoc:
+    forall p1 p2 p3 : population, w : world.
+    w |= eq_variance p1 p2 /\ w |= eq_variance p2 p3 -> w |= eq_variance p1 p3
+
+  lemma Eq_variance_same_var:
+    forall m n v : real_number, w : world.
+      w |= eq_variance (NormalD m v) (NormalD n v)
+      by (
+        forall w : world. w |= (var (NormalD m v) =' Real v) &&
+                          w |= (var (NormalD n v) =' Real v) &&
+                          w |= (var (NormalD m v) =' var (NormalD n v))
+    )
+
+  val predicate eq_mean population population
+
+  axiom Ppl_eq_mean : forall p1 p2 : population.
+    eq_mean p1 p2 <-> forall w : world. w |= (mean p1 =' mean p2)
+
+  scope Eq_mean
+  clone export relations.Equivalence with type t = population, predicate rel = eq_mean
+  end
+
+  lemma Eq_variance_same_mean:
+    forall m v v' : real_number.
+      eq_mean (NormalD m v) (NormalD m v')
+      by (
+        forall w : world. w |= (mean (NormalD m v) =' Real m) &&
+                          w |= (mean (NormalD m v') =' Real m) &&
+                          w |= (mean (NormalD m v) =' mean (NormalD m v'))
+    )
+         
+    
+  use list.List
+  use real.Real
+  use utility.Utility
+
+  predicate is_prob_dist [@rewrite] (l : list real_number) (w : world) =
+    match w with
+    | World _ i ->
+        let s = fold (fun acc r -> acc + (i (Real r))) 0.0 l in
+        0.99 <= s <= 1.01
+    end
+
+  predicate is_prob_dist_const [@rewrite] (l : list real) =
+    let s = fold (+) 0.0 l in
+    0.99 <= s <= 1.01
+
+  lemma is_prob_dist_const_implies_is_prob_dist_const:
+    (forall s : list real.
+      is_prob_dist_const s <-> forall w : world. is_prob_dist (map (fun r -> Const r) s) w)
+      by (
+      forall s : list real, i : interpretation.
+        fold (+) 0.0 s = fold (fun acc r -> acc + (i (Real r))) 0.0 (map (fun r -> Const r) s)
+  )
+  (* TODO: Prove this *)
+
+  lemma test_prob_dist:
+    forall w : world.
+    is_prob_dist (Cons (Const 0.1) (Cons (Const 0.9) Nil)) w
+
+ 
+  (* Predicate for tests of normality *)
+
+  let function (=^) (p1 p2 : population) : formula =
+    Atom (Pred "=^" (Cons (PopulationT p1) (Cons (PopulationT p2) Nil)))
+
+  axiom eq_p_refl:
+    forall p : population, w : world. w |= (p =^ p)
+
+  axiom eq_p_symm:
+    forall p1 p2 : population, w : world. w |= (p1 =^ p2) <-> w |= (p2 =^ p1)
+
+  axiom eq_p_trans:
+    forall p1 p2 p3 : population, w : world.
+    w |= (p1 =^ p2) /\ w |= (p2 =^ p3)
+    -> w |= (p1 =^ p3)
+
+  let function (=^!) (p1 p2 : population) : formula =
+    Atom (Pred "=^!" (Cons (PopulationT p1) (Cons (PopulationT p2) Nil)))
+
+  axiom neq_p_def:
+    forall p1 p2 : population, w : world.
+    w |= (p1 =^! p2) <-> not w |= (p1 =^ p2)
+
+  axiom eq_population_implies_equivalence:
+    forall p1 p2 : population, w : world.
+      eq_population p1 p2 -> w |= (p1 =^! p2)
+
+  let function is_normal (p : population) : formula =
+    Atom (Pred "is_normal" (Cons (PopulationT p) Nil))
+
+  axiom is_normal_interp:
+    forall p : population, w : world.
+      w |= (is_normal p) <-> (exists m v : real_number. w |= (p =^ (NormalD m v)))
+
+  lemma is_not_normal_interp:
+    forall p : population, w : world.
+      w |= Not (is_normal p) <-> (forall m v : real_number. w |= Not (p =^ (NormalD m v)))
+end
+
+module Paired
+  use logicalFormula.Dataset
+  use list.List
+
+  val predicate paired (y1 y2 : dataset (list 'a))
+
+  axiom paired_symm : forall y1 y2 : dataset (list 'a).
+    paired y1 y2 <-> paired y2 y1
+
+  axiom paired_trans : forall y1 y2 y3 : dataset (list 'a).
+    paired y1 y2 /\ paired y2 y3 -> paired y1 y3
+
+  predicate non_paired (y1 y2 : dataset (list 'a)) =
+    not (paired y1 y2)
+
+  lemma non_paired_symm : forall y1 y2 : dataset (list 'a).
+    non_paired y1 y2 <-> non_paired y2 y1
+end

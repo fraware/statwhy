@@ -1,0 +1,5 @@
+(executable
+ (libraries gospel why3 cameleer cameleer.statWhy.genconf)
+ (name cli)
+ (public_name statwhy)
+ (package cameleer))

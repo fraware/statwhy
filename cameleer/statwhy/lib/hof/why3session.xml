@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"https://www.why3.org/why3session.dtd">
+<why3session shape_version="6">
+<prover id="0" name="Coq" version="8.18.0" timelimit="0" steplimit="0" memlimit="0"/>
+<prover id="1" name="CVC5" version="1.0.6" timelimit="1" steplimit="0" memlimit="1000"/>
+<file format="whyml" proved="true">
+<path name=".."/><path name="hof.mlw"/>
+<theory name="Hof" proved="true">
+ <goal name="fold__append" proved="true">
+ <proof prover="0"><path name="hof_Hof_fold__append_2.v"/><result status="valid" time="0.256370"/></proof>
+ </goal>
+ <goal name="for_all&#39;vc" expl="VC for for_all" proved="true">
+ <proof prover="1"><result status="valid" time="0.007574" steps="2259"/></proof>
+ </goal>
+ <goal name="for_all_correctness" proved="true">
+ <proof prover="0"><path name="hof_Hof_for_all_correctness_4.v"/><result status="valid" time="0.267692"/></proof>
+ <transf name="intros" arg1="p">
+  <goal name="for_all_correctness.0">
+  <transf name="induction_ty_lex" >
+   <goal name="for_all_correctness.0.0">
+   <proof prover="1" obsolete="true"><result status="valid" time="0.026371" steps="9450"/></proof>
+   </goal>
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="for_all2&#39;vc" expl="VC for for_all2" proved="true">
+ <proof prover="1"><result status="valid" time="0.006185" steps="4650"/></proof>
+ </goal>
+ <goal name="for_some&#39;vc" expl="VC for for_some" proved="true">
+ <proof prover="1"><result status="valid" time="0.004906" steps="2865"/></proof>
+ </goal>
+</theory>
+</file>
+</why3session>

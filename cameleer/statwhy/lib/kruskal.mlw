@@ -1,0 +1,27 @@
+module Kruskal
+  use cameleerBHL.CameleerBHL
+
+  function kruskal_hypothesis (terms : list population) : formula =
+    let terms = map (fun t -> RealT (med t)) terms in
+    match combinations terms "=!" with
+    | Cons hd tl -> fold (fun acc t -> acc \/+ t) hd tl
+    | Nil -> Atom (Pred "nil" Nil)
+    end
+
+  val exec_kruskal (ps : list population) (ys : dataset (list (list real))) : real
+  writes { st }
+  requires {
+    length ps = length ys /\
+    length ps >= 2 /\ length ys >= 2 /\
+    for_all2 (fun p y -> sampled y p) ps ys /\
+    for_all (fun x -> let (s, t) = x in
+      ((World !st interp) |= Possible (med s <' med t) /\
+       (World !st interp) |= Possible (med s >' med t)))
+      (combinations_poly ps)
+  } ensures {
+    let pv = result in
+    pvalue result /\
+    let h = kruskal_hypothesis ps in
+    !st = !(old st) ++ Cons ("kruskal", h, Eq pv) Nil
+  }
+end

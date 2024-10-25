@@ -1,0 +1,53 @@
+module Chisquare
+  use cameleerBHL.CameleerBHL
+  use real.FromInt
+  use int.MinMax
+  use list.Combine
+  use option.Option
+
+  function sum (l : list int) : int
+  = match l with
+    | Nil -> 0
+    | Cons x xs -> x + sum xs
+    end
+  meta "rewrite_def" function sum
+    
+  (* lemma Combine_length: *)
+  (*   forall l: list 'a, m : list 'b. *)
+  (*   length (combine l m) = min (length l) (length m) *)
+    
+  function chisquare_hypothesis (ps : list real_number) (exp : list real_number) : formula
+  = match combine ps exp with
+    | Cons (p1,p2) tl ->
+      fold (fun fml x -> let (p1,p2) = x in fml \/+ ((Real p1) =!' (Real p2)))
+        ((Real p1) =!' (Real p2)) tl
+    | Nil -> Atom (Pred "nil" Nil)
+    end
+  meta "rewrite_def" function chisquare_hypothesis
+    
+  val exec_chisquare_test (ppl_obs : population) (ps_th : list real) (y_obs : dataset (list int)) : real
+  writes { st }
+  requires {
+    match ppl_obs with
+    | CategoricalD ps_obs ->
+      is_prob_dist ps_obs (World !st interp) /\ is_prob_dist_const ps_th /\
+      length ps_obs = length ps_th = length y_obs /\
+      let size = from_int (sum y_obs) in
+      for_all (fun p_i -> p_i *. size >=. 5.0) ps_th /\
+      for_all2 (fun x y -> 
+        ((World !st interp) |= Possible ((Real x) <' (Real (Const y))) /\
+        (World !st interp) |= Possible ((Real x) >' (Real (Const y)))))
+        ps_obs ps_th
+    | _ -> false
+    end
+  } ensures {
+    match (ppl_obs) with
+    | CategoricalD ps_obs ->
+      let pv = result in
+      pvalue result /\
+      let h = chisquare_hypothesis ps_obs (map (fun r -> Const r) ps_th) in
+      !st = !(old st) ++ (Cons ("chisquare", h, Eq pv) Nil)
+    | _ -> true
+    end
+  }
+end

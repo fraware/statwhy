@@ -1,0 +1,188 @@
+(* Store of p-values *)
+module StorePV
+  use real.Real
+  use logicalFormula.SetAppReal
+  use logicalFormula.Dataset
+  use export list.List
+  use export list.Mem
+  use export list.Length
+  use export logicalFormula.LanguageData
+
+  type store_elm = (fsymb, formula, pvalue)
+  type store = list store_elm
+  
+  (** empty list *)
+  predicate is_empty (st: store) = (st = Nil)
+  meta "rewrite_def" predicate is_empty
+
+  let function empty = Nil
+  meta "rewrite_def" function empty
+
+end
+
+(* Programming language Prog  *)
+module LanguageProg
+  use int.Int
+  use real.Real
+  use option.Option
+  use export logicalFormula.LanguageData
+  (* use export HistoryActions *)
+
+  let constant return_error = -1.0
+end
+
+(* Hypothesis testing functions *)
+module HypothesisTest
+  use int.Int
+  use real.RealInfix
+  use list.List
+  use list.Append
+  use list.Mem
+  use export StorePV
+  use export logicalFormula.LanguageData
+
+  exception Not_found
+  let constant syntax_error = -1000.0
+
+  type alternative = Two | Up | Low
+
+  (* calculation of p-values for combinted tests  *)
+  function disjpvs (pv1:pvalue) (pv2:pvalue) : pvalue =
+    match (pv1, pv2) with
+    | (Eq r1, Eq r2) | (Eq r1, Leq r2) | (Leq r1, Eq r2) | (Leq r1, Leq r2)
+      -> Leq (r1 +. r2)
+    end
+  meta "rewrite_def" function disjpvs
+
+  function conjpvs (pv1:pvalue) (pv2:pvalue) : pvalue =
+    match (pv1, pv2) with
+    | (Eq r1, Eq r2) | (Eq r1, Leq r2) | (Leq r1, Eq r2) | (Leq r1, Leq r2)
+      -> Leq (if r1 <. r2 then r1 else r2)
+    end
+  meta "rewrite_def" function conjpvs
+
+  function mem_fml_in_store (h: formula) (st: store) : bool
+  =
+    match st with
+    | (Cons (_,h',_) st') -> (eq_hypothesis h h') || mem_fml_in_store h st'
+    | Nil -> False
+    end
+  meta "rewrite_def" function mem_fml_in_store
+
+  function consistent_fml_store (h: formula) (st: store) : bool
+  = mem_fml_in_store h st ||
+    match h with
+    | Disj h1 h2 -> ((consistent_fml_store h1 st) && (consistent_fml_store h2 st))
+    | Conj h1 h2 -> (consistent_fml_store h1 st) && (consistent_fml_store h2 st)
+    | _ -> False
+    end
+  meta "rewrite_def" function consistent_fml_store
+
+  (* obtain a single p-value from a store *)
+  function get_pv (h: formula) (st: store) : pvalue
+  = match st with
+    | (Cons (_,h',pv) st') -> if (eq_hypothesis h' h) then
+                                if mem_fml_in_store h st' then disjpvs (get_pv h st') pv else pv
+                              else get_pv h st'
+    | Nil -> Eq 0.0
+    end
+  meta "rewrite_def" function get_pv
+  
+
+  (* obtain a composite p-value from a store *)
+  function compose_pvs (h: formula) (st : store) : pvalue
+  = if mem_fml_in_store h st then get_pv h st else
+    match h with
+    | Atom _ -> get_pv h st
+    | Not _ -> Eq syntax_error
+    | Disj h1 h2 -> disjpvs (compose_pvs h1 st) (compose_pvs h2 st)
+    | Conj h1 h2 -> conjpvs (compose_pvs h1 st) (compose_pvs h2 st)
+    | Impl _ _ | Equiv _ _ | Know _ | StatTau _ _ | StatB _ _
+      -> Eq syntax_error
+    | _ -> Eq 0.0
+    end
+  meta "rewrite_def" function compose_pvs
+
+  
+  lemma get_pv_recursive1:
+    forall h1 : formula, st [@rewrite] : store, f : string, p : pvalue.
+    eq_hypothesis h1 h1 /\ mem_fml_in_store h1 st ->
+    get_pv h1 (Cons (f, h1, p) st) = disjpvs p (get_pv h1 st)
+
+  lemma get_pv_recursive2:
+  forall h1 h2 : atomic_formula, st [@rewrite]: store, f : string, p : pvalue.
+    not eq_atom h1 h2 -> get_pv (Atom h1) (Cons (f, (Atom h2), p) st) = get_pv (Atom h1) st
+
+  lemma compose_pvs_atom:
+    forall afml : atomic_formula, st [@rewrite]: store.
+    compose_pvs (Atom afml) st = get_pv (Atom afml) st
+
+  lemma compose_pvs_disj3:
+    forall h: formula, ah: atomic_formula, st [@rewrite] : store.
+    not mem_fml_in_store (Disj (Atom ah) h) st ->
+    compose_pvs (Disj (Atom ah) h) st = disjpvs (get_pv (Atom ah) st) (compose_pvs h st)
+
+  lemma compose_pvs_disj4:
+    forall h: formula, ah: atomic_formula, st [@rewrite] : store.
+    not mem_fml_in_store (Disj h (Atom ah)) st ->
+    compose_pvs (Disj h (Atom ah)) st = disjpvs (compose_pvs h st) (get_pv (Atom ah) st)
+
+  lemma compose_pvs_disj1:
+    forall h1 h2: formula, st[@rewrite]: store.
+    not mem_fml_in_store (Disj h1 h2) st ->
+    compose_pvs (Disj h1 h2) st = disjpvs (compose_pvs h1 st) (compose_pvs h2 st)
+
+  lemma compose_pvs_disj2:
+    forall h1 h2: formula, st[@rewrite]: store, p1 p2: pvalue.
+    not mem_fml_in_store (Disj h1 h2) st ->
+      (compose_pvs (Disj h1 h2) st = disjpvs p1 p2
+      <-> exists r1 r2 : pvalue.
+          compose_pvs h1 st = r1 && compose_pvs h2 st = r2 &&
+          compose_pvs (Disj h1 h2) st = disjpvs p1 p2)
+
+  lemma compose_pvs_disj5:
+    forall h1 h2 h3 h4 : formula, st [@rewrite]: store.
+      mem_fml_in_store (Disj h1 h2) st /\ mem_fml_in_store (Disj h3 h4) st /\
+      not mem_fml_in_store (Disj (Disj h1 h2) (Disj h3 h4)) st
+      -> compose_pvs (Disj (Disj h1 h2) (Disj h3 h4)) st = disjpvs (get_pv (Disj h1 h2) st) (get_pv (Disj h3 h4) st)
+
+  lemma compose_pvs_conj:
+    forall h1 h2: formula, st[@rewrite]: store.
+    not mem_fml_in_store (Conj h1 h2) st ->
+    compose_pvs (Conj h1 h2) st =
+      conjpvs (compose_pvs h1 st) (compose_pvs h2 st)
+   
+  (* predicate for statistical belief *)
+  predicate stat_believe (pv: pvalue) (h: formula) (st[@rewrite]: store) =
+  match pv with
+  | Eq _ -> pv = compose_pvs h st
+  | Leq p -> match compose_pvs h st with
+             | Eq q | Leq q -> p >=. q
+             end
+      (* /\ consistent_fml_store 'a h st *)
+  end
+  meta "rewrite_def" predicate stat_believe
+
+  lemma stat_believe_mem:
+    forall h : formula, st [@rewrite]: store.
+      mem_fml_in_store h st -> stat_believe (get_pv h st) h st
+
+  lemma compose_pvs_implies_stat_believe:
+    forall h : formula, st [@rewrite]: store, p : pvalue.
+      p = compose_pvs h st -> stat_believe p h st
+
+  lemma stat_believe_disj:
+    forall pv1 pv2 : pvalue, h1 h2 : formula, st : store.
+    stat_believe pv1 h1 st /\ stat_believe pv2 h2 st /\ not mem_fml_in_store (Disj h1 h2) st
+      -> stat_believe (disjpvs pv1 pv2) (Disj h1 h2) st
+
+  lemma stat_believe_conj:
+    forall pv1 pv2 : pvalue, h1 h2 : formula, st : store.
+    stat_believe pv1 h1 st /\ stat_believe pv2 h2 st /\ not mem_fml_in_store (Conj h1 h2) st
+      -> stat_believe (conjpvs pv1 pv2) (Conj h1 h2) st
+
+  lemma stat_believe_eq_implies_leq:
+    forall p : real, h : formula, st : store.
+    stat_believe (Eq p) h st -> stat_believe (Leq p) h st
+end
+

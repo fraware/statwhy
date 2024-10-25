@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>README.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+<link rel="stylesheet" href="file:///Users/ken/src/git/statwhy-cameleer/.github-markdown.css" type="text/css">
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="statwhy">StatWhy</h1>
+<p>This artifact comprises StatWhy, a software tool for automatically verifying the correctness of statistical hypothesis testing programs.
+In this file, we first present how to install the StatWhy tool. We then show how to verify the programs that implement the hypothesis testing examples addressed in our paper.</p>
+<h2 id="before-installing">Before Installing</h2>
+<p>The submitted zip archive must be copied into the VM (e.g., via a shared folder).
+During installation, internet access is required to download external softwares, such as OCaml and CVC5.
+It is recommended to update the system before installation via Software Updater.</p>
+<h2 id="installation">Installation</h2>
+<p>Unzip the source code and move to the root directory:</p>
+<pre class="hljs"><code><div>unzip statwhy-1.1.0.zip
+<span class="hljs-built_in">cd</span> statwhy-1.1.0
+</div></code></pre>
+<p>Run the following command:</p>
+<pre class="hljs"><code><div><span class="hljs-built_in">source</span> install.sh
+</div></code></pre>
+<p>During installation, you will be prompted to enter <code>y</code> or <code>n</code>
+multiple times. Press <code>y</code> when prompted.</p>
+<p>After installation, restart the machine or log in again to apply the changes made to <code>~/.profile</code>.</p>
+<h2 id="executing-examples">Executing examples</h2>
+<p>Move to the <code>examples</code> directory:</p>
+<pre class="hljs"><code><div><span class="hljs-built_in">cd</span> examples
+</div></code></pre>
+<p>As with Example 1, we provide a detailed explanation of how to use StatWhy.
+You can run the other examples in a similar way to Example 1;
+therefore we omit the details of such instructions for Example 2 and later.</p>
+<h3 id="example-1-one-sample-t-test-section-61-in-our-paper">Example 1: one-sample t-test (Section 6.1 in our paper)</h3>
+<p>In this example, we demonstrate how to verify a program that conducts a one-sample t-test (shown in Section 6.1 in our paper), which is used to compare a population mean with a constant.
+To verify the OCaml program <code>example1.ml</code>, run the following command:</p>
+<pre class="hljs"><code><div>statwhy example1.ml 
+</div></code></pre>
+<p>This will launch the Why3 IDE as follows:</p>
+<p><img src="./screenshots/example1-why3-ide.png?raw=true" alt="Screenshot of the Why3 IDE" title="The Why3 IDE screen." width="1016" height="644"></p>
+<p>There are two verification conditions (VCs) to be discharged: example1'vc
+(VC for example1) and example1''vc (VC for example1').  Right-click
+on the first goal and select 'StatWhy' (<strong>Not 'CVC5 1.2.0' or the other items</strong>), or press '4' after selecting the
+goal to make StatWhy try to discharge the goal. If the prover
+successfully verifies the goal, a check mark will appear next to it as follows.</p>
+<p><img src="./screenshots/example1-successful.png?raw=true" alt="Screenshot of the Why3 IDE showing a successfully discharged VC" title="The Why3 IDE screen successfully discharged example1'vc." width="1016" height="644"></p>
+<p>The second goal, example1''vc, is similar to the first, but lacks one
+of the preconditions: <code>sampled d t_n</code>.<br>
+Since this precondition for the t-test is missing, it is not appropriate to use the t-test.
+In fact, if you press '4' on example1'vc, <strong>StatWhy will fail to discharge the goal</strong>, as shown below.
+At this point,
+StatWhy generates sub-goals by applying transformations and attempts
+to prove them.  By examining the results of the sub-goals, you can see
+which conditions are missing in the annotation of the program.</p>
+<p><img src="./screenshots/example1-timed-out.png?raw=true" alt="Screenshot of the Why3 IDE showing a VC that could not be discharged" title="The Why3 IDE screen showing a goal that StatWhy could not discharge." width="1016" height="644"></p>
+<p><strong>We emphasize that the above screenshot is the intended result</strong>, in which several verification conditions are not discharged due to the lack of the precondition.
+In the above screenshot, the condition <code>ppl @ d = NormalD ...</code> fails
+to discharge, which corresponds to the definition of the missing precondition <code>sampled d t_n</code>.</p>
+<h3 id="example-2-paired-t-test-section-62-in-our-paper">Example 2: paired t-test (Section 6.2 in our paper)</h3>
+<p>In this example, we show how to verify a program that conducts a paired t-test (shown in Section 6.2 in our paper), which is used when there is a pairing or matching between two
+datasets.</p>
+<p>Run the following command:</p>
+<pre class="hljs"><code><div>statwhy example2.ml
+</div></code></pre>
+<p>The goal, <code>example2'vc</code>, should be successfully discharged.
+For details, see Section 6.2 of the User Documentation, in the subsection 'Paired t-test vs. Non-Paired t-test.'</p>
+<h3 id="example-3-t-tests-with-equal-vs-unequal-variances-section-62-in-our-paper">Example 3: t-tests with equal vs. unequal variances (Section 6.2 in our paper)</h3>
+<p>In this example, we demonstrate how to verify a program that conducts
+t-tests for the comparison of two population means (shown in Section 6.2 in our paper).</p>
+<p>Run the following command to verify <code>example3.ml</code>:</p>
+<pre class="hljs"><code><div>statwhy example3.ml
+</div></code></pre>
+<p>You should see the goals, <code>example3_eq'vc</code> and <code>example3_neq'vc</code>, discharged successfully.
+For details, refer to Section 6.2 of the User Documentation, in the subsection 'Equal vs. Unequal Variance.'</p>
+<h3 id="example-4-disjunctive-vs-conjunctive-hypotheses-section-63-in-our-paper">Example 4: disjunctive vs. conjunctive hypotheses (Section 6.3 in our paper)</h3>
+<p>In this example, we demonstrate how to verify a program that covers the verification of combined tests (shown in Section 6.3 in our paper).</p>
+<p>Run the following command:</p>
+<pre class="hljs"><code><div>statwhy example4.ml
+</div></code></pre>
+<p>These four VCs cannot be immediately discharged, but StatWhy
+automatically splits these VCs into smaller ones and applies
+computations and simplifications to them. Finally, these sub-goals will
+be discharged by the prover.</p>
+<p>For details, refer to Section 6.3 of the User Documentation.</p>
+<h3 id="example-5-p-value-hacking-section-63-in-our-paper">Example 5: p-value hacking (Section 6.3 in our paper)</h3>
+<p>In this example (shown in Section 6.3 in our paper), we show that StatWhy can automatically check whether
+the p-values are correctly calculated and prevent p-value hacking.
+Run the following command:</p>
+<pre class="hljs"><code><div>statwhy example5.ml
+</div></code></pre>
+<p><strong>The VC, example5'vc, cannot be discharged</strong>; StatWhy points out the
+p-value hacking in the code, which reports a lower p-value than the
+actual one.  This is implied by the fact that <code>Eq p = compose_pvs fmlA !st</code> is reduced to <code>false</code> after applying several transformations:</p>
+<p><img src="./screenshots/example5-incorrect-pvalue.png?raw=true" alt="Screenshot of the Why3 IDE showing the specific condition that failed to discharge" title="The Why3 IDE screen showing the specific condition that failed to discharge." width="1016" height="644"></p>
+<p>On the other hand, the correct calculation of p-value, <code>Leq (p1 +. p2) = compose_pvs fmlA!st</code>, is successfully discharged:</p>
+<p><img src="./screenshots/example5-correct-pvalue.png?raw=true" alt="Screenshot of the Why3 IDE highlighting the correct p-value calculation" title="The Why3 IDE screen where the correct calculation of p-value is highlighted." width="1016" height="644"></p>
+<p>For details, see Section 6.3 of the User Documentation, specifically in the subsection 'p-value hacking.'</p>
+<h3 id="example-6-tukeys-hsd-test-section-64-in-our-paper">Example 6: Tukey's HSD test (Section 6.4 in our paper)</h3>
+<p>This example demonstrates the verification of a multiple comparison method called
+Tukey's HSD test.</p>
+<p>Run the following command:</p>
+<pre class="hljs"><code><div>statwhy example6.ml
+</div></code></pre>
+<p>These two VCs should be successfully discharged after applying of several transformations.</p>
+<p>See Section 6.5 of the User Documentation, in the subsection &quot;Tukey's HSD Test&quot; for details.</p>
+
+</body>
+</html>

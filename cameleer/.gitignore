@@ -1,0 +1,6 @@
+*.bak
+*~
+.merlin
+_build/*
+/.DS_Store
+/examples/.DS_Store

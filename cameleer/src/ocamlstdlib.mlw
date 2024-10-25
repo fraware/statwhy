@@ -1,0 +1,749 @@
+module Stdlib
+
+  use export int.Int
+  use export int.ComputerDivision
+  use export int.MinMax
+  use export int.Abs
+  use export mach.int.Int
+  use export list.List
+  use export list.Append
+  use export ocaml.Exceptions
+  use export option.Option
+  use export ref.Ref
+  use export ref.Refint
+
+  let invalid_arg (s: string)
+    raises  { Invalid_argument }
+    returns { _ -> false }
+  = raise (Invalid_argument s)
+
+  val ignore (_: 'a) : unit
+
+  let function fst (x: ('a, 'b)) : 'a =
+    let r, _ = x in r
+
+  let function snd (x: ('a, 'b)) : 'b =
+    let _, r = x in r
+
+  type result 'a 'b = Ok 'a | Error 'b
+
+  function (%) (x y: int) : int = mod x y
+
+  predicate same_location 'a 'a
+
+  axiom same_location_eq: forall x y: 'a.
+    same_location x y -> x = y
+
+  val (==) (x y: 'a) : bool
+    ensures { result <-> same_location x y }
+
+  val (!=) (x y: 'a) : bool
+    ensures { result <-> not same_location x y }
+
+  val function (~=) (x y: int) : bool
+    ensures { result <-> not x = y }
+
+  val (|>) (x: 'a) (f: 'a -> 'b) : 'b
+    ensures { result = f x }
+
+  let (~-_) (x: int) = -x
+
+  let succ (x: int) = x + 1
+
+  predicate is_pre_order (cmp: 'a -> 'a -> int) =
+    (forall x. cmp x x = 0) /\
+    (forall x y. cmp x y = 0 <-> cmp y x = 0) /\
+    (forall x y. cmp x y < 0 <-> cmp y x > 0) /\
+    (forall x y z.
+      (cmp x y = 0 -> cmp y z = 0 -> cmp x z = 0) /\
+      (cmp x y = 0 -> cmp y z < 0 -> cmp x z < 0) /\
+      (cmp x y < 0 -> cmp y z = 0 -> cmp x z < 0) /\
+      (cmp x y < 0 -> cmp y z < 0 -> cmp x z < 0))
+
+  lemma cmp_eq: forall x y: 'a, cmp: 'a -> 'a -> int.
+    is_pre_order cmp -> (cmp x y = 0 <-> x = y)
+
+  val function compare (x y: 'a) : int
+  axiom compare_pre_order : is_pre_order (fun (x: 'a) (y: 'a) -> compare x y)
+
+  use string.String
+
+  val int_of_string (s: string) : int
+    ensures { result = to_int s }
+
+  use import seq.Seq as Seq
+
+  scope import Array
+
+    type my_array 'a = private {
+      mutable ghost elts : seq 'a;
+                  length : int;
+    } invariant { 0 <= length = Seq.length elts }
+
+    function ([]) (a: my_array 'a) (i: int) : 'a = Seq.([]) a.elts i
+
+    function get (a: my_array 'a) (i: int) : 'a = a[i]
+
+    val copy (a: my_array 'a) : my_array 'a
+      ensures  { result.length = a.length }
+      ensures  { forall i:int. 0 <= i < result.length -> result[i] = a[i] }
+
+    val get (a: my_array 'a) (i: int) : 'a
+      requires { [@expl:index in array bounds] 0 <= i < length a }
+      ensures  { result = a[i] }
+
+    val set (a: my_array 'a) (i: int) (v: 'a) : unit
+      writes   { a }
+      requires { 0 <= i < length a }
+      ensures  { a.elts = (old a.elts)[i <- v] }
+
+    meta coercion function elts
+
+    val ([]) (a: my_array 'a) (i: int) : 'a
+      requires { [@expl:index in array bounds] 0 <= i < a.length }
+      ensures  { result = a[i] }
+
+    val ([]<-) (a: my_array 'a) (i: int) (v: 'a) : unit writes {a}
+      requires { [@expl:index in array bounds] 0 <= i < a.length }
+      ensures  { a.elts = (old a.elts)[i <- v] }
+
+    val make (n: int) (v: 'a) : my_array 'a
+      requires { [@expl:array creation size] n >= 0 }
+      ensures  { forall i. 0 <= i < n -> result[i] = v }
+      ensures  { result.length = n }
+
+    let init (n: int) (f: int -> 'a) : my_array 'a
+      requires { [@expl:array creation size] n >= 0 }
+      ensures  { forall i. 0 <= i < n -> result[i] = f i }
+      ensures  { length result = n }
+    = let a = make n (f 0) in
+      for i = 1 to n - 1 do
+        invariant { forall j. 0 <= j < i -> a[j] = f j }
+        a[i] <- f i
+      done;
+      a
+
+    val empty () : my_array 'a
+      ensures { result.length = 0 }
+
+    let blit (a1: my_array 'a) (ofs1: int)
+             (a2: my_array 'a) (ofs2: int) (len: int) : unit writes {a2}
+      requires { 0 <= ofs1 /\ 0 <= len /\ ofs1 + len <= length a1 }
+      requires { 0 <= ofs2 /\             ofs2 + len <= length a2 }
+      ensures  { forall i:int.
+        (0 <= i < ofs2 \/ ofs2 + len <= i < length a2) -> a2[i] = old a2[i] }
+      ensures  { forall i:int.
+        ofs2 <= i < ofs2 + len -> a2[i] = a1[ofs1 + i - ofs2] }
+    =
+      for i = 0 to len - 1 do
+        invariant { forall k. not (0 <= k < i) -> a2[ofs2 + k] = old a2[ofs2 + k] }
+        invariant { forall k. 0 <= k < i -> a2[ofs2 + k] = a1[ofs1 + k] }
+        a2[ofs2 + i] <- a1[ofs1 + i];
+      done
+
+    val sort (cmp: 'a -> 'a -> int) (a: my_array 'a) : unit
+      requires { is_pre_order cmp }
+      ensures  { forall i j. 0 <= i <= j < length a -> cmp a[i] a[j] <= 0 }
+
+    let rec function to_list_range (a: my_array 'a) (l u: int) : list 'a
+      requires { l >= 0 /\ u <= a.length }
+      variant  { u - l }
+    = if u <= l then Nil else Cons a[l] (to_list_range a (l+1) u)
+
+    use list.Append
+
+    let rec lemma to_list_append (a: my_array 'a) (l m u: int)
+      requires { 0 <= l <= m <= u <= a.length }
+      variant  { m - l }
+      ensures  { to_list_range a l m ++ to_list_range a m u =
+                 to_list_range a l u }
+    = if l < m then to_list_append a (l+1) m u
+
+    let to_list (a: my_array 'a) : list 'a
+      ensures { result = to_list_range a 0 (length a) }
+    = to_list_range a 0 (length a)
+
+    use seq.Mem
+
+    predicate mem (x: 'a) (a: my_array 'a) =
+      Mem.mem x a
+
+  end
+
+  type array 'a = my_array 'a
+
+  scope Sys
+
+    val constant max_array_length : int
+    axiom non_neg_max_array_length : 0 < max_array_length
+
+  end
+
+  scope List
+
+    use export list.List
+    use export list.Length
+    use export list.Mem
+    use export list.NumOcc
+    use import list.Append    as A
+    use import list.Reverse   as R
+    use import list.RevAppend as RA
+    use import list.Map       as LM
+
+    let function rev (l: list 'a) : list 'a =
+      R.reverse l
+
+    let function append (l1 l2: list 'a) : list 'a =
+      A.(++) l1 l2
+
+    let function rev_append (s t: list 'a) : list 'a =
+      RA.rev_append s t
+
+    val mem (x: 'a) (l: list 'a) : bool
+      ensures { result <-> mem x l }
+
+    val filter (p: 'a -> bool) (l: list 'a) : list 'a
+      ensures { forall x. mem x result <-> p x && mem x l }
+      ensures { forall x. mem x result -> num_occ x result = num_occ x l }
+
+    let find_all (p: 'a -> bool) (l: list 'a)
+      ensures { forall x. mem x result -> p x && mem x l }
+      ensures { forall x. mem x result -> num_occ x result = num_occ x l }
+    = filter p l
+
+    val list_exists (p: 'a -> bool) (l: list 'a) : bool
+      ensures { result <-> exists x. mem x l /\ p x }
+
+    val map (f: 'a -> 'b ) (l: list 'a) : list 'b
+      ensures { result = LM.map f l }
+  end
+
+  use import set.Fset as FS
+
+  type set 'a = FS.fset 'a
+
+  scope Set
+
+    type t 'a = set 'a
+
+    predicate mem (x: 'a) (s: t 'a) = FS.mem x s
+
+    constant empty: set 'a = FS.empty
+
+    function add (x: 'a) (s: t 'a) : t 'a = FS.add x s
+
+    function singleton (x: 'a) : t 'a = FS.singleton x
+
+    predicate subset (s1 s2: t 'a) = FS.subset s1 s2
+
+    use list.Elements
+
+    function of_list (l: list 'a) : set 'a = elements l
+
+  end
+
+  scope Power
+
+    use int.Power
+
+    function pow (x y: int) : int = power x y
+
+  end
+
+  scope Queue
+
+    type t 'a = abstract {
+      mutable view: seq 'a;
+    }
+
+    exception Empty
+
+    val create () : t 'a
+      ensures { result.view = Seq.empty }
+
+    val is_empty (q: t 'a) : bool
+      ensures { result <-> q.view = Seq.empty }
+
+    val pop (q: t 'a) : 'a
+      writes  { q }
+      raises  { Empty -> q.view = Seq.empty /\ q.view = (old q).view }
+      ensures { (old q).view = cons result q.view }
+
+    val add (x: 'a) (q: t 'a) : unit
+      writes  { q }
+      ensures { q.view = snoc (old q).view x }
+
+    val copy (q : t 'a) : t 'a
+      ensures { Seq.(==) result.view q.view }
+
+  end
+
+  scope Stack
+
+    type t 'a = abstract {
+      mutable view: seq 'a;
+    }
+
+    use seq.Seq
+
+    exception Empty
+
+    val create () : t 'a
+      ensures { result.view = empty }
+
+    val is_empty (q: t 'a) : bool
+      ensures { result <-> q.view = empty }
+
+    val pop (q: t 'a) : 'a
+      writes  { q }
+      raises  { Empty -> q.view = empty /\ q.view = (old q).view }
+      ensures { (old q).view = cons result q.view }
+
+    val top (q: t 'a) : 'a
+      raises  { Empty -> q.view = empty }
+      ensures { result = Seq.get q.view 0 }
+
+    val push (x: 'a) (q: t 'a) : unit
+      writes  { q }
+      ensures { q.view = cons x (old q).view }
+
+    val copy (q : t 'a) : t 'a
+      ensures { result.view == q.view }
+
+  end
+
+  scope String
+
+    type t = string
+
+    val function compare (x y: t) : int
+    axiom compare_pre_order : is_pre_order compare
+
+  end
+
+  scope Int
+
+    type t = int
+
+    val function compare (x y: t) : int
+    axiom compare_pre_order : is_pre_order compare
+
+  end
+
+end
+
+(* TEMPORARY: just for experience purposes *)
+module Hashtbl_Make
+
+  use map.Map, set.Fset
+  use Stdlib
+
+  scope HashedType
+    type t
+
+    val equal (x y: t) : bool
+    (*@ b = equal x y
+          ensures b <-> x = y *)
+
+    val hash (x: t) : int
+  end
+
+  type key = HashedType.t
+
+  type t 'a = abstract {
+    mutable         dom : fset key;
+    mutable         view: key -> list 'a;
+            initial_size: int;
+  } invariant { initial_size >= cardinal dom }
+    invariant { forall x. mem x dom <-> view x <> Nil }
+
+  val find (h: t 'a) (k: key) : 'a
+    raises  { Not_found -> not mem k h.dom }
+    ensures { match h.view k with
+              | Nil -> false
+              | Cons v _ -> v = result end }
+
+  val create (n: int) : t 'a
+    ensures { result.initial_size = n }
+    ensures { result.dom = empty }
+
+  val clear (h: t 'a) : unit
+    writes  { h }
+    ensures { h.dom = empty }
+    ensures { h.view = (fun _ -> Nil) }
+
+  val length (h: t 'a) : int
+    ensures { result = cardinal h.dom }
+
+  val mem (h: t 'a) (k: key) : bool
+    ensures { result <-> mem k h.dom }
+
+  val add (h: t 'a) (k: key) (v: 'a) : unit
+    writes  { h }
+    ensures { h.dom = add k (old h).dom }
+    ensures { let l = (old h).view k in
+              h.view = (old h).view[k <- Cons v l] }
+
+  val remove (h: t 'a) (k: key) : unit
+    writes  { h }
+    ensures { h.dom = remove k (old h).dom }
+    ensures { let l = (old h).view k in
+              match l with
+              | Nil -> true
+              | Cons _ r -> h.view = (old h).view[k <- r] end }
+
+  val replace (h: t 'a) (k: key) (v: 'a) : unit
+    writes  { h }
+    ensures { h.dom = add k (old h).dom }
+    ensures { let l = (old h).view k in
+              match l with
+              | Nil -> h.view = (old h).view[k <- Cons v Nil]
+              | Cons _ r -> h.view = (old h).view[k <- Cons v r] end }
+
+  val copy (h: t 'a) : t 'a
+    ensures { result.dom == h.dom }
+    ensures { result.view = result.view }
+
+end
+
+module Map_Make
+
+  use map.Map, set.Fset
+  use Stdlib
+  use export list.List
+  use export list.Nth
+  use seq.OfList
+
+  scope Ord
+    type t
+
+    val function compare (x y: t) : int
+    axiom compare_pre_order : is_pre_order compare
+  end
+
+  type key = Ord.t
+  type t 'a = abstract {
+    dom : fset key;
+    view: key -> 'a;
+  }
+
+  val constant empty: t 'a
+    ensures { result.dom = empty }
+
+  val is_empty (s: t 'a) : bool
+    ensures { result <-> is_empty s.dom }
+
+  val function mem (k: key) (s: t 'a) : bool
+    ensures { result <-> mem k s.dom }
+
+  val find (k: key) (s: t 'a) : 'a
+    raises  { Not_found -> not Fset.mem k s.dom }
+    ensures { Fset.mem k s.dom /\ result = s.view k }
+
+  val add (k: key) (v: 'a) (s: t 'a) : t 'a
+    ensures { result.dom = add k s.dom }
+    ensures { result.view = s.view[k <- v] }
+
+  val function find_opt (x: key) (m: t 'a) : option 'a
+    ensures { match result with
+              | None   -> not Fset.mem x m.dom
+              | Some r -> Fset.mem x m.dom /\ r = m.view x end }
+
+  val update (x: key) (f: option 'a -> option 'a) (m: t 'a) : t 'a
+    ensures { match f (find_opt x m) with
+              | None   -> result.dom  = remove x m.dom
+              | Some z -> result.dom  = add x m.dom /\
+                          result.view = m.view[x <- z] end }
+
+  val cardinal (m: t 'a) : int
+    ensures { result = Fset.cardinal m.dom }
+
+  val remove (k: key) (s: t 'a) : t 'a
+    ensures { forall e. Fset.mem e s.dom /\ e <> k <-> Fset.mem e result.dom }
+    ensures { result.view = s.view }
+    ensures { not (Fset.mem k result.dom) }
+
+  val bindings (m: t 'a) : list (key, 'a )
+    ensures { forall a, b. a = m.view b /\ Fset.mem b m.dom <-> List.mem (b, a) result }
+    ensures { forall a. Fset.mem a m.dom -> exists p. List.mem p result /\ fst p = a }
+    ensures { forall i j. 0 <= i < List.length result -> 0 <= j < List.length result ->
+                      i <> j -> nth i result <> nth j result }
+
+end
+
+module Set_Make
+
+  use map.Map, set.Fset
+  use Stdlib
+  use list.List
+
+  scope Ord
+    type t
+
+    val function compare (x y: t) : int
+    axiom compare_pre_order : is_pre_order compare
+  end
+
+  type elt = Ord.t
+  type t = abstract {
+    dom : fset elt;
+  }
+
+  val constant empty: t
+    ensures { result.dom = empty }
+
+  val is_empty (s: t) : bool
+    ensures { result <-> is_empty s.dom }
+
+  val mem (x: elt) (s: t) : bool
+    ensures { result <-> mem x s.dom }
+
+  val find (x: elt) (s: t) : elt
+    raises  { Not_found -> not mem x s.dom }
+    ensures { Ord.compare result x = 0 }
+
+  val add (x: elt) (s: t) : t
+    ensures { result.dom = add x s.dom }
+
+  val remove  (x: elt) (s: t) : t
+    ensures { result.dom = remove x s.dom }
+
+  val cardinal (s : t) : int
+    ensures { result = cardinal s.dom }
+
+  val elements (s : t) : list elt
+    ensures { forall e. List.mem e result <-> mem e s.dom}
+    ensures { List.length result = cardinal s.dom}
+
+  val exists_ (f : elt -> bool) (s : t) : bool
+    ensures { result <-> exists e. mem e s.dom /\ f e }
+
+  val filter (f : elt -> bool) (s : t) : t
+    ensures { forall e. mem e result.dom <-> (mem e s.dom /\ f e) }
+
+
+end
+
+module Map
+
+  use map.Map, set.Fset
+  use Stdlib
+
+  scope Make
+
+    scope Ord
+      type t
+
+      val function compare (x y: t) : int
+      axiom compare_pre_order : is_pre_order compare
+    end
+
+    type key = Ord.t
+    type t 'a = abstract {
+      dom  : fset key;
+      model: key -> 'a;
+    }
+
+    val constant empty: t 'a
+      ensures { result.dom = empty }
+
+    val is_empty (s: t 'a) : bool
+      ensures { result <-> is_empty s.dom }
+
+  end
+end
+
+module Array
+  use int.Int
+  use seq.Seq
+  use Stdlib
+
+  (* scope import MyArray *)
+
+    type my_array 'a = private {
+      mutable ghost elts : seq 'a;
+                  length : int;
+    } invariant { 0 <= length = Seq.length elts }
+
+    function ([]) (a: my_array 'a) (i: int) : 'a = Seq.([]) a.elts i
+
+    function get (a: my_array 'a) (i: int) : 'a = a[i]
+
+    val get (a: my_array 'a) (i: int) : 'a
+      requires { [@expl:index in array bounds] 0 <= i < length a }
+      ensures  { result = a[i] }
+
+    val set (a: my_array 'a) (i: int) (v: 'a) : unit
+      writes   { a }
+      requires { 0 <= i < length a }
+      ensures  { a.elts = (old a.elts)[i <- v] }
+
+    meta coercion function elts
+
+    val ([]) (a: my_array 'a) (i: int) : 'a
+      requires { [@expl:index in array bounds] 0 <= i < a.length }
+      ensures  { result = a[i] }
+
+    val ([]<-) (a: my_array 'a) (i: int) (v: 'a) : unit writes {a}
+      requires { [@expl:index in array bounds] 0 <= i < a.length }
+      ensures  { a.elts = (old a.elts)[i <- v] }
+
+    val make (n: int) (v: 'a) : my_array 'a
+      requires { [@expl:array creation size] n >= 0 }
+      ensures  { forall i. 0 <= i < n -> result[i] = v }
+      ensures  { result.length = n }
+
+    let init (n: int) (f: int -> 'a) : my_array 'a
+      requires { [@expl:array creation size] n >= 0 }
+      ensures  { forall i. 0 <= i < n -> result[i] = f i }
+      ensures  { length result = n }
+    = let a = make n (f 0) in
+      for i = 1 to n - 1 do
+        invariant { forall j. 0 <= j < i -> a[j] = f j }
+        a[i] <- f i
+      done;
+      a
+
+    val sort (cmp: 'a -> 'a -> int) (a: my_array 'a) : unit
+      requires { is_pre_order cmp }
+      ensures  { forall i j. 0 <= i <= j < length a -> cmp a[i] a[j] <= 0 }
+
+    let rec function to_list_range (a: my_array 'a) (l u: int) : list 'a
+      requires { l >= 0 /\ u <= a.length }
+      variant  { u - l }
+    = if u <= l then Nil else Cons a[l] (to_list_range a (l+1) u)
+
+    use list.Append
+
+    let rec lemma to_list_append (a: my_array 'a) (l m u: int)
+      requires { 0 <= l <= m <= u <= a.length }
+      variant  { m - l }
+      ensures  { to_list_range a l m ++ to_list_range a m u =
+                 to_list_range a l u }
+    = if l < m then to_list_append a (l+1) m u
+
+    let to_list (a: my_array 'a) : list 'a
+      ensures { result = to_list_range a 0 (length a) }
+    = to_list_range a 0 (length a)
+
+    val copy (a: my_array 'a) : my_array 'a
+      ensures  { length result = length a }
+      ensures  { forall i:int. 0 <= i < length result -> result[i] = a[i] }
+
+
+  (* end *)
+
+  type array 'a = my_array 'a
+
+end
+
+module Queue
+
+  use seq.Seq, ocaml.Exceptions
+
+  type t 'a = abstract {
+    mutable view: seq 'a;
+  }
+
+  exception Empty
+
+  val create () : t 'a
+    ensures { result.view = empty }
+
+  val is_empty (q: t 'a) : bool
+    ensures { result <-> q.view = empty }
+
+  val pop (q: t 'a) : 'a
+    writes  { q }
+    raises  { Empty -> q.view = empty /\ q.view = (old q).view }
+    ensures { (old q).view = cons result q.view }
+
+  val add (x: 'a) (q: t 'a) : unit
+    writes  { q }
+    ensures { q.view = snoc (old q).view x }
+
+  val copy (q : t 'a) : t 'a
+    ensures { result.view == q.view }
+
+end
+
+module Seq
+
+  use export seq.Seq
+  use export seq.Mem
+
+end
+
+module SeqPermut
+
+  use export seq.Permut
+
+end
+
+module ListOfSeq
+
+  use export seq.ToList
+
+end
+
+module FsetSum
+
+  use export set.FsetSum
+
+end
+
+module SeqOfList
+
+  use export seq.OfList
+
+end
+
+module Permut
+
+  use export list.Permut
+
+end
+
+module Numof
+
+  use array.NumOfEq
+  use import int.NumOf as N
+
+  use Stdlib
+
+  function numof (a: Array.my_array 'a) (v: 'a) (l u: int) : int =
+    N.numof (fun i -> (Array.([]) a i) = v) l u
+
+end
+
+module Sum
+
+  use export int.Sum
+
+end
+
+module Power
+
+  use int.Power
+
+  function (^) (x y: int) : int = power x y
+
+end
+
+module Set
+
+  use export set.Fset
+
+end
+
+module Bag
+
+  use export bag.Bag
+
+end
+
+(* module Correct *)
+
+(*   use ocamlstdlib. *)
+
+(* end *)

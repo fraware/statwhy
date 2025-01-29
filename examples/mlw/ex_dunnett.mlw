@@ -42,7 +42,7 @@ module Dunnett_example
                 (World !st interp |= StatB (Eq (ps[i])) (mean p0 =!' mean p)))
               (enumerate (Cons p1 Nil) 0)
     }
-    = exec_dunnett (Cons p1 Nil) p0 (Cons d1 Nil) c
+    = exec_dunnett (Cons p1 Nil) p0 (Cons d1 Nil) c Two
 
   let ex_dunnett2 (d1 d2 : (list real)) (c : list real) : array real
     requires { !st = Nil /\
@@ -63,7 +63,7 @@ module Dunnett_example
                 (World !st interp |= StatB (Eq (ps[i])) (mean p0 =!' mean p)))
               (enumerate (Cons p1 (Cons p2 Nil)) 0)
     }
-    = exec_dunnett (Cons p1 (Cons p2 Nil)) p0 (Cons d1 (Cons d2 Nil)) c
+    = exec_dunnett (Cons p1 (Cons p2 Nil)) p0 (Cons d1 (Cons d2 Nil)) c Two
 
   let ex_dunnett3 (d1 d2 d3 : (list real)) (c : list real) : array real
     requires { !st = Nil /\
@@ -84,7 +84,7 @@ module Dunnett_example
                 (World !st interp |= StatB (Eq (ps[i])) (mean p0 =!' mean p)))
               (enumerate (Cons p1 (Cons p2 (Cons p3 Nil))) 0)
     }
-    = exec_dunnett (Cons p1 (Cons p2 (Cons p3 Nil))) p0 (Cons d1 (Cons d2 (Cons d3 Nil))) c
+    = exec_dunnett (Cons p1 (Cons p2 (Cons p3 Nil))) p0 (Cons d1 (Cons d2 (Cons d3 Nil))) c Two
 
   let ex_dunnett4 (d1 d2 d3 d4 : (list real)) (c : list real) : array real
     requires { !st = Nil /\
@@ -107,7 +107,7 @@ module Dunnett_example
                 (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil))))
                 0)
     }
-    = exec_dunnett (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil)))) p0 (Cons d1 (Cons d2 (Cons d3 (Cons d4 Nil)))) c
+    = exec_dunnett (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil)))) p0 (Cons d1 (Cons d2 (Cons d3 (Cons d4 Nil)))) c Two
 
   let ex_dunnett5 (d1 d2 d3 d4 d5 : (list real)) (c : list real): array real
     requires { !st = Nil /\
@@ -131,7 +131,7 @@ module Dunnett_example
                 0)
     }
     = exec_dunnett (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 Nil))))) p0
-                 (Cons d1 (Cons d2 (Cons d3 (Cons d4 (Cons d5 Nil))))) c
+                 (Cons d1 (Cons d2 (Cons d3 (Cons d4 (Cons d5 Nil))))) c Two
 
   let ex_dunnett6 (d1 d2 d3 d4 d5 d6 : (list real)) (c : list real): array real
     requires { !st = Nil /\
@@ -155,7 +155,7 @@ module Dunnett_example
                 0)
     }
     = exec_dunnett (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 Nil)))))) p0
-                 (Cons d1 (Cons d2 (Cons d3 (Cons d4 (Cons d5 (Cons d6 Nil)))))) c
+                 (Cons d1 (Cons d2 (Cons d3 (Cons d4 (Cons d5 (Cons d6 Nil)))))) c Two
 
   let ex_dunnett7 (d1 d2 d3 d4 d5 d6 d7 : (list real)) (c : list real): array real
     requires { !st = Nil /\
@@ -180,5 +180,5 @@ module Dunnett_example
     }
     = exec_dunnett
         (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 (Cons p7 Nil))))))) p0
-        (Cons d1 (Cons d2 (Cons d3 (Cons d4 (Cons d5 (Cons d6 (Cons d7 Nil))))))) c
+        (Cons d1 (Cons d2 (Cons d3 (Cons d4 (Cons d5 (Cons d6 (Cons d7 Nil))))))) c Two
 end

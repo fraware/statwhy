@@ -29,10 +29,7 @@ module Williams
     Length.length ppls = Length.length ys /\
     for_all2 (fun p y -> match p with NormalD _ _ -> sampled y p | _ -> false end) ppls ys /\
     (match control_ppl with NormalD _ _ -> sampled c control_ppl | _ -> false end) /\
-    for_all
-      (fun t -> let (x, y) = t in
-        (World !st interp) |= eq_variance x y)
-      (combinations_poly (Cons control_ppl ppls)) /\
+    for_all (fun p -> (World !st interp) |= eq_variance control_ppl p) ppls /\      
     match alt with
     | Two -> false
     | Up ->
@@ -41,14 +38,18 @@ module Williams
           (World !st interp) |= Possible (mean control_ppl >' mean p) /\
           (World !st interp) |= Not (Possible (mean control_ppl <' mean p)))
         ppls /\
-      for_all (fun t -> let (p1, p2) = t in (World !st interp) |= Know (mean p1 <=' mean p2)) (combine (ppls ++ (Cons control_ppl Nil)) (tl (ppls ++ (Cons control_ppl Nil))))
+      for_all (fun t -> let (p1, p2) = t in
+                (World !st interp) |= Know (mean p1 <=' mean p2))
+              (combine (ppls ++ (Cons control_ppl Nil)) (tl (ppls ++ (Cons control_ppl Nil))))
     | Low ->
       for_all
         (fun p ->
           (World !st interp) |= Not (Possible (mean control_ppl >' mean p)) /\
           (World !st interp) |= Possible (mean control_ppl <' mean p))
         ppls /\
-      for_all (fun t -> let (p1, p2) = t in (World !st interp) |= Know (mean p1 >=' mean p2)) (combine ppls (tl ppls))
+      for_all (fun t -> let (p1, p2) = t in
+                (World !st interp) |= Know (mean p1 >=' mean p2))
+              (combine ppls (tl ppls))
     end
   } ensures {
     let ps = result in

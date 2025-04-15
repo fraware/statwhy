@@ -3,329 +3,37 @@
 "https://www.why3.org/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="CVC5" version="1.1.2" timelimit="1" steplimit="0" memlimit="1000"/>
-<file format="whyml">
+<file format="whyml" proved="true">
 <path name=".."/><path name="multiple_hypotheses.mlw"/>
-<theory name="Multiple_hypotheses">
- <goal name="ex_two_hypotheses_disj&#39;vc" expl="VC for ex_two_hypotheses_disj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_two_hypotheses_disj&#39;vc.0" expl="VC for ex_two_hypotheses_disj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="153931"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_two_hypotheses_disj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.169489" steps="60534"/></proof>
-   </goal>
-   <goal name="ex_two_hypotheses_disj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.174499" steps="61920"/></proof>
-   </goal>
-   <goal name="ex_two_hypotheses_disj&#39;vc.0.2" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="141489"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_two_hypotheses_disj&#39;vc.0.2.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="331993"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_two_hypotheses_disj&#39;vc.0.2.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_two_hypotheses_disj&#39;vc.0.2.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.220337" steps="82455"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_two_hypotheses_conj&#39;vc" expl="VC for ex_two_hypotheses_conj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_two_hypotheses_conj&#39;vc.0" expl="VC for ex_two_hypotheses_conj" proved="true">
-  <proof prover="0"><result status="timeout" time="0.780740" steps="162985"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_two_hypotheses_conj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.166211" steps="60534"/></proof>
-   </goal>
-   <goal name="ex_two_hypotheses_conj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.167984" steps="61920"/></proof>
-   </goal>
-   <goal name="ex_two_hypotheses_conj&#39;vc.0.2" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="130028"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_two_hypotheses_conj&#39;vc.0.2.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="3.295437" steps="349221"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_two_hypotheses_conj&#39;vc.0.2.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_two_hypotheses_conj&#39;vc.0.2.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.093930" steps="82480"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_three_hypotheses_disj&#39;vc" expl="VC for ex_three_hypotheses_disj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_three_hypotheses_disj&#39;vc.0" expl="VC for ex_three_hypotheses_disj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="210072"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_three_hypotheses_disj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.183954" steps="61737"/></proof>
-   </goal>
-   <goal name="ex_three_hypotheses_disj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.225811" steps="63127"/></proof>
-   </goal>
-   <goal name="ex_three_hypotheses_disj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.202696" steps="63768"/></proof>
-   </goal>
-   <goal name="ex_three_hypotheses_disj&#39;vc.0.3" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="166129"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_three_hypotheses_disj&#39;vc.0.3.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="212276"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_three_hypotheses_disj&#39;vc.0.3.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_three_hypotheses_disj&#39;vc.0.3.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.393249" steps="94449"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_three_hypotheses_conj&#39;vc" expl="VC for ex_three_hypotheses_conj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_three_hypotheses_conj&#39;vc.0" expl="VC for ex_three_hypotheses_conj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="209596"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_three_hypotheses_conj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.120150" steps="61737"/></proof>
-   </goal>
-   <goal name="ex_three_hypotheses_conj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.191246" steps="63127"/></proof>
-   </goal>
-   <goal name="ex_three_hypotheses_conj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.162892" steps="63768"/></proof>
-   </goal>
-   <goal name="ex_three_hypotheses_conj&#39;vc.0.3" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="162940"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_three_hypotheses_conj&#39;vc.0.3.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="452981"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_three_hypotheses_conj&#39;vc.0.3.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_three_hypotheses_conj&#39;vc.0.3.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.327290" steps="94257"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_four_hypotheses_disj&#39;vc" expl="VC for ex_four_hypotheses_disj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_four_hypotheses_disj&#39;vc.0" expl="VC for ex_four_hypotheses_disj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="278930"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_four_hypotheses_disj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.143864" steps="62940"/></proof>
-   </goal>
-   <goal name="ex_four_hypotheses_disj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.171680" steps="64334"/></proof>
-   </goal>
-   <goal name="ex_four_hypotheses_disj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.089259" steps="64975"/></proof>
-   </goal>
-   <goal name="ex_four_hypotheses_disj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.194908" steps="65605"/></proof>
-   </goal>
-   <goal name="ex_four_hypotheses_disj&#39;vc.0.4" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="193213"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_four_hypotheses_disj&#39;vc.0.4.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="950107"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_four_hypotheses_disj&#39;vc.0.4.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_four_hypotheses_disj&#39;vc.0.4.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.246876" steps="104105"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_four_hypotheses_conj&#39;vc" expl="VC for ex_four_hypotheses_conj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_four_hypotheses_conj&#39;vc.0" expl="VC for ex_four_hypotheses_conj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="141865"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_four_hypotheses_conj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.177624" steps="62940"/></proof>
-   </goal>
-   <goal name="ex_four_hypotheses_conj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.189770" steps="64334"/></proof>
-   </goal>
-   <goal name="ex_four_hypotheses_conj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.186014" steps="64975"/></proof>
-   </goal>
-   <goal name="ex_four_hypotheses_conj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.186039" steps="65605"/></proof>
-   </goal>
-   <goal name="ex_four_hypotheses_conj&#39;vc.0.4" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="189796"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_four_hypotheses_conj&#39;vc.0.4.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="299279"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_four_hypotheses_conj&#39;vc.0.4.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_four_hypotheses_conj&#39;vc.0.4.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.367521" steps="104180"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_five_hypotheses_disj&#39;vc" expl="VC for ex_five_hypotheses_disj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_five_hypotheses_disj&#39;vc.0" expl="VC for ex_five_hypotheses_disj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="162236"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_five_hypotheses_disj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.121770" steps="64143"/></proof>
-   </goal>
-   <goal name="ex_five_hypotheses_disj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.203706" steps="65541"/></proof>
-   </goal>
-   <goal name="ex_five_hypotheses_disj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.142728" steps="66182"/></proof>
-   </goal>
-   <goal name="ex_five_hypotheses_disj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.222682" steps="66812"/></proof>
-   </goal>
-   <goal name="ex_five_hypotheses_disj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.179562" steps="67465"/></proof>
-   </goal>
-   <goal name="ex_five_hypotheses_disj&#39;vc.0.5" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="207973"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_five_hypotheses_disj&#39;vc.0.5.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="221689"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_five_hypotheses_disj&#39;vc.0.5.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_five_hypotheses_disj&#39;vc.0.5.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.250114" steps="113903"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_five_hypotheses_conj&#39;vc" expl="VC for ex_five_hypotheses_conj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_five_hypotheses_conj&#39;vc.0" expl="VC for ex_five_hypotheses_conj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="152852"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_five_hypotheses_conj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.176480" steps="64143"/></proof>
-   </goal>
-   <goal name="ex_five_hypotheses_conj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.189301" steps="65541"/></proof>
-   </goal>
-   <goal name="ex_five_hypotheses_conj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.200440" steps="66182"/></proof>
-   </goal>
-   <goal name="ex_five_hypotheses_conj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.188865" steps="66812"/></proof>
-   </goal>
-   <goal name="ex_five_hypotheses_conj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.190233" steps="67465"/></proof>
-   </goal>
-   <goal name="ex_five_hypotheses_conj&#39;vc.0.5" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="217820"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_five_hypotheses_conj&#39;vc.0.5.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="308706"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_five_hypotheses_conj&#39;vc.0.5.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_five_hypotheses_conj&#39;vc.0.5.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.220523" steps="114099"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
+<theory name="Multiple_hypotheses" proved="true">
  <goal name="ex_six_hypotheses_disj&#39;vc" expl="VC for ex_six_hypotheses_disj" proved="true">
  <transf name="compute_in_goal_statwhy" proved="true" >
   <goal name="ex_six_hypotheses_disj&#39;vc.0" expl="VC for ex_six_hypotheses_disj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="178737"/></proof>
+  <proof prover="0"><result status="timeout" time="1.000000" steps="147356"/></proof>
   <transf name="split_vc" proved="true" >
    <goal name="ex_six_hypotheses_disj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.187165" steps="65346"/></proof>
+   <proof prover="0"><result status="valid" time="0.225749" steps="65346"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_disj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.203956" steps="66748"/></proof>
+   <proof prover="0"><result status="valid" time="0.184356" steps="66748"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_disj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.160228" steps="67389"/></proof>
+   <proof prover="0"><result status="valid" time="0.189124" steps="67389"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_disj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.178011" steps="68019"/></proof>
+   <proof prover="0"><result status="valid" time="0.089925" steps="68019"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_disj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.210449" steps="68672"/></proof>
+   <proof prover="0"><result status="valid" time="0.170065" steps="68672"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_disj&#39;vc.0.5" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.189368" steps="69348"/></proof>
+   <proof prover="0"><result status="valid" time="0.226879" steps="69348"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_disj&#39;vc.0.6" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="240569"/></proof>
+   <proof prover="0"><result status="timeout" time="1.000000" steps="141513"/></proof>
    <transf name="split_vc" proved="true" >
     <goal name="ex_six_hypotheses_disj&#39;vc.0.6.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="255640"/></proof>
+    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="258600"/></proof>
     <transf name="subst_all_statwhy" proved="true" >
      <goal name="ex_six_hypotheses_disj&#39;vc.0.6.0.0" expl="postcondition" proved="true">
      <transf name="compute_in_goal_statwhy" proved="true" >
@@ -334,7 +42,7 @@
     </transf>
     </goal>
     <goal name="ex_six_hypotheses_disj&#39;vc.0.6.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.303167" steps="123727"/></proof>
+    <proof prover="0"><result status="valid" time="0.287418" steps="123727"/></proof>
     </goal>
    </transf>
    </goal>
@@ -345,31 +53,31 @@
  <goal name="ex_six_hypotheses_conj&#39;vc" expl="VC for ex_six_hypotheses_conj" proved="true">
  <transf name="compute_in_goal_statwhy" proved="true" >
   <goal name="ex_six_hypotheses_conj&#39;vc.0" expl="VC for ex_six_hypotheses_conj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="186157"/></proof>
+  <proof prover="0"><result status="timeout" time="1.000000" steps="147878"/></proof>
   <transf name="split_vc" proved="true" >
    <goal name="ex_six_hypotheses_conj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.193710" steps="65346"/></proof>
+   <proof prover="0"><result status="valid" time="0.159657" steps="65346"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_conj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.198637" steps="66748"/></proof>
+   <proof prover="0"><result status="valid" time="0.157457" steps="66748"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_conj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.179158" steps="67389"/></proof>
+   <proof prover="0"><result status="valid" time="0.221229" steps="67389"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_conj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.184843" steps="68019"/></proof>
+   <proof prover="0"><result status="valid" time="0.217572" steps="68019"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_conj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.149466" steps="68672"/></proof>
+   <proof prover="0"><result status="valid" time="0.204701" steps="68672"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_conj&#39;vc.0.5" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.223979" steps="69348"/></proof>
+   <proof prover="0"><result status="valid" time="0.192353" steps="69348"/></proof>
    </goal>
    <goal name="ex_six_hypotheses_conj&#39;vc.0.6" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="233312"/></proof>
+   <proof prover="0"><result status="timeout" time="1.000000" steps="176576"/></proof>
    <transf name="split_vc" proved="true" >
     <goal name="ex_six_hypotheses_conj&#39;vc.0.6.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="257670"/></proof>
+    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="256224"/></proof>
     <transf name="subst_all_statwhy" proved="true" >
      <goal name="ex_six_hypotheses_conj&#39;vc.0.6.0.0" expl="postcondition" proved="true">
      <transf name="compute_in_goal_statwhy" proved="true" >
@@ -378,441 +86,13 @@
     </transf>
     </goal>
     <goal name="ex_six_hypotheses_conj&#39;vc.0.6.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.311568" steps="124016"/></proof>
+    <proof prover="0"><result status="valid" time="0.386421" steps="124016"/></proof>
     </goal>
    </transf>
    </goal>
   </transf>
   </goal>
  </transf>
- </goal>
- <goal name="ex_seven_hypotheses_disj&#39;vc" expl="VC for ex_seven_hypotheses_disj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_seven_hypotheses_disj&#39;vc.0" expl="VC for ex_seven_hypotheses_disj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="174420"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_seven_hypotheses_disj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.202728" steps="66547"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_disj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.240630" steps="67955"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_disj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.238537" steps="68596"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_disj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.233782" steps="69226"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_disj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.233260" steps="69879"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_disj&#39;vc.0.5" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.222432" steps="70555"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_disj&#39;vc.0.6" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.225494" steps="71254"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_disj&#39;vc.0.7" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="270254"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_seven_hypotheses_disj&#39;vc.0.7.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="286430"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_seven_hypotheses_disj&#39;vc.0.7.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_seven_hypotheses_disj&#39;vc.0.7.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.558514" steps="133556"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_seven_hypotheses_conj&#39;vc" expl="VC for ex_seven_hypotheses_conj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_seven_hypotheses_conj&#39;vc.0" expl="VC for ex_seven_hypotheses_conj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="179174"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_seven_hypotheses_conj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.200266" steps="66547"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_conj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.111920" steps="67955"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_conj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.166438" steps="68596"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_conj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.241015" steps="69226"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_conj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.168133" steps="69879"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_conj&#39;vc.0.5" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.251771" steps="70555"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_conj&#39;vc.0.6" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.247585" steps="71254"/></proof>
-   </goal>
-   <goal name="ex_seven_hypotheses_conj&#39;vc.0.7" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="225526"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_seven_hypotheses_conj&#39;vc.0.7.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="287242"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_seven_hypotheses_conj&#39;vc.0.7.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_seven_hypotheses_conj&#39;vc.0.7.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.589101" steps="133937"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_eight_hypotheses_disj&#39;vc" expl="VC for ex_eight_hypotheses_disj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_eight_hypotheses_disj&#39;vc.0" expl="VC for ex_eight_hypotheses_disj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="191577"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_eight_hypotheses_disj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.221753" steps="67572"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_disj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.213157" steps="68984"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_disj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.234516" steps="69625"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_disj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.235684" steps="70255"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_disj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.244799" steps="70908"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_disj&#39;vc.0.5" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.244146" steps="71584"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_disj&#39;vc.0.6" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.240777" steps="72283"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_disj&#39;vc.0.7" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.256813" steps="73005"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_disj&#39;vc.0.8" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="162899"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_eight_hypotheses_disj&#39;vc.0.8.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="321122"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_eight_hypotheses_disj&#39;vc.0.8.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_eight_hypotheses_disj&#39;vc.0.8.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.625378" steps="143217"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_eight_hypotheses_conj&#39;vc" expl="VC for ex_eight_hypotheses_conj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_eight_hypotheses_conj&#39;vc.0" expl="VC for ex_eight_hypotheses_conj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="214590"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_eight_hypotheses_conj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.186612" steps="67572"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_conj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.226934" steps="68984"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_conj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.205148" steps="69625"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_conj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.210631" steps="70255"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_conj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.215321" steps="70908"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_conj&#39;vc.0.5" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.153378" steps="71584"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_conj&#39;vc.0.6" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.261584" steps="72283"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_conj&#39;vc.0.7" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.218990" steps="73005"/></proof>
-   </goal>
-   <goal name="ex_eight_hypotheses_conj&#39;vc.0.8" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="0.539768" steps="234468"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_eight_hypotheses_conj&#39;vc.0.8.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="322383"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_eight_hypotheses_conj&#39;vc.0.8.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_eight_hypotheses_conj&#39;vc.0.8.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.731206" steps="144009"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_nine_hypotheses_disj&#39;vc" expl="VC for ex_nine_hypotheses_disj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_nine_hypotheses_disj&#39;vc.0" expl="VC for ex_nine_hypotheses_disj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="196993"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_nine_hypotheses_disj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.203376" steps="68749"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_disj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.218191" steps="70165"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_disj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.147887" steps="70806"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_disj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.236786" steps="71436"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_disj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.230868" steps="72089"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_disj&#39;vc.0.5" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.233864" steps="72765"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_disj&#39;vc.0.6" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.218539" steps="73464"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_disj&#39;vc.0.7" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.229784" steps="74186"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_disj&#39;vc.0.8" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.227512" steps="74931"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_disj&#39;vc.0.9" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="273278"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_nine_hypotheses_disj&#39;vc.0.9.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="358517"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_nine_hypotheses_disj&#39;vc.0.9.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_nine_hypotheses_disj&#39;vc.0.9.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.609948" steps="153157"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_nine_hypotheses_conj&#39;vc" expl="VC for ex_nine_hypotheses_conj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_nine_hypotheses_conj&#39;vc.0" expl="VC for ex_nine_hypotheses_conj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="206740"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_nine_hypotheses_conj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.184726" steps="68749"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_conj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.228137" steps="70165"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_conj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.226904" steps="70806"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_conj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.261356" steps="71436"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_conj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.255633" steps="72089"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_conj&#39;vc.0.5" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.250679" steps="72765"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_conj&#39;vc.0.6" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.235040" steps="73464"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_conj&#39;vc.0.7" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.238419" steps="74186"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_conj&#39;vc.0.8" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.239253" steps="74931"/></proof>
-   </goal>
-   <goal name="ex_nine_hypotheses_conj&#39;vc.0.9" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="166836"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_nine_hypotheses_conj&#39;vc.0.9.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="359942"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_nine_hypotheses_conj&#39;vc.0.9.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_nine_hypotheses_conj&#39;vc.0.9.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.720635" steps="153751"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_ten_hypotheses_disj&#39;vc" expl="VC for ex_ten_hypotheses_disj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_ten_hypotheses_disj&#39;vc.0" expl="VC for ex_ten_hypotheses_disj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="216198"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_ten_hypotheses_disj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.226823" steps="69928"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_disj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.234573" steps="71348"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_disj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.252269" steps="71989"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_disj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.238231" steps="72619"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_disj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.276561" steps="73272"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_disj&#39;vc.0.5" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.253696" steps="73948"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_disj&#39;vc.0.6" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.266701" steps="74647"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_disj&#39;vc.0.7" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.262395" steps="75369"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_disj&#39;vc.0.8" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.303182" steps="76394"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_disj&#39;vc.0.9" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.293261" steps="76974"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_disj&#39;vc.0.10" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="167604"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_ten_hypotheses_disj&#39;vc.0.10.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="371494"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_ten_hypotheses_disj&#39;vc.0.10.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_ten_hypotheses_disj&#39;vc.0.10.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.745924" steps="163003"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_ten_hypotheses_conj&#39;vc" expl="VC for ex_ten_hypotheses_conj" proved="true">
- <transf name="compute_in_goal_statwhy" proved="true" >
-  <goal name="ex_ten_hypotheses_conj&#39;vc.0" expl="VC for ex_ten_hypotheses_conj" proved="true">
-  <proof prover="0"><result status="timeout" time="1.000000" steps="170471"/></proof>
-  <transf name="split_vc" proved="true" >
-   <goal name="ex_ten_hypotheses_conj&#39;vc.0.0" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.212305" steps="69928"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_conj&#39;vc.0.1" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.183035" steps="71348"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_conj&#39;vc.0.2" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.228582" steps="71989"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_conj&#39;vc.0.3" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.170141" steps="72619"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_conj&#39;vc.0.4" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.255634" steps="73272"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_conj&#39;vc.0.5" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.226646" steps="73948"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_conj&#39;vc.0.6" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.252825" steps="74647"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_conj&#39;vc.0.7" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.267587" steps="75369"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_conj&#39;vc.0.8" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.261710" steps="76394"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_conj&#39;vc.0.9" expl="precondition" proved="true">
-   <proof prover="0"><result status="valid" time="0.302597" steps="76974"/></proof>
-   </goal>
-   <goal name="ex_ten_hypotheses_conj&#39;vc.0.10" expl="postcondition" proved="true">
-   <proof prover="0"><result status="timeout" time="1.000000" steps="168608"/></proof>
-   <transf name="split_vc" proved="true" >
-    <goal name="ex_ten_hypotheses_conj&#39;vc.0.10.0" expl="postcondition" proved="true">
-    <proof prover="0" timelimit="5"><result status="timeout" time="5.000000" steps="370498"/></proof>
-    <transf name="subst_all_statwhy" proved="true" >
-     <goal name="ex_ten_hypotheses_conj&#39;vc.0.10.0.0" expl="postcondition" proved="true">
-     <transf name="compute_in_goal_statwhy" proved="true" >
-     </transf>
-     </goal>
-    </transf>
-    </goal>
-    <goal name="ex_ten_hypotheses_conj&#39;vc.0.10.1" expl="postcondition" proved="true">
-    <proof prover="0"><result status="valid" time="0.703258" steps="163625"/></proof>
-    </goal>
-   </transf>
-   </goal>
-  </transf>
-  </goal>
- </transf>
- </goal>
- <goal name="ex_twenty_hypotheses_disj&#39;vc" expl="VC for ex_twenty_hypotheses_disj">
- </goal>
- <goal name="ex_twenty_hypotheses_conj&#39;vc" expl="VC for ex_twenty_hypotheses_conj">
- </goal>
- <goal name="ex_thirty_hypotheses_disj&#39;vc" expl="VC for ex_thirty_hypotheses_disj">
- </goal>
- <goal name="ex_thirty_hypotheses_conj&#39;vc" expl="VC for ex_thirty_hypotheses_conj">
- </goal>
-</theory>
-<theory name="Interim_analysis">
- <goal name="ex_drug1&#39;vc" expl="VC for ex_drug1">
- </goal>
- <goal name="ex_drug2&#39;vc" expl="VC for ex_drug2">
- </goal>
- <goal name="ex_drug3&#39;vc" expl="VC for ex_drug3">
  </goal>
 </theory>
 </file>

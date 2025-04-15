@@ -18,7 +18,7 @@ build: [
 ]
 depends: [
   "dune" {>= "2.4.0"}
-  "why3" {= "1.7.1"}
+  "why3" {= "1.8.0"}
   "why3-ide" {>= "1.5.0"}
   "gospel"
   "fmt"

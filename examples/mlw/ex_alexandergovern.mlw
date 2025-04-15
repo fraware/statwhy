@@ -19,23 +19,23 @@ module AlexanderGovern_example
                  (fun p y -> sampled y p)
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil))))
                  (Cons d1 (Cons d2 (Cons d3 (Cons d4 Nil)))) /\
-               ((World !st interp) |= Possible (t_m1 <' t_m2)) /\
-               ((World !st interp) |= Possible (t_m1 >' t_m2)) /\
-               ((World !st interp) |= Possible (t_m1 <' t_m3)) /\
-               ((World !st interp) |= Possible (t_m1 >' t_m3)) /\
-               ((World !st interp) |= Possible (t_m1 <' t_m4)) /\
-               ((World !st interp) |= Possible (t_m1 >' t_m4)) /\               
-               ((World !st interp) |= Possible (t_m2 <' t_m3)) /\
-               ((World !st interp) |= Possible (t_m2 >' t_m3)) /\
-               ((World !st interp) |= Possible (t_m2 <' t_m4)) /\
-               ((World !st interp) |= Possible (t_m2 >' t_m4)) /\
-               ((World !st interp) |= Possible (t_m3 <' t_m4)) /\
-               ((World !st interp) |= Possible (t_m3 >' t_m4))
+               ((World !st interp) |= Possible (t_m1 $< t_m2)) /\
+               ((World !st interp) |= Possible (t_m1 $> t_m2)) /\
+               ((World !st interp) |= Possible (t_m1 $< t_m3)) /\
+               ((World !st interp) |= Possible (t_m1 $> t_m3)) /\
+               ((World !st interp) |= Possible (t_m1 $< t_m4)) /\
+               ((World !st interp) |= Possible (t_m1 $> t_m4)) /\               
+               ((World !st interp) |= Possible (t_m2 $< t_m3)) /\
+               ((World !st interp) |= Possible (t_m2 $> t_m3)) /\
+               ((World !st interp) |= Possible (t_m2 $< t_m4)) /\
+               ((World !st interp) |= Possible (t_m2 $> t_m4)) /\
+               ((World !st interp) |= Possible (t_m3 $< t_m4)) /\
+               ((World !st interp) |= Possible (t_m3 $> t_m4))
              }
     ensures {
       let p = result in
-      let h = (t_m1 =!' t_m2) \/+ (t_m1 =!' t_m3) \/+ (t_m1 =!' t_m4)
-        \/+ (t_m2 =!' t_m3) \/+ (t_m2 =!' t_m4) \/+ (t_m3 =!' t_m4) in
+      let h = (t_m1 $!= t_m2) $|| (t_m1 $!= t_m3) $|| (t_m1 $!= t_m4)
+        $|| (t_m2 $!= t_m3) $|| (t_m2 $!= t_m4) $|| (t_m3 $!= t_m4) in
       Eq p = compose_pvs h !st &&
       (World !st interp) |= StatB (Eq p) h
     }

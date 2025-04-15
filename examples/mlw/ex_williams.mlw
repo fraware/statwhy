@@ -31,16 +31,16 @@ module Williams_example
                  (Cons p1 Nil) /\
                sampled c p0 /\
                for_all
-                 (fun p -> (World !st interp) |= Not (Possible (mean p0 <' mean p)) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Not (Possible (mean p0 $< mean p)) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 Nil) /\
-               ((World !st interp) |= Know (mean p1 <=' mean p0))
+               ((World !st interp) |= Know (mean p1 $<= mean p0))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 >' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 >' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $> mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $> mean p)))
               (enumerate (Cons p1 Nil) 0)
     }
     = exec_williams (Cons p1 Nil) p0 (Cons d1 Nil) c Up
@@ -53,17 +53,17 @@ module Williams_example
                  (Cons p1 (Cons p2 Nil)) /\
                sampled c p0 /\
                for_all
-                 (fun p -> (World !st interp) |= Not (Possible (mean p0 <' mean p)) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Not (Possible (mean p0 $< mean p)) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 Nil)) /\
-               ((World !st interp) |= Know (mean p1 <=' mean p2)) /\
-               ((World !st interp) |= Know (mean p2 <=' mean p0))
+               ((World !st interp) |= Know (mean p1 $<= mean p2)) /\
+               ((World !st interp) |= Know (mean p2 $<= mean p0))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 >' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 >' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $> mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $> mean p)))
               (enumerate (Cons p1 (Cons p2 Nil)) 0)
     }
     = exec_williams (Cons p1 (Cons p2 Nil)) p0 (Cons d1 (Cons d2 Nil)) c Up
@@ -76,18 +76,18 @@ module Williams_example
                  (Cons p1 (Cons p2 (Cons p3 Nil))) /\
                sampled c p0 /\
                for_all
-                 (fun p -> (World !st interp) |= Not (Possible (mean p0 <' mean p)) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Not (Possible (mean p0 $< mean p)) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 (Cons p3 Nil))) /\
-               ((World !st interp) |= Know (mean p1 <=' mean p2)) /\
-               ((World !st interp) |= Know (mean p2 <=' mean p3)) /\
-               ((World !st interp) |= Know (mean p3 <=' mean p0))
+               ((World !st interp) |= Know (mean p1 $<= mean p2)) /\
+               ((World !st interp) |= Know (mean p2 $<= mean p3)) /\
+               ((World !st interp) |= Know (mean p3 $<= mean p0))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 >' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 >' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $> mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $> mean p)))
               (enumerate (Cons p1 (Cons p2 (Cons p3 Nil))) 0)
     }
     = exec_williams (Cons p1 (Cons p2 (Cons p3 Nil))) p0 (Cons d1 (Cons d2 (Cons d3 Nil))) c Up
@@ -100,19 +100,19 @@ module Williams_example
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil)))) /\
                sampled c p0 /\
                for_all
-                 (fun p -> (World !st interp) |= Not (Possible (mean p0 <' mean p)) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Not (Possible (mean p0 $< mean p)) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil)))) /\
-               ((World !st interp) |= Know (mean p1 <=' mean p2)) /\
-               ((World !st interp) |= Know (mean p2 <=' mean p3)) /\
-               ((World !st interp) |= Know (mean p3 <=' mean p4)) /\
-               ((World !st interp) |= Know (mean p4 <=' mean p0))
+               ((World !st interp) |= Know (mean p1 $<= mean p2)) /\
+               ((World !st interp) |= Know (mean p2 $<= mean p3)) /\
+               ((World !st interp) |= Know (mean p3 $<= mean p4)) /\
+               ((World !st interp) |= Know (mean p4 $<= mean p0))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 >' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 >' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $> mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $> mean p)))
               (enumerate
                 (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil))))
                 0)
@@ -127,20 +127,20 @@ module Williams_example
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 Nil))))) /\
                sampled c p0 /\
                for_all
-                 (fun p -> (World !st interp) |= Not (Possible (mean p0 <' mean p)) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Not (Possible (mean p0 $< mean p)) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 Nil))))) /\
-               ((World !st interp) |= Know (mean p1 <=' mean p2)) /\
-               ((World !st interp) |= Know (mean p2 <=' mean p3)) /\
-               ((World !st interp) |= Know (mean p3 <=' mean p4)) /\
-               ((World !st interp) |= Know (mean p4 <=' mean p5)) /\
-               ((World !st interp) |= Know (mean p5 <=' mean p0))
+               ((World !st interp) |= Know (mean p1 $<= mean p2)) /\
+               ((World !st interp) |= Know (mean p2 $<= mean p3)) /\
+               ((World !st interp) |= Know (mean p3 $<= mean p4)) /\
+               ((World !st interp) |= Know (mean p4 $<= mean p5)) /\
+               ((World !st interp) |= Know (mean p5 $<= mean p0))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 >' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 >' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $> mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $> mean p)))
               (enumerate
                 (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 Nil)))))
                 0)
@@ -156,21 +156,21 @@ module Williams_example
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 Nil)))))) /\
                sampled c p0 /\
                for_all
-                 (fun p -> (World !st interp) |= Not (Possible (mean p0 <' mean p)) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Not (Possible (mean p0 $< mean p)) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 Nil)))))) /\
-               ((World !st interp) |= Know (mean p1 <=' mean p2)) /\
-               ((World !st interp) |= Know (mean p2 <=' mean p3)) /\
-               ((World !st interp) |= Know (mean p3 <=' mean p4)) /\
-               ((World !st interp) |= Know (mean p4 <=' mean p5)) /\
-               ((World !st interp) |= Know (mean p5 <=' mean p6)) /\
-               ((World !st interp) |= Know (mean p6 <=' mean p0))
+               ((World !st interp) |= Know (mean p1 $<= mean p2)) /\
+               ((World !st interp) |= Know (mean p2 $<= mean p3)) /\
+               ((World !st interp) |= Know (mean p3 $<= mean p4)) /\
+               ((World !st interp) |= Know (mean p4 $<= mean p5)) /\
+               ((World !st interp) |= Know (mean p5 $<= mean p6)) /\
+               ((World !st interp) |= Know (mean p6 $<= mean p0))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 >' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 >' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $> mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $> mean p)))
               (enumerate
                 (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 Nil))))))
                 0)
@@ -186,22 +186,22 @@ module Williams_example
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 (Cons p7 Nil))))))) /\
                sampled c p0 /\
                for_all
-                 (fun p -> (World !st interp) |= Not (Possible (mean p0 <' mean p)) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Not (Possible (mean p0 $< mean p)) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 (Cons p7 Nil))))))) /\
-               ((World !st interp) |= Know (mean p1 <=' mean p2)) /\
-               ((World !st interp) |= Know (mean p2 <=' mean p3)) /\
-               ((World !st interp) |= Know (mean p3 <=' mean p4)) /\
-               ((World !st interp) |= Know (mean p4 <=' mean p5)) /\
-               ((World !st interp) |= Know (mean p5 <=' mean p6)) /\
-               ((World !st interp) |= Know (mean p6 <=' mean p7)) /\
-               ((World !st interp) |= Know (mean p7 <=' mean p0))
+               ((World !st interp) |= Know (mean p1 $<= mean p2)) /\
+               ((World !st interp) |= Know (mean p2 $<= mean p3)) /\
+               ((World !st interp) |= Know (mean p3 $<= mean p4)) /\
+               ((World !st interp) |= Know (mean p4 $<= mean p5)) /\
+               ((World !st interp) |= Know (mean p5 $<= mean p6)) /\
+               ((World !st interp) |= Know (mean p6 $<= mean p7)) /\
+               ((World !st interp) |= Know (mean p7 $<= mean p0))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 >' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 >' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $> mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $> mean p)))
               (enumerate
                 (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 (Cons p7 Nil)))))))
                 0)

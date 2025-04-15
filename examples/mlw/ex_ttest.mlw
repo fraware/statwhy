@@ -10,13 +10,13 @@ module Ttest_1samp
   requires {
     is_empty !st /\
     sampled d pp /\
-    (World !st interp) |= Possible (mean pp <' const_term 0.0) /\
-    (World !st interp) |= Possible (mean pp >' const_term 0.0)
+    (World !st interp) |= Possible (mean pp $< const_term 0.0) /\
+    (World !st interp) |= Possible (mean pp $> const_term 0.0)
   }
   ensures {
     let p = result in
-    Eq p = compose_pvs (mean pp =!' const_term 0.0) !st &&
-    (World !st interp) |= StatB (Eq p) (mean pp =!' const_term 0.0)
+    Eq p = compose_pvs (mean pp $!= const_term 0.0) !st &&
+    (World !st interp) |= StatB (Eq p) (mean pp $!= const_term 0.0)
   }
   = exec_ttest_1samp pp 0.0 d Two
 
@@ -38,16 +38,16 @@ module Ttest_ind
   requires {
     is_empty !st /\
     sampled d1 p1 /\ sampled d2 p2 /\
-    (World !st interp) |= Know (var p1 =' var p2) /\
+    (World !st interp) |= Know (var p1 $= var p2) /\
     (World !st interp) |= eq_variance p1 p2 /\
     non_paired d1 d2 /\
-    (World !st interp) |= Possible (mean p1 <' mean p2) /\
-    (World !st interp) |= Possible (mean p1 >' mean p2)
+    (World !st interp) |= Possible (mean p1 $< mean p2) /\
+    (World !st interp) |= Possible (mean p1 $> mean p2)
   }
   ensures {
     let p = result in
-    Eq p = compose_pvs (mean p1 =!' mean p2) !st &&
-    (World !st interp) |= StatB (Eq p) (mean p1 =!' mean p2)
+    Eq p = compose_pvs (mean p1 $!= mean p2) !st &&
+    (World !st interp) |= StatB (Eq p) (mean p1 $!= mean p2)
   }
   = exec_ttest_ind_eq p1 p2 (d1, d2) Two
 
@@ -57,13 +57,13 @@ module Ttest_ind
     sampled d1 p1 /\ sampled d2 p2 /\
     (World !st interp) |= Not (eq_variance p1 p2)
     /\ non_paired d1 d2 /\
-    (World !st interp) |= Possible (mean p1 <' mean p2) /\
-    (World !st interp) |= Possible (mean p1 >' mean p2)
+    (World !st interp) |= Possible (mean p1 $< mean p2) /\
+    (World !st interp) |= Possible (mean p1 $> mean p2)
   }
   ensures {
     let p = result in
-    Eq p = compose_pvs (mean p1 =!' mean p2) !st &&
-    (World !st interp) |= StatB (Eq p) (mean p1 =!' mean p2)
+    Eq p = compose_pvs (mean p1 $!= mean p2) !st &&
+    (World !st interp) |= StatB (Eq p) (mean p1 $!= mean p2)
   }
   = exec_ttest_ind_neq p1 p2 (d1, d2) Two
 end
@@ -85,13 +85,13 @@ module Ttest_paired
     is_empty !st /\
     sampled d1 p1 /\ sampled d2 p2 /\
     paired d1 d2 /\
-    (World !st interp) |= Possible (mean p1 <' mean p2) /\
-    (World !st interp) |= Possible (mean p1 >' mean p2)
+    (World !st interp) |= Possible (mean p1 $< mean p2) /\
+    (World !st interp) |= Possible (mean p1 $> mean p2)
   }
   ensures {
     let p = result in
-    Eq p = compose_pvs (mean p1 =!' mean p2) !st &&
-    (World !st interp) |= StatB (Eq p) (mean p1 =!' mean p2)
+    Eq p = compose_pvs (mean p1 $!= mean p2) !st &&
+    (World !st interp) |= StatB (Eq p) (mean p1 $!= mean p2)
   }
   = exec_ttest_paired p1 p2 (d1, d2) Two
 end

@@ -13,14 +13,14 @@ module Ttest
     let m = const_term mu in
     match alt with
     | Two ->
-        (World !st interp) |= Possible (r <' m) /\
-        (World !st interp) |= Possible (r >' m)
+        (World !st interp) |= Possible (r $< m) /\
+        (World !st interp) |= Possible (r $> m)
     | Up ->
-        (World !st interp) |= Not (Possible (r <' m)) /\
-        (World !st interp) |= Possible (r >' m)
+        (World !st interp) |= Not (Possible (r $< m)) /\
+        (World !st interp) |= Possible (r $> m)
     | Low ->
-        (World !st interp) |= Possible (r <' m) /\
-        (World !st interp) |= Not (Possible (r >' m))
+        (World !st interp) |= Possible (r $< m) /\
+        (World !st interp) |= Not (Possible (r $> m))
     end
     | _ -> false
     end
@@ -31,9 +31,9 @@ module Ttest
     let m = const_term mu in
     let r = mean p in
     let h = match alt with
-      | Two -> r =!' m
-      | Up -> r >' m
-      | Low -> r <' m
+      | Two -> r $!= m
+      | Up -> r $> m
+      | Low -> r $< m
     end in !st = Cons ("ttest_1samp", h, Eq pv) !(old st)
   }
 
@@ -54,14 +54,14 @@ module Ttest
         let r2 = mean p2 in
         match alt with
         | Two ->
-          (World !st interp) |= Possible (r1 <' r2) /\
-          (World !st interp) |= Possible (r1 >' r2)
+          (World !st interp) |= Possible (r1 $< r2) /\
+          (World !st interp) |= Possible (r1 $> r2)
         | Up ->
-          (World !st interp) |= Not (Possible (r1 <' r2)) /\
-          (World !st interp) |= Possible (r1 >' r2)
+          (World !st interp) |= Not (Possible (r1 $< r2)) /\
+          (World !st interp) |= Possible (r1 $> r2)
         | Low ->
-          (World !st interp) |= Possible (r1 <' r2) /\
-          (World !st interp) |= Not (Possible (r1 >' r2))
+          (World !st interp) |= Possible (r1 $< r2) /\
+          (World !st interp) |= Not (Possible (r1 $> r2))
         end
     end
     | _ -> false
@@ -73,9 +73,9 @@ module Ttest
     let r1 = mean p1 in
     let r2 = mean p2 in
     let h = match alt with
-      | Two -> r1 =!' r2
-      | Up -> r1 >' r2
-      | Low -> r1 <' r2
+      | Two -> r1 $!= r2
+      | Up -> r1 $> r2
+      | Low -> r1 $< r2
     end in !st = Cons ("ttest_ind_eq", h, Eq pv) !(old st)
   }
 
@@ -96,14 +96,14 @@ module Ttest
         let r2 = mean p2 in
         match alt with
         | Two ->
-          (World !st interp) |= Possible (r1 <' r2) /\
-          (World !st interp) |= Possible (r1 >' r2)
+          (World !st interp) |= Possible (r1 $< r2) /\
+          (World !st interp) |= Possible (r1 $> r2)
         | Up ->
-          (World !st interp) |= Not (Possible (r1 <' r2)) /\
-          (World !st interp) |= Possible (r1 >' r2)
+          (World !st interp) |= Not (Possible (r1 $< r2)) /\
+          (World !st interp) |= Possible (r1 $> r2)
         | Low ->
-          (World !st interp) |= Possible (r1 <' r2) /\
-          (World !st interp) |= Not (Possible (r1 >' r2))
+          (World !st interp) |= Possible (r1 $< r2) /\
+          (World !st interp) |= Not (Possible (r1 $> r2))
         end
     end
     | _ -> false
@@ -115,9 +115,9 @@ module Ttest
     let r1 = mean p1 in
     let r2 = mean p2 in
     let h = match alt with
-      | Two -> r1 =!' r2
-      | Up -> r1 >' r2
-      | Low -> r1 <' r2
+      | Two -> r1 $!= r2
+      | Up -> r1 $> r2
+      | Low -> r1 $< r2
     end in !st = Cons ("ttest_ind_neq", h, Eq pv) !(old st)
   }
 
@@ -135,14 +135,14 @@ module Ttest
         let r2 = mean p2 in
         match alt with
         | Two ->
-          (World !st interp) |= Possible (r1 <' r2) /\
-          (World !st interp) |= Possible (r1 >' r2)
+          (World !st interp) |= Possible (r1 $< r2) /\
+          (World !st interp) |= Possible (r1 $> r2)
         | Up ->
-          (World !st interp) |= Not (Possible (r1 <' r2)) /\
-          (World !st interp) |= Possible (r1 >' r2)
+          (World !st interp) |= Not (Possible (r1 $< r2)) /\
+          (World !st interp) |= Possible (r1 $> r2)
         | Low ->
-          (World !st interp) |= Possible (r1 <' r2) /\
-          (World !st interp) |= Not (Possible (r1 >' r2))
+          (World !st interp) |= Possible (r1 $< r2) /\
+          (World !st interp) |= Not (Possible (r1 $> r2))
         end
     end
     | _ -> false
@@ -154,9 +154,9 @@ module Ttest
     let r1 = mean p1 in
     let r2 = mean p2 in
     let h = match alt with
-      | Two -> r1 =!' r2
-      | Up -> r1 >' r2
-      | Low -> r1 <' r2
+      | Two -> r1 $!= r2
+      | Up -> r1 $> r2
+      | Low -> r1 $< r2
     end in !st = Cons ("ttest_paired", h, Eq pv) !(old st)
   }
 

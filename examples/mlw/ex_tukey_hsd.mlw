@@ -55,7 +55,7 @@ module Tukey_HSD_example
       for_all (fun t -> let (i,fml) = t in
                 (Eq (ps[i]) = compose_pvs fml !st) &&
                 (World !st interp |= StatB (Eq (ps[i])) fml))
-              (enumerate (combinations terms2 "=!") 0)
+              (enumerate (combinations terms2 "!=") 0)
     }
     = exec_tukey_hsd (Cons p1 (Cons p2 Nil)) (Cons d1 (Cons d2 Nil))
   
@@ -75,7 +75,7 @@ module Tukey_HSD_example
       for_all (fun t -> let (i,fml) = t in
                 (Eq (ps[i]) = compose_pvs fml !st) &&
                 (World !st interp |= StatB (Eq (ps[i])) fml))
-              (enumerate (combinations terms3 "=!") 0)
+              (enumerate (combinations terms3 "!=") 0)
     }
     = exec_tukey_hsd (Cons p1 (Cons p2 (Cons p3 Nil))) (Cons d1 (Cons d2 (Cons d3 Nil)))
 
@@ -95,7 +95,7 @@ module Tukey_HSD_example
       for_all (fun t -> let (i,fml) = t in
                 (Eq (ps[i]) = compose_pvs fml !st) &&
                 (World !st interp |= StatB (Eq (ps[i])) fml))
-              (enumerate (combinations terms4 "=!") 0)
+              (enumerate (combinations terms4 "!=") 0)
     }
     = exec_tukey_hsd (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil)))) (Cons d1 (Cons d2 (Cons d3 (Cons d4 Nil))))
 
@@ -115,7 +115,7 @@ module Tukey_HSD_example
       for_all (fun t -> let (i,fml) = t in
                 (Eq (ps[i]) = compose_pvs fml !st) &&
                 (World !st interp |= StatB (Eq (ps[i])) fml))
-              (enumerate (combinations terms5 "=!") 0)
+              (enumerate (combinations terms5 "!=") 0)
     }
     = exec_tukey_hsd (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 Nil)))))
                      (Cons d1 (Cons d2 (Cons d3 (Cons d4 (Cons d5 Nil)))))
@@ -136,7 +136,7 @@ module Tukey_HSD_example
       for_all (fun t -> let (i,fml) = t in
                 (Eq (ps[i]) = compose_pvs fml !st) &&
                 (World !st interp |= StatB (Eq (ps[i])) fml))
-              (enumerate (combinations terms6 "=!") 0)
+              (enumerate (combinations terms6 "!=") 0)
     }
     = exec_tukey_hsd (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 Nil)))))) (Cons d1 (Cons d2 (Cons d3 (Cons d4 (Cons d5 (Cons d6 Nil))))))
 
@@ -157,7 +157,7 @@ module Tukey_HSD_example
       for_all (fun t -> let (i,fml) = t in
                 (Eq (ps[i]) = compose_pvs fml !st) &&
                 (World !st interp |= StatB (Eq (ps[i])) fml))
-              (enumerate (combinations terms7 "=!") 0)
+              (enumerate (combinations terms7 "!=") 0)
     }
     = exec_tukey_hsd (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 (Cons p7 Nil))))))) (Cons d1 (Cons d2 (Cons d3 (Cons d4 (Cons d5 (Cons d6 (Cons d7 Nil)))))))
 
@@ -178,7 +178,7 @@ module Tukey_HSD_example
       for_all (fun t -> let (i,fml) = t in
                 (Eq (ps[i]) = compose_pvs fml !st) &&
                 (World !st interp |= StatB (Eq (ps[i])) fml))
-              (enumerate (combinations terms9 "=!") 0)
+              (enumerate (combinations terms9 "!=") 0)
     }
     = exec_tukey_hsd
         (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 (Cons p7 (Cons p8 (Cons p9 Nil)))))))))

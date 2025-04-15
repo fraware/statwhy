@@ -299,6 +299,10 @@ module LanguageELTH
         w |= StatTau p h -> stat_believe p h st
     end
 
+  lemma know_implies_statb:
+    forall w : world, p : pvalue, h : formula.
+    w |= (Know h) -> w |= (StatB p h)
+    
   (* properties of statistical belief K^alpha in Proposition 3 of [arXiv22] *)
   lemma BHT:
     forall w : world. forall h: formula. forall pv: pvalue.

@@ -21,7 +21,7 @@ module Poisson
     let pv = result in
     pvalue result /\
     let h = match alt with
-      | Two -> Pred "=!" (Cons p1 (Cons p2 Nil))
+      | Two -> Pred "!=" (Cons p1 (Cons p2 Nil))
       | Up -> Pred ">" (Cons p1 (Cons p2 Nil))
       | Low -> Pred "<" (Cons p1 (Cons p2 Nil))
     end in !st = !(old st) ++ Cons ("poisson_means_test", Atom h, Eq pv) Nil

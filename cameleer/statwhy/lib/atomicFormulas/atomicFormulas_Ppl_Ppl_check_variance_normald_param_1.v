@@ -134,76 +134,83 @@ Axiom fold_left_append :
   ((fold_left f acc (Init.Datatypes.app l1 l2)) =
    (fold_left f (fold_left f acc l1) l2)).
 
-Parameter concat: BuiltIn.string -> BuiltIn.string -> BuiltIn.string.
+Parameter concat:
+  Strings.String.string -> Strings.String.string -> Strings.String.string.
 
 Axiom concat_assoc :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (s3:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (s3:Strings.String.string),
   ((concat (concat s1 s2) s3) = (concat s1 (concat s2 s3))).
 
-Parameter rliteral: BuiltIn.string.
+Parameter rliteral: Strings.String.string.
 
 Axiom rliteral_axiom : True.
 
 Axiom concat_empty :
-  forall (s:BuiltIn.string),
+  forall (s:Strings.String.string),
   ((concat s rliteral) = (concat rliteral s)) /\ ((concat rliteral s) = s).
 
-Parameter length: BuiltIn.string -> Numbers.BinNums.Z.
+Parameter length: Strings.String.string -> Numbers.BinNums.Z.
 
 Axiom length_empty : ((length rliteral) = 0%Z).
 
 Axiom length_concat :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
   ((length (concat s1 s2)) = ((length s1) + (length s2))%Z).
 
-Parameter lt: BuiltIn.string -> BuiltIn.string -> Prop.
+Parameter lt: Strings.String.string -> Strings.String.string -> Prop.
 
 Axiom lt_empty :
-  forall (s:BuiltIn.string), ~ (s = rliteral) -> lt rliteral s.
+  forall (s:Strings.String.string), ~ (s = rliteral) -> lt rliteral s.
 
 Axiom lt_not_com :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string), lt s1 s2 -> ~ lt s2 s1.
+  forall (s1:Strings.String.string) (s2:Strings.String.string), lt s1 s2 ->
+  ~ lt s2 s1.
 
-Axiom lt_ref : forall (s1:BuiltIn.string), ~ lt s1 s1.
+Axiom lt_ref : forall (s1:Strings.String.string), ~ lt s1 s1.
 
 Axiom lt_trans :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (s3:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (s3:Strings.String.string),
   lt s1 s2 /\ lt s2 s3 -> lt s1 s3.
 
-Parameter le: BuiltIn.string -> BuiltIn.string -> Prop.
+Parameter le: Strings.String.string -> Strings.String.string -> Prop.
 
-Axiom le_empty : forall (s:BuiltIn.string), le rliteral s.
+Axiom le_empty : forall (s:Strings.String.string), le rliteral s.
 
-Axiom le_ref : forall (s1:BuiltIn.string), le s1 s1.
+Axiom le_ref : forall (s1:Strings.String.string), le s1 s1.
 
 Axiom lt_le :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string), lt s1 s2 -> le s1 s2.
+  forall (s1:Strings.String.string) (s2:Strings.String.string), lt s1 s2 ->
+  le s1 s2.
 
 Axiom lt_le_eq :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string), le s1 s2 ->
+  forall (s1:Strings.String.string) (s2:Strings.String.string), le s1 s2 ->
   lt s1 s2 \/ (s1 = s2).
 
 Axiom le_trans :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (s3:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (s3:Strings.String.string),
   le s1 s2 /\ le s2 s3 -> le s1 s3.
 
-Parameter s_at: BuiltIn.string -> Numbers.BinNums.Z -> BuiltIn.string.
+Parameter s_at:
+  Strings.String.string -> Numbers.BinNums.Z -> Strings.String.string.
 
 Axiom at_out_of_range :
-  forall (s:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (i:Numbers.BinNums.Z),
   (i < 0%Z)%Z \/ ((length s) <= i)%Z -> ((s_at s i) = rliteral).
 
 Axiom at_empty :
   forall (i:Numbers.BinNums.Z), ((s_at rliteral i) = rliteral).
 
 Axiom at_length :
-  forall (s:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (i:Numbers.BinNums.Z),
   let j := s_at s i in
   ((0%Z <= i)%Z /\ (i < (length s))%Z -> ((length j) = 1%Z)) /\
   (~ ((0%Z <= i)%Z /\ (i < (length s))%Z) -> ((length j) = 0%Z)).
 
 Axiom concat_at :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
   let s := concat s1 s2 in
   forall (i:Numbers.BinNums.Z),
   ((0%Z <= i)%Z /\ (i < (length s1))%Z -> ((s_at s i) = (s_at s1 i))) /\
@@ -211,14 +218,17 @@ Axiom concat_at :
    ((s_at s i) = (s_at s2 (i - (length s1))%Z))).
 
 Parameter substring:
-  BuiltIn.string -> Numbers.BinNums.Z -> Numbers.BinNums.Z -> BuiltIn.string.
+  Strings.String.string -> Numbers.BinNums.Z -> Numbers.BinNums.Z ->
+  Strings.String.string.
 
 Axiom substring_out_of_range :
-  forall (s:BuiltIn.string) (i:Numbers.BinNums.Z) (x:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (i:Numbers.BinNums.Z)
+    (x:Numbers.BinNums.Z),
   (i < 0%Z)%Z \/ ((length s) <= i)%Z -> ((substring s i x) = rliteral).
 
 Axiom substring_of_length_zero_or_less :
-  forall (s:BuiltIn.string) (i:Numbers.BinNums.Z) (x:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (i:Numbers.BinNums.Z)
+    (x:Numbers.BinNums.Z),
   (x <= 0%Z)%Z -> ((substring s i x) = rliteral).
 
 Axiom substring_of_empty :
@@ -226,27 +236,30 @@ Axiom substring_of_empty :
   ((substring rliteral i x) = rliteral).
 
 Axiom substring_smaller :
-  forall (s:BuiltIn.string) (i:Numbers.BinNums.Z) (x:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (i:Numbers.BinNums.Z)
+    (x:Numbers.BinNums.Z),
   ((length (substring s i x)) <= (length s))%Z.
 
 Axiom substring_smaller_x :
-  forall (s:BuiltIn.string) (i:Numbers.BinNums.Z) (x:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (i:Numbers.BinNums.Z)
+    (x:Numbers.BinNums.Z),
   (0%Z <= x)%Z -> ((length (substring s i x)) <= x)%Z.
 
 Axiom substring_length :
-  forall (s:BuiltIn.string) (i:Numbers.BinNums.Z) (x:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (i:Numbers.BinNums.Z)
+    (x:Numbers.BinNums.Z),
   (0%Z <= x)%Z /\ (0%Z <= i)%Z /\ (i < (length s))%Z ->
   (((length s) < (i + x)%Z)%Z ->
    ((length (substring s i x)) = ((length s) - i)%Z)) /\
   (~ ((length s) < (i + x)%Z)%Z -> ((length (substring s i x)) = x)).
 
 Axiom substring_at :
-  forall (s:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (i:Numbers.BinNums.Z),
   ((s_at s i) = (substring s i 1%Z)).
 
 Axiom substring_substring :
-  forall (s:BuiltIn.string) (ofs:Numbers.BinNums.Z) (len:Numbers.BinNums.Z)
-    (ofs':Numbers.BinNums.Z) (len':Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (ofs:Numbers.BinNums.Z)
+    (len:Numbers.BinNums.Z) (ofs':Numbers.BinNums.Z) (len':Numbers.BinNums.Z),
   (0%Z <= ofs)%Z /\ (ofs <= (length s))%Z -> (0%Z <= len)%Z ->
   ((ofs + len)%Z <= (length s))%Z -> (0%Z <= ofs')%Z /\ (ofs' <= len)%Z ->
   (0%Z <= len')%Z -> ((ofs' + len')%Z <= len)%Z ->
@@ -254,8 +267,8 @@ Axiom substring_substring :
    (substring s (ofs + ofs')%Z len')).
 
 Axiom concat_substring :
-  forall (s:BuiltIn.string) (ofs:Numbers.BinNums.Z) (len:Numbers.BinNums.Z)
-    (len':Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (ofs:Numbers.BinNums.Z)
+    (len:Numbers.BinNums.Z) (len':Numbers.BinNums.Z),
   (0%Z <= ofs)%Z /\ (ofs <= (length s))%Z -> (0%Z <= len)%Z ->
   ((ofs + len)%Z <= (length s))%Z -> (0%Z <= len')%Z ->
   (0%Z <= ((ofs + len)%Z + len')%Z)%Z /\
@@ -263,128 +276,147 @@ Axiom concat_substring :
   ((concat (substring s ofs len) (substring s (ofs + len)%Z len')) =
    (substring s ofs (len + len')%Z)).
 
-Parameter prefixof: BuiltIn.string -> BuiltIn.string -> Prop.
+Parameter prefixof: Strings.String.string -> Strings.String.string -> Prop.
 
 Axiom prefixof_substring :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
   prefixof s1 s2 <-> (s1 = (substring s2 0%Z (length s1))).
 
 Axiom prefixof_concat :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string), prefixof s1 (concat s1 s2).
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
+  prefixof s1 (concat s1 s2).
 
-Axiom prefixof_empty : forall (s2:BuiltIn.string), prefixof rliteral s2.
+Axiom prefixof_empty :
+  forall (s2:Strings.String.string), prefixof rliteral s2.
 
 Axiom prefixof_empty2 :
-  forall (s1:BuiltIn.string), ~ (s1 = rliteral) -> ~ prefixof s1 rliteral.
+  forall (s1:Strings.String.string), ~ (s1 = rliteral) ->
+  ~ prefixof s1 rliteral.
 
-Parameter suffixof: BuiltIn.string -> BuiltIn.string -> Prop.
+Parameter suffixof: Strings.String.string -> Strings.String.string -> Prop.
 
 Axiom suffixof_substring :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
   suffixof s1 s2 <->
   (s1 = (substring s2 ((length s2) - (length s1))%Z (length s1))).
 
 Axiom suffixof_concat :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string), suffixof s2 (concat s1 s2).
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
+  suffixof s2 (concat s1 s2).
 
-Axiom suffixof_empty : forall (s2:BuiltIn.string), suffixof rliteral s2.
+Axiom suffixof_empty :
+  forall (s2:Strings.String.string), suffixof rliteral s2.
 
 Axiom suffixof_empty2 :
-  forall (s1:BuiltIn.string), ~ (s1 = rliteral) -> ~ suffixof s1 rliteral.
+  forall (s1:Strings.String.string), ~ (s1 = rliteral) ->
+  ~ suffixof s1 rliteral.
 
-Parameter contains: BuiltIn.string -> BuiltIn.string -> Prop.
+Parameter contains: Strings.String.string -> Strings.String.string -> Prop.
 
 Axiom contains_prefixof :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string), prefixof s1 s2 ->
-  contains s2 s1.
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
+  prefixof s1 s2 -> contains s2 s1.
 
 Axiom contains_suffixof :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string), suffixof s1 s2 ->
-  contains s2 s1.
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
+  suffixof s1 s2 -> contains s2 s1.
 
 Axiom contains_empty :
-  forall (s2:BuiltIn.string), contains rliteral s2 <-> (s2 = rliteral).
+  forall (s2:Strings.String.string), contains rliteral s2 <-> (s2 = rliteral).
 
-Axiom contains_empty2 : forall (s1:BuiltIn.string), contains s1 rliteral.
+Axiom contains_empty2 :
+  forall (s1:Strings.String.string), contains s1 rliteral.
 
 Axiom contains_substring :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (i:Numbers.BinNums.Z),
   ((substring s1 i (length s2)) = s2) -> contains s1 s2.
 
 Axiom contains_concat :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
   contains (concat s1 s2) s1 /\ contains (concat s1 s2) s2.
 
 Axiom contains_at :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (i:Numbers.BinNums.Z),
   ((s_at s1 i) = s2) -> contains s1 s2.
 
 Parameter indexof:
-  BuiltIn.string -> BuiltIn.string -> Numbers.BinNums.Z -> Numbers.BinNums.Z.
+  Strings.String.string -> Strings.String.string -> Numbers.BinNums.Z ->
+  Numbers.BinNums.Z.
 
 Axiom indexof_empty :
-  forall (s:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (i:Numbers.BinNums.Z),
   (0%Z <= i)%Z /\ (i <= (length s))%Z -> ((indexof s rliteral i) = i).
 
 Axiom indexof_empty1 :
-  forall (s:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (i:Numbers.BinNums.Z),
   let j := indexof rliteral s i in
   (j = (-1%Z)%Z) \/ (s = rliteral) /\ (i = j) /\ (j = 0%Z).
 
 Axiom indexof_contains :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
   let j := indexof s1 s2 0%Z in
   contains s1 s2 ->
   ((0%Z <= j)%Z /\ (j <= (length s1))%Z) /\
   ((substring s1 j (length s2)) = s2).
 
 Axiom contains_indexof :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (i:Numbers.BinNums.Z),
   (0%Z <= (indexof s1 s2 i))%Z -> contains s1 s2.
 
 Axiom not_contains_indexof :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (i:Numbers.BinNums.Z),
   ~ contains s1 s2 -> ((indexof s1 s2 i) = (-1%Z)%Z).
 
 Axiom substring_indexof :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (i:Numbers.BinNums.Z),
   let j := indexof s1 s2 i in
   (0%Z <= j)%Z -> ((substring s1 j (length s2)) = s2).
 
 Axiom indexof_out_of_range :
-  forall (i:Numbers.BinNums.Z) (s1:BuiltIn.string) (s2:BuiltIn.string),
+  forall (i:Numbers.BinNums.Z) (s1:Strings.String.string)
+    (s2:Strings.String.string),
   ~ ((0%Z <= i)%Z /\ (i <= (length s1))%Z) -> ((indexof s1 s2 i) = (-1%Z)%Z).
 
 Axiom indexof_in_range :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (i:Numbers.BinNums.Z),
   let j := indexof s1 s2 i in
   (0%Z <= i)%Z /\ (i <= (length s1))%Z ->
   (j = (-1%Z)%Z) \/ (i <= j)%Z /\ (j <= (length s1))%Z.
 
 Axiom indexof_contains_substring :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (i:Numbers.BinNums.Z),
   ((0%Z <= i)%Z /\ (i <= (length s1))%Z) /\
   contains (substring s1 i ((length s1) - i)%Z) s2 ->
   (i <= (indexof s1 s2 i))%Z /\ ((indexof s1 s2 i) <= (length s1))%Z.
 
 Parameter replace:
-  BuiltIn.string -> BuiltIn.string -> BuiltIn.string -> BuiltIn.string.
+  Strings.String.string -> Strings.String.string -> Strings.String.string ->
+  Strings.String.string.
 
 Axiom replace_empty :
-  forall (s1:BuiltIn.string) (s3:BuiltIn.string),
+  forall (s1:Strings.String.string) (s3:Strings.String.string),
   ((replace s1 rliteral s3) = (concat s3 s1)).
 
 Axiom replace_not_contains :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (s3:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (s3:Strings.String.string),
   ~ contains s1 s2 -> ((replace s1 s2 s3) = s1).
 
 Axiom replace_empty2 :
-  forall (s2:BuiltIn.string) (s3:BuiltIn.string),
+  forall (s2:Strings.String.string) (s3:Strings.String.string),
   let s4 := replace rliteral s2 s3 in
   ((s2 = rliteral) -> (s4 = s3)) /\ (~ (s2 = rliteral) -> (s4 = rliteral)).
 
 Axiom replace_substring_indexof :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (s3:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (s3:Strings.String.string),
   let j := indexof s1 s2 0%Z in
   ((j < 0%Z)%Z -> ((replace s1 s2 s3) = s1)) /\
   (~ (j < 0%Z)%Z ->
@@ -393,28 +425,30 @@ Axiom replace_substring_indexof :
      (substring s1 (j + (length s2))%Z (((length s1) - j)%Z - (length s2))%Z)))).
 
 Parameter replaceall:
-  BuiltIn.string -> BuiltIn.string -> BuiltIn.string -> BuiltIn.string.
+  Strings.String.string -> Strings.String.string -> Strings.String.string ->
+  Strings.String.string.
 
 Axiom replaceall_empty1 :
-  forall (s1:BuiltIn.string) (s3:BuiltIn.string),
+  forall (s1:Strings.String.string) (s3:Strings.String.string),
   ((replaceall s1 rliteral s3) = s1).
 
 Axiom not_contains_replaceall :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string) (s3:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string)
+    (s3:Strings.String.string),
   ~ contains s1 s2 -> ((replaceall s1 s2 s3) = s1).
 
-Parameter to_int: BuiltIn.string -> Numbers.BinNums.Z.
+Parameter to_int: Strings.String.string -> Numbers.BinNums.Z.
 
 Axiom to_int_gt_minus_1 :
-  forall (s:BuiltIn.string), ((-1%Z)%Z <= (to_int s))%Z.
+  forall (s:Strings.String.string), ((-1%Z)%Z <= (to_int s))%Z.
 
 Axiom to_int_empty : ((to_int rliteral) = (-1%Z)%Z).
 
 (* Why3 assumption *)
-Definition is_digit (s:BuiltIn.string) : Prop :=
+Definition is_digit (s:Strings.String.string) : Prop :=
   ((0%Z <= (to_int s))%Z /\ ((to_int s) <= 9%Z)%Z) /\ ((length s) = 1%Z).
 
-Parameter from_int: Numbers.BinNums.Z -> BuiltIn.string.
+Parameter from_int: Numbers.BinNums.Z -> Strings.String.string.
 
 Axiom from_int_negative :
   forall (i:Numbers.BinNums.Z), (i < 0%Z)%Z <-> ((from_int i) = rliteral).
@@ -428,7 +462,7 @@ Axiom char : Type.
 Parameter char_WhyType : WhyType char.
 Existing Instance char_WhyType.
 
-Parameter contents: char -> BuiltIn.string.
+Parameter contents: char -> Strings.String.string.
 
 Axiom char'invariant : forall (self:char), ((length (contents self)) = 1%Z).
 
@@ -447,41 +481,42 @@ Axiom code_chr :
 
 Axiom chr_code : forall (c:char), ((chr (code c)) = c).
 
-Parameter get: BuiltIn.string -> Numbers.BinNums.Z -> char.
+Parameter get: Strings.String.string -> Numbers.BinNums.Z -> char.
 
 Axiom get1 :
-  forall (s:BuiltIn.string) (i:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (i:Numbers.BinNums.Z),
   (0%Z <= i)%Z /\ (i < (length s))%Z -> ((contents (get s i)) = (s_at s i)).
 
 Axiom substring_get :
-  forall (s:BuiltIn.string) (ofs:Numbers.BinNums.Z) (len:Numbers.BinNums.Z)
-    (i:Numbers.BinNums.Z),
+  forall (s:Strings.String.string) (ofs:Numbers.BinNums.Z)
+    (len:Numbers.BinNums.Z) (i:Numbers.BinNums.Z),
   (0%Z <= ofs)%Z /\ (ofs <= (length s))%Z -> (0%Z <= len)%Z ->
   ((ofs + len)%Z <= (length s))%Z -> (0%Z <= i)%Z /\ (i < len)%Z ->
   ((get (substring s ofs len) i) = (get s (ofs + i)%Z)).
 
 Axiom concat_first :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
   forall (i:Numbers.BinNums.Z), (0%Z <= i)%Z /\ (i < (length s1))%Z ->
   ((get (concat s1 s2) i) = (get s1 i)).
 
 Axiom concat_second :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
   forall (i:Numbers.BinNums.Z),
   ((length s1) <= i)%Z /\ (i < ((length s1) + (length s2))%Z)%Z ->
   ((get (concat s1 s2) i) = (get s2 (i - (length s1))%Z)).
 
 (* Why3 assumption *)
-Definition eq_string (s1:BuiltIn.string) (s2:BuiltIn.string) : Prop :=
+Definition eq_string (s1:Strings.String.string) (s2:Strings.String.string) :
+    Prop :=
   ((length s1) = (length s2)) /\
   (forall (i:Numbers.BinNums.Z), (0%Z <= i)%Z /\ (i < (length s1))%Z ->
    ((get s1 i) = (get s2 i))).
 
 Axiom extensionality :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string), eq_string s1 s2 ->
-  (s1 = s2).
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
+  eq_string s1 s2 -> (s1 = s2).
 
-Parameter make: Numbers.BinNums.Z -> char -> BuiltIn.string.
+Parameter make: Numbers.BinNums.Z -> char -> Strings.String.string.
 
 Axiom make_length :
   forall (size:Numbers.BinNums.Z) (v:char), (0%Z <= size)%Z ->
@@ -502,6 +537,12 @@ Axiom int63'axiom :
   forall (i:int63),
   ((-4611686018427387904%Z)%Z <= (int63'int i))%Z /\
   ((int63'int i) <= 4611686018427387903%Z)%Z.
+
+(* Why3 assumption *)
+Definition int63'eq (a:int63) (b:int63) : Prop :=
+  ((int63'int a) = (int63'int b)).
+
+Axiom int63'inj : forall (a:int63) (b:int63), int63'eq a b -> (a = b).
 
 (* Why3 assumption *)
 Definition in_bounds (n:Numbers.BinNums.Z) : Prop :=
@@ -527,10 +568,10 @@ Definition dataset (a:Type) := a.
 Definition vsymb := Numbers.BinNums.Z.
 
 (* Why3 assumption *)
-Definition fsymb := BuiltIn.string.
+Definition fsymb := Strings.String.string.
 
 (* Why3 assumption *)
-Definition psymb := BuiltIn.string.
+Definition psymb := Strings.String.string.
 
 (* Why3 assumption *)
 Inductive pvalue :=
@@ -540,11 +581,11 @@ Axiom pvalue_WhyType : WhyType pvalue.
 Existing Instance pvalue_WhyType.
 
 (* Why3 assumption *)
-Definition parameter := BuiltIn.string.
+Definition parameter := Strings.String.string.
 
 (* Why3 assumption *)
 Inductive real_number :=
-  | Param : BuiltIn.string -> real_number
+  | Param : Strings.String.string -> real_number
   | Const : Reals.Rdefinitions.R -> real_number.
 Axiom real_number_WhyType : WhyType real_number.
 Existing Instance real_number_WhyType.
@@ -554,7 +595,7 @@ Inductive population :=
   | NormalD : real_number -> real_number -> population
   | BernoulliD : real_number -> population
   | CategoricalD : Init.Datatypes.list real_number -> population
-  | UnknownD : BuiltIn.string -> population.
+  | UnknownD : Strings.String.string -> population.
 Axiom population_WhyType : WhyType population.
 Existing Instance population_WhyType.
 
@@ -585,23 +626,13 @@ Definition const_term (r:Reals.Rdefinitions.R) : real_term := Real (Const r).
 Axiom Refl : True.
 
 Axiom Trans :
-  forall (x:BuiltIn.string) (y:BuiltIn.string) (z:BuiltIn.string), (x = y) ->
-  (y = z) -> (x = z).
+  forall (x:Strings.String.string) (y:Strings.String.string)
+    (z:Strings.String.string),
+  (x = y) -> (y = z) -> (x = z).
 
 Axiom Symm :
-  forall (x:BuiltIn.string) (y:BuiltIn.string), (x = y) -> (y = x).
-
-Axiom eq_param_1 : True.
-
-Parameter rliteral1: BuiltIn.string.
-
-Axiom rliteral_axiom1 : True.
-
-Parameter rliteral2: BuiltIn.string.
-
-Axiom rliteral_axiom2 : True.
-
-Axiom eq_param_2 : ~ (rliteral1 = rliteral2).
+  forall (x:Strings.String.string) (y:Strings.String.string), (x = y) ->
+  (y = x).
 
 (* Why3 assumption *)
 Definition eq_real_number (r1:real_number) (r2:real_number) : Prop :=
@@ -751,7 +782,8 @@ Axiom Symm6 :
 
 (* Why3 assumption *)
 Inductive atomic_formula :=
-  | Pred : BuiltIn.string -> Init.Datatypes.list term -> atomic_formula.
+  | Pred : Strings.String.string -> Init.Datatypes.list term ->
+      atomic_formula.
 Axiom atomic_formula_WhyType : WhyType atomic_formula.
 Existing Instance atomic_formula_WhyType.
 
@@ -786,12 +818,12 @@ Axiom Symm7 :
   forall (x:atomic_formula) (y:atomic_formula), eq_atom x y -> eq_atom y x.
 
 Axiom eq_atom_neq_pred :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
   forall (tl1:Init.Datatypes.list term) (tl2:Init.Datatypes.list term),
   ~ (s1 = s2) -> ~ eq_atom (Pred s1 tl1) (Pred s2 tl2).
 
 Axiom eq_atom_neq_tl :
-  forall (s1:BuiltIn.string) (s2:BuiltIn.string),
+  forall (s1:Strings.String.string) (s2:Strings.String.string),
   forall (tl1:Init.Datatypes.list term) (tl2:Init.Datatypes.list term),
   ~ eq_term_list tl1 tl2 -> ~ eq_atom (Pred s1 tl1) (Pred s2 tl2).
 
@@ -824,11 +856,11 @@ Fixpoint length_fml (fml:formula) {struct fml}: Numbers.BinNums.Z :=
   end.
 
 (* Why3 assumption *)
-Definition store_elm := (BuiltIn.string* formula* pvalue)%type.
+Definition store_elm := (Strings.String.string* formula* pvalue)%type.
 
 (* Why3 assumption *)
 Definition store :=
-  Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type.
+  Init.Datatypes.list (Strings.String.string* formula* pvalue)%type.
 
 (* Why3 assumption *)
 Inductive alternative :=
@@ -856,12 +888,13 @@ Axiom conjpvs'def :
   end.
 
 Parameter mem_fml_in_store:
-  formula -> Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type ->
+  formula ->
+  Init.Datatypes.list (Strings.String.string* formula* pvalue)%type ->
   Init.Datatypes.bool.
 
 Axiom mem_fml_in_store'def :
   forall (h:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   (match st with
    | Init.Datatypes.cons (_, h', _) st' =>
        eq_hypothesis h h' \/ ((mem_fml_in_store h st') = Init.Datatypes.true)
@@ -876,12 +909,13 @@ Axiom mem_fml_in_store'def :
    ((mem_fml_in_store h st) = Init.Datatypes.false)).
 
 Parameter consistent_fml_store:
-  formula -> Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type ->
+  formula ->
+  Init.Datatypes.list (Strings.String.string* formula* pvalue)%type ->
   Init.Datatypes.bool.
 
 Axiom consistent_fml_store'def :
   forall (h:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   (((mem_fml_in_store h st) = Init.Datatypes.true) \/
    match h with
    | Disj h1 h2 =>
@@ -905,12 +939,13 @@ Axiom consistent_fml_store'def :
    ((consistent_fml_store h st) = Init.Datatypes.false)).
 
 Parameter get_pv:
-  formula -> Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type ->
+  formula ->
+  Init.Datatypes.list (Strings.String.string* formula* pvalue)%type ->
   pvalue.
 
 Axiom get_pv'def :
   forall (h:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   match st with
   | Init.Datatypes.cons (_, h', pv) st' =>
       (eq_hypothesis h' h ->
@@ -923,12 +958,13 @@ Axiom get_pv'def :
   end.
 
 Parameter compose_pvs:
-  formula -> Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type ->
+  formula ->
+  Init.Datatypes.list (Strings.String.string* formula* pvalue)%type ->
   pvalue.
 
 Axiom compose_pvs'def :
   forall (h:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   (((mem_fml_in_store h st) = Init.Datatypes.true) ->
    ((compose_pvs h st) = (get_pv h st))) /\
   (~ ((mem_fml_in_store h st) = Init.Datatypes.true) ->
@@ -945,49 +981,49 @@ Axiom compose_pvs'def :
 
 Axiom get_pv_recursive1 :
   forall (h1:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
-    (f:BuiltIn.string) (p:pvalue),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
+    (f:Strings.String.string) (p:pvalue),
   eq_hypothesis h1 h1 /\ ((mem_fml_in_store h1 st) = Init.Datatypes.true) ->
   ((get_pv h1 (Init.Datatypes.cons (f, h1, p) st)) =
    (disjpvs p (get_pv h1 st))).
 
 Axiom get_pv_recursive2 :
   forall (h1:atomic_formula) (h2:atomic_formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
-    (f:BuiltIn.string) (p:pvalue),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
+    (f:Strings.String.string) (p:pvalue),
   ~ eq_atom h1 h2 ->
   ((get_pv (Atom h1) (Init.Datatypes.cons (f, Atom h2, p) st)) =
    (get_pv (Atom h1) st)).
 
 Axiom compose_pvs_atom :
   forall (afml:atomic_formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   ((compose_pvs (Atom afml) st) = (get_pv (Atom afml) st)).
 
 Axiom compose_pvs_disj3 :
   forall (h:formula) (ah:atomic_formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   ~ ((mem_fml_in_store (Disj (Atom ah) h) st) = Init.Datatypes.true) ->
   ((compose_pvs (Disj (Atom ah) h) st) =
    (disjpvs (get_pv (Atom ah) st) (compose_pvs h st))).
 
 Axiom compose_pvs_disj4 :
   forall (h:formula) (ah:atomic_formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   ~ ((mem_fml_in_store (Disj h (Atom ah)) st) = Init.Datatypes.true) ->
   ((compose_pvs (Disj h (Atom ah)) st) =
    (disjpvs (compose_pvs h st) (get_pv (Atom ah) st))).
 
 Axiom compose_pvs_disj1 :
   forall (h1:formula) (h2:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   ~ ((mem_fml_in_store (Disj h1 h2) st) = Init.Datatypes.true) ->
   ((compose_pvs (Disj h1 h2) st) =
    (disjpvs (compose_pvs h1 st) (compose_pvs h2 st))).
 
 Axiom compose_pvs_disj2 :
   forall (h1:formula) (h2:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (p1:pvalue) (p2:pvalue),
   ~ ((mem_fml_in_store (Disj h1 h2) st) = Init.Datatypes.true) ->
   ((compose_pvs (Disj h1 h2) st) = (disjpvs p1 p2)) <->
@@ -998,7 +1034,7 @@ Axiom compose_pvs_disj2 :
 
 Axiom compose_pvs_disj5 :
   forall (h1:formula) (h2:formula) (h3:formula) (h4:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   ((mem_fml_in_store (Disj h1 h2) st) = Init.Datatypes.true) /\
   ((mem_fml_in_store (Disj h3 h4) st) = Init.Datatypes.true) /\
   ~ ((mem_fml_in_store (Disj (Disj h1 h2) (Disj h3 h4)) st) =
@@ -1008,14 +1044,15 @@ Axiom compose_pvs_disj5 :
 
 Axiom compose_pvs_conj :
   forall (h1:formula) (h2:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   ~ ((mem_fml_in_store (Conj h1 h2) st) = Init.Datatypes.true) ->
   ((compose_pvs (Conj h1 h2) st) =
    (conjpvs (compose_pvs h1 st) (compose_pvs h2 st))).
 
 (* Why3 assumption *)
 Definition stat_believe (pv:pvalue) (h:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type) : Prop :=
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type) :
+    Prop :=
   match pv with
   | Eq _ => (pv = (compose_pvs h st))
   | Leq p => match compose_pvs h st with
@@ -1025,19 +1062,19 @@ Definition stat_believe (pv:pvalue) (h:formula)
 
 Axiom stat_believe_mem :
   forall (h:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   ((mem_fml_in_store h st) = Init.Datatypes.true) ->
   stat_believe (get_pv h st) h st.
 
 Axiom compose_pvs_implies_stat_believe :
   forall (h:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (p:pvalue),
   (p = (compose_pvs h st)) -> stat_believe p h st.
 
 Axiom stat_believe_disj :
   forall (pv1:pvalue) (pv2:pvalue) (h1:formula) (h2:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   stat_believe pv1 h1 st /\
   stat_believe pv2 h2 st /\
   ~ ((mem_fml_in_store (Disj h1 h2) st) = Init.Datatypes.true) ->
@@ -1045,7 +1082,7 @@ Axiom stat_believe_disj :
 
 Axiom stat_believe_conj :
   forall (pv1:pvalue) (pv2:pvalue) (h1:formula) (h2:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   stat_believe pv1 h1 st /\
   stat_believe pv2 h2 st /\
   ~ ((mem_fml_in_store (Conj h1 h2) st) = Init.Datatypes.true) ->
@@ -1053,7 +1090,7 @@ Axiom stat_believe_conj :
 
 Axiom stat_believe_eq_implies_leq :
   forall (p:Reals.Rdefinitions.R) (h:formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type),
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type),
   stat_believe (Eq p) h st -> stat_believe (Leq p) h st.
 
 (* Why3 assumption *)
@@ -1065,7 +1102,7 @@ Axiom interp_const :
 
 (* Why3 assumption *)
 Inductive world :=
-  | World : Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type ->
+  | World : Init.Datatypes.list (Strings.String.string* formula* pvalue)%type ->
       (real_term -> Reals.Rdefinitions.R) -> world.
 Axiom world_WhyType : WhyType world.
 Existing Instance world_WhyType.
@@ -1074,8 +1111,8 @@ Parameter infix_breq: world -> formula -> Prop.
 
 Axiom interpretation_afml_invariance :
   forall (afml:atomic_formula)
-    (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
-    (st':Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+    (st:Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
+    (st':Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (i:real_term -> Reals.Rdefinitions.R),
   infix_breq (World st i) (Atom afml) -> infix_breq (World st' i) (Atom afml).
 
@@ -1165,13 +1202,15 @@ Axiom tautology_absorption_dc :
   infix_breq w (Equiv (Disj h1 (Conj h1 h2)) h1).
 
 Axiom ax_p_interpretation :
-  forall (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+  forall (st:
+          Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (i:real_term -> Reals.Rdefinitions.R) (h:formula),
   infix_breq (World st i) (Possible h) <->
   (exists j:real_term -> Reals.Rdefinitions.R, infix_breq (World st j) h).
 
 Axiom ax_k_interpretation :
-  forall (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+  forall (st:
+          Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (i:real_term -> Reals.Rdefinitions.R) (h:formula),
   infix_breq (World st i) (Know h) <->
   (forall (j:real_term -> Reals.Rdefinitions.R), infix_breq (World st j) h).
@@ -1194,41 +1233,47 @@ Axiom ax_5 :
   infix_breq w (Know (Possible h)).
 
 Axiom lem_not_possible :
-  forall (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+  forall (st:
+          Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (i:real_term -> Reals.Rdefinitions.R) (h:formula),
   infix_breq (World st i) (Not (Possible h)) <->
   (forall (j:real_term -> Reals.Rdefinitions.R),
    infix_breq (World st j) (Not h)).
 
 Axiom lem_know_not :
-  forall (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+  forall (st:
+          Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (i:real_term -> Reals.Rdefinitions.R) (h:formula),
   infix_breq (World st i) (Know (Not h)) <->
   (forall (j:real_term -> Reals.Rdefinitions.R),
    infix_breq (World st j) (Not h)).
 
 Axiom lem_not_know :
-  forall (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+  forall (st:
+          Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (i:real_term -> Reals.Rdefinitions.R) (h:formula),
   infix_breq (World st i) (Not (Know h)) <->
   (exists j:real_term -> Reals.Rdefinitions.R,
    infix_breq (World st j) (Not h)).
 
 Axiom lem_possible_not :
-  forall (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+  forall (st:
+          Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (i:real_term -> Reals.Rdefinitions.R) (h:formula),
   infix_breq (World st i) (Possible (Not h)) <->
   (exists j:real_term -> Reals.Rdefinitions.R,
    infix_breq (World st j) (Not h)).
 
 Axiom ax_duality_p_k' :
-  forall (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+  forall (st:
+          Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (i:real_term -> Reals.Rdefinitions.R) (h:formula),
   infix_breq (World st i) (Not (Possible h)) <->
   infix_breq (World st i) (Know (Not h)).
 
 Axiom ax_duality_k_p' :
-  forall (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+  forall (st:
+          Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (i:real_term -> Reals.Rdefinitions.R) (h:formula),
   infix_breq (World st i) (Not (Know h)) <->
   infix_breq (World st i) (Possible (Not h)).
@@ -1447,6 +1492,12 @@ Axiom lem_tau_implies_StatB :
       end
   end.
 
+Axiom stat_believe_implies_StatB :
+  forall (w:world), forall (h:formula), forall (pv:pvalue),
+  match w with
+  | World st _ => stat_believe pv h st -> infix_breq w (StatB pv h)
+  end.
+
 Axiom lem_tau_implies_StatB_disj :
   forall (w:world), forall (h1:formula) (h2:formula), forall (pvs:pvalue),
   match w with
@@ -1468,8 +1519,9 @@ Axiom lem_tau_implies_StatB_conj :
   end.
 
 Axiom st_invariant :
-  forall (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
-    (st':Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+  forall (st:
+          Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
+    (st':Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (i:real_term -> Reals.Rdefinitions.R)
     (j:real_term -> Reals.Rdefinitions.R) (afml:atomic_formula),
   let fmlA := Atom afml in
@@ -1477,88 +1529,89 @@ Axiom st_invariant :
   infix_breq (World st' j) fmlA /\ infix_breq (World st' i) (Possible fmlA).
 
 Axiom st_invariant' :
-  forall (st:Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
-    (st':Init.Datatypes.list (BuiltIn.string* formula* pvalue)%type)
+  forall (st:
+          Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
+    (st':Init.Datatypes.list (Strings.String.string* formula* pvalue)%type)
     (i:real_term -> Reals.Rdefinitions.R) (afml:atomic_formula),
   let fmlA := Atom afml in
   infix_breq (World st i) (Possible fmlA) ->
   infix_breq (World st' i) (Possible fmlA).
 
-Parameter rliteral3: BuiltIn.string.
+Parameter rliteral1: Strings.String.string.
+
+Axiom rliteral_axiom1 : True.
+
+(* Why3 assumption *)
+Definition infix_dlls (t1:real_term) (t2:real_term) : formula :=
+  Atom
+  (Pred rliteral1
+   (Init.Datatypes.cons (RealT t1)
+    (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil))).
+
+Parameter rliteral2: Strings.String.string.
+
+Axiom rliteral_axiom2 : True.
+
+(* Why3 assumption *)
+Definition infix_dlgt (t1:real_term) (t2:real_term) : formula :=
+  Atom
+  (Pred rliteral2
+   (Init.Datatypes.cons (RealT t1)
+    (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil))).
+
+Parameter rliteral3: Strings.String.string.
 
 Axiom rliteral_axiom3 : True.
 
 (* Why3 assumption *)
-Definition infix_ls' (t1:real_term) (t2:real_term) : formula :=
+Definition infix_dleq (t1:real_term) (t2:real_term) : formula :=
   Atom
   (Pred rliteral3
    (Init.Datatypes.cons (RealT t1)
     (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil))).
 
-Parameter rliteral4: BuiltIn.string.
+Parameter rliteral4: Strings.String.string.
 
 Axiom rliteral_axiom4 : True.
 
 (* Why3 assumption *)
-Definition infix_gt' (t1:real_term) (t2:real_term) : formula :=
+Definition infix_dlexeq (t1:real_term) (t2:real_term) : formula :=
   Atom
   (Pred rliteral4
    (Init.Datatypes.cons (RealT t1)
     (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil))).
 
-Parameter rliteral5: BuiltIn.string.
+Parameter rliteral5: Strings.String.string.
 
 Axiom rliteral_axiom5 : True.
 
 (* Why3 assumption *)
-Definition infix_eq' (t1:real_term) (t2:real_term) : formula :=
+Definition infix_dllseq (t1:real_term) (t2:real_term) : formula :=
   Atom
   (Pred rliteral5
    (Init.Datatypes.cons (RealT t1)
     (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil))).
 
-Parameter rliteral6: BuiltIn.string.
+Parameter rliteral6: Strings.String.string.
 
 Axiom rliteral_axiom6 : True.
 
 (* Why3 assumption *)
-Definition infix_eqex' (t1:real_term) (t2:real_term) : formula :=
+Definition infix_dlgteq (t1:real_term) (t2:real_term) : formula :=
   Atom
   (Pred rliteral6
    (Init.Datatypes.cons (RealT t1)
     (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil))).
 
-Parameter rliteral7: BuiltIn.string.
+Parameter rliteral7: Strings.String.string.
 
 Axiom rliteral_axiom7 : True.
-
-(* Why3 assumption *)
-Definition infix_lseq' (t1:real_term) (t2:real_term) : formula :=
-  Atom
-  (Pred rliteral7
-   (Init.Datatypes.cons (RealT t1)
-    (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil))).
-
-Parameter rliteral8: BuiltIn.string.
-
-Axiom rliteral_axiom8 : True.
-
-(* Why3 assumption *)
-Definition infix_gteq' (t1:real_term) (t2:real_term) : formula :=
-  Atom
-  (Pred rliteral8
-   (Init.Datatypes.cons (RealT t1)
-    (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil))).
-
-Parameter rliteral9: BuiltIn.string.
-
-Axiom rliteral_axiom9 : True.
 
 Axiom Atom_nil :
   forall (w:world),
   match w with
   | World st i =>
-      ~ infix_breq (World st i) (Atom (Pred rliteral9 Init.Datatypes.nil))
+      ~ infix_breq (World st i) (Atom (Pred rliteral7 Init.Datatypes.nil))
   end.
 
 Axiom Real_equal :
@@ -1567,11 +1620,23 @@ Axiom Real_equal :
   | World st i =>
       infix_breq (World st i)
       (Atom
-       (Pred rliteral5
+       (Pred rliteral3
         (Init.Datatypes.cons (RealT tx)
          (Init.Datatypes.cons (RealT ty) Init.Datatypes.nil)))) <->
       ((i tx) = (i ty))
   end.
+
+Axiom Real_equal_refl :
+  forall (tx:real_term) (w:world), infix_breq w (infix_dleq tx tx).
+
+Axiom Real_equal_symm :
+  forall (tx:real_term) (ty:real_term) (w:world),
+  infix_breq w (infix_dleq tx ty) <-> infix_breq w (infix_dleq ty tx).
+
+Axiom Real_equal_trans :
+  forall (tx:real_term) (ty:real_term) (tz:real_term) (w:world),
+  infix_breq w (infix_dleq tx ty) -> infix_breq w (infix_dleq ty tz) ->
+  infix_breq w (infix_dleq tx tz).
 
 Axiom Real_neq :
   forall (tx:real_term) (ty:real_term) (w:world),
@@ -1579,7 +1644,7 @@ Axiom Real_neq :
   | World st i =>
       infix_breq (World st i)
       (Atom
-       (Pred rliteral6
+       (Pred rliteral4
         (Init.Datatypes.cons (RealT tx)
          (Init.Datatypes.cons (RealT ty) Init.Datatypes.nil)))) <->
       ~ ((i tx) = (i ty))
@@ -1591,7 +1656,7 @@ Axiom Real_less :
   | World st i =>
       infix_breq (World st i)
       (Atom
-       (Pred rliteral3
+       (Pred rliteral1
         (Init.Datatypes.cons (RealT tx)
          (Init.Datatypes.cons (RealT ty) Init.Datatypes.nil)))) <->
       ((i tx) < (i ty))%R
@@ -1603,7 +1668,7 @@ Axiom Real_greater :
   | World st i =>
       infix_breq (World st i)
       (Atom
-       (Pred rliteral4
+       (Pred rliteral2
         (Init.Datatypes.cons (RealT tx)
          (Init.Datatypes.cons (RealT ty) Init.Datatypes.nil)))) <->
       ((i ty) < (i tx))%R
@@ -1615,7 +1680,7 @@ Axiom Real_leq :
   | World st i =>
       infix_breq (World st i)
       (Atom
-       (Pred rliteral7
+       (Pred rliteral5
         (Init.Datatypes.cons (RealT tx)
          (Init.Datatypes.cons (RealT ty) Init.Datatypes.nil)))) <->
       ((i tx) <= (i ty))%R
@@ -1627,7 +1692,7 @@ Axiom Real_geq :
   | World st i =>
       infix_breq (World st i)
       (Atom
-       (Pred rliteral8
+       (Pred rliteral6
         (Init.Datatypes.cons (RealT tx)
          (Init.Datatypes.cons (RealT ty) Init.Datatypes.nil)))) <->
       ((i ty) <= (i tx))%R
@@ -1644,24 +1709,24 @@ Axiom Real_le_leq :
   (Init.Datatypes.cons (RealT ty) Init.Datatypes.nil) in
   match w with
   | World st i =>
-      (infix_breq (World st i) (Atom (Pred rliteral3 tl)) ->
+      (infix_breq (World st i) (Atom (Pred rliteral1 tl)) ->
        ((i tx) < (i ty))%R) /\
       (((i tx) < (i ty))%R -> ((i tx) <= (i ty))%R) /\
-      (((i tx) <= (i ty))%R -> infix_breq w (Atom (Pred rliteral7 tl))) /\
-      (infix_breq w (Atom (Pred rliteral3 tl)) ->
-       infix_breq w (Atom (Pred rliteral7 tl)))
+      (((i tx) <= (i ty))%R -> infix_breq w (Atom (Pred rliteral5 tl))) /\
+      (infix_breq w (Atom (Pred rliteral1 tl)) ->
+       infix_breq w (Atom (Pred rliteral5 tl)))
   end.
 
 Axiom neq_tautology :
   forall (t1:real_term) (t2:real_term) (w:world),
   infix_breq w
   (Atom
-   (Pred rliteral3
+   (Pred rliteral1
     (Init.Datatypes.cons (RealT t1)
      (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))) <->
   infix_breq w
   (Atom
-   (Pred rliteral4
+   (Pred rliteral2
     (Init.Datatypes.cons (RealT t2)
      (Init.Datatypes.cons (RealT t1) Init.Datatypes.nil)))).
 
@@ -1669,12 +1734,12 @@ Axiom not_neq_implies_eq :
   forall (t1:real_term) (t2:real_term) (w:world),
   infix_breq w
   (Atom
-   (Pred rliteral6
+   (Pred rliteral4
     (Init.Datatypes.cons (RealT t1)
      (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))) <->
   ~ infix_breq w
     (Atom
-     (Pred rliteral5
+     (Pred rliteral3
       (Init.Datatypes.cons (RealT t1)
        (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))).
 
@@ -1682,17 +1747,17 @@ Axiom leq_or_eq_or_geq :
   forall (t1:real_term) (t2:real_term) (w:world),
   infix_breq w
   (Atom
-   (Pred rliteral5
-    (Init.Datatypes.cons (RealT t1)
-     (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))) \/
-  infix_breq w
-  (Atom
    (Pred rliteral3
     (Init.Datatypes.cons (RealT t1)
      (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))) \/
   infix_breq w
   (Atom
-   (Pred rliteral4
+   (Pred rliteral1
+    (Init.Datatypes.cons (RealT t1)
+     (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))) \/
+  infix_breq w
+  (Atom
+   (Pred rliteral2
     (Init.Datatypes.cons (RealT t1)
      (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))).
 
@@ -1700,17 +1765,17 @@ Axiom not_eq_implies_leq_or_geq :
   forall (t1:real_term) (t2:real_term) (w:world),
   ~ infix_breq w
     (Atom
-     (Pred rliteral5
+     (Pred rliteral3
       (Init.Datatypes.cons (RealT t1)
        (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))) ->
   infix_breq w
   (Atom
-   (Pred rliteral3
+   (Pred rliteral1
     (Init.Datatypes.cons (RealT t1)
      (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))) \/
   infix_breq w
   (Atom
-   (Pred rliteral4
+   (Pred rliteral2
     (Init.Datatypes.cons (RealT t1)
      (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))).
 
@@ -1718,19 +1783,23 @@ Axiom neq_implies_leq_or_geq :
   forall (t1:real_term) (t2:real_term) (w:world),
   infix_breq w
   (Atom
-   (Pred rliteral6
+   (Pred rliteral4
     (Init.Datatypes.cons (RealT t1)
      (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))) <->
   infix_breq w
   (Atom
-   (Pred rliteral3
+   (Pred rliteral1
     (Init.Datatypes.cons (RealT t1)
      (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))) \/
   infix_breq w
   (Atom
-   (Pred rliteral4
+   (Pred rliteral2
     (Init.Datatypes.cons (RealT t1)
      (Init.Datatypes.cons (RealT t2) Init.Datatypes.nil)))).
+
+Axiom eq_real_number_soundness :
+  forall (r1:real_number) (r2:real_number) (w:world), eq_real_number r1 r2 ->
+  infix_breq w (infix_dleq (Real r1) (Real r2)).
 
 (* Why3 assumption *)
 Definition sampled {a:Type} {a_WT:WhyType a} (y:a) (p:population) : Prop :=
@@ -1738,31 +1807,31 @@ Definition sampled {a:Type} {a_WT:WhyType a} (y:a) (p:population) : Prop :=
 
 Axiom normal_distribution_mean :
   forall (m:real_number) (v:real_number) (w:world),
-  infix_breq w (infix_eq' (mean (NormalD m v)) (Real m)).
+  infix_breq w (infix_dleq (mean (NormalD m v)) (Real m)).
 
 Axiom normal_distribution_var :
   forall (m:real_number) (v:real_number) (w:world),
-  infix_breq w (infix_eq' (var (NormalD m v)) (Real v)).
+  infix_breq w (infix_dleq (var (NormalD m v)) (Real v)).
 
 Parameter bernoullip: population -> real_term.
 
 Axiom bernoullip_def :
   forall (p:real_number), ((bernoullip (BernoulliD p)) = (Real p)).
 
-Parameter rliteral10: BuiltIn.string.
+Parameter rliteral8: Strings.String.string.
 
-Axiom rliteral_axiom10 : True.
+Axiom rliteral_axiom8 : True.
 
 (* Why3 assumption *)
 Definition check_variance (p:population) : formula :=
   Atom
-  (Pred rliteral10 (Init.Datatypes.cons (PopulationT p) Init.Datatypes.nil)).
+  (Pred rliteral8 (Init.Datatypes.cons (PopulationT p) Init.Datatypes.nil)).
 
 Axiom check_variance_def :
   forall (p:population) (w:world),
   infix_breq w (check_variance p) <->
   (exists r:Reals.Rdefinitions.R,
-   infix_breq w (Know (infix_eq' (var p) (const_term r)))).
+   infix_breq w (Know (infix_dleq (var p) (const_term r)))).
 
 Axiom Ppl_check_variance_normald_const :
   forall (mean1:real_number) (s:Reals.Rdefinitions.R) (w:world),
@@ -1770,8 +1839,9 @@ Axiom Ppl_check_variance_normald_const :
 
 (* Why3 goal *)
 Theorem Ppl_check_variance_normald_param :
-  forall (mean1:real_number) (s:BuiltIn.string) (w:world),
+  forall (mean1:real_number) (s:Strings.String.string) (w:world),
   ~ infix_breq w (check_variance (NormalD mean1 (Param s))).
+(* Why3 intros mean1 s w. *)
 Proof.
 intros mean1 s w.
 

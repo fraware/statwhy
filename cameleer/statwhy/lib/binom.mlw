@@ -10,14 +10,14 @@ module Binom
   let p = bernoullip p in
   match alt with
   | Two ->
-    (World !st interp) |= Possible (p <' p0) /\
-    (World !st interp) |= Possible (p >' p0)
+    (World !st interp) |= Possible (p $< p0) /\
+    (World !st interp) |= Possible (p $> p0)
   | Up ->
-    (World !st interp) |= Not (Possible (p <' p0)) /\
-    (World !st interp) |= Possible (p >' p0)
+    (World !st interp) |= Not (Possible (p $< p0)) /\
+    (World !st interp) |= Possible (p $> p0)
   | Low ->
-    (World !st interp) |= Possible (p <' p0) /\
-    (World !st interp) |= Not (Possible (p >' p0)) end
+    (World !st interp) |= Possible (p $< p0) /\
+    (World !st interp) |= Not (Possible (p $> p0)) end
   | _ -> false
   end
   } ensures {
@@ -26,9 +26,9 @@ module Binom
     let p = bernoullip p in
     let p0 = const_term p0 in
     let h = match alt with
-      | Two -> p =!' p0
-      | Up -> p >' p0
-      | Low -> p <' p0
+      | Two -> p $!= p0
+      | Up -> p $> p0
+      | Low -> p $< p0
     end in !st = !(old st) ++ Cons ("binom_test", h, Eq pv) Nil
   }
 

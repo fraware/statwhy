@@ -14,10 +14,10 @@ module Chi_square_example
   
   let function p = CategoricalD (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil))))
   
-  let function h = ((param_term p1) =!' (const_term q1)) \/+
-                   ((param_term p2) =!' (const_term q2)) \/+
-                   ((param_term p3) =!' (const_term q3)) \/+
-                   ((param_term p4) =!' (const_term q4))
+  let function h = ((param_term p1) $!= (const_term q1)) $||
+                   ((param_term p2) $!= (const_term q2)) $||
+                   ((param_term p3) $!= (const_term q3)) $||
+                   ((param_term p4) $!= (const_term q4))
   
   let ex_chisquare (d : list int)
     requires { is_empty !st /\
@@ -29,14 +29,14 @@ module Chi_square_example
                (q4 *. size >=. 5.0) /\
                is_prob_dist (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil)))) (World !st interp) /\
                is_prob_dist_const (Cons q1 (Cons q2 (Cons q3 (Cons q4 Nil)))) /\
-               ((World !st interp) |= Possible (param_term p1 <' const_term q1)) /\
-               ((World !st interp) |= Possible (param_term p1 >' const_term q1)) /\
-               ((World !st interp) |= Possible (param_term p2 <' const_term q2)) /\
-               ((World !st interp) |= Possible (param_term p2 >' const_term q2)) /\
-               ((World !st interp) |= Possible (param_term p3 <' const_term q3)) /\
-               ((World !st interp) |= Possible (param_term p3 >' const_term q3)) /\
-               ((World !st interp) |= Possible (param_term p4 <' const_term q4)) /\
-               ((World !st interp) |= Possible (param_term p4 >' const_term q4))
+               ((World !st interp) |= Possible (param_term p1 $< const_term q1)) /\
+               ((World !st interp) |= Possible (param_term p1 $> const_term q1)) /\
+               ((World !st interp) |= Possible (param_term p2 $< const_term q2)) /\
+               ((World !st interp) |= Possible (param_term p2 $> const_term q2)) /\
+               ((World !st interp) |= Possible (param_term p3 $< const_term q3)) /\
+               ((World !st interp) |= Possible (param_term p3 $> const_term q3)) /\
+               ((World !st interp) |= Possible (param_term p4 $< const_term q4)) /\
+               ((World !st interp) |= Possible (param_term p4 $> const_term q4))
              }
     ensures {
       let p = result in

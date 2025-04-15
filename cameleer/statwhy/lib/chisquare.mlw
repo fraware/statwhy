@@ -19,8 +19,8 @@ module Chisquare
   function chisquare_hypothesis (ps : list real_number) (exp : list real_number) : formula
   = match combine ps exp with
     | Cons (p1,p2) tl ->
-      fold (fun fml x -> let (p1,p2) = x in fml \/+ ((Real p1) =!' (Real p2)))
-        ((Real p1) =!' (Real p2)) tl
+      fold (fun fml x -> let (p1,p2) = x in fml $|| ((Real p1) $!= (Real p2)))
+        ((Real p1) $!= (Real p2)) tl
     | Nil -> Atom (Pred "nil" Nil)
     end
   meta "rewrite_def" function chisquare_hypothesis
@@ -35,8 +35,8 @@ module Chisquare
       let size = from_int (sum y_obs) in
       for_all (fun p_i -> p_i *. size >=. 5.0) ps_th /\
       for_all2 (fun x y -> 
-        ((World !st interp) |= Possible ((Real x) <' (Real (Const y))) /\
-        (World !st interp) |= Possible ((Real x) >' (Real (Const y)))))
+        ((World !st interp) |= Possible ((Real x) $< (Real (Const y))) /\
+        (World !st interp) |= Possible ((Real x) $> (Real (Const y)))))
         ps_obs ps_th
     | _ -> false
     end

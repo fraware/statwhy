@@ -17,19 +17,18 @@ module Bartlett_example
                  (fun p y -> sampled y p)
                  (Cons p1 (Cons p2 (Cons p3 Nil)))
                  (Cons d1 (Cons d2 (Cons d3 Nil))) /\
-               ((World !st interp) |= Possible (t_v1 <' t_v2)) /\
-               ((World !st interp) |= Possible (t_v1 >' t_v2)) /\
-               ((World !st interp) |= Possible (t_v1 <' t_v3)) /\
-               ((World !st interp) |= Possible (t_v1 >' t_v3)) /\
-               ((World !st interp) |= Possible (t_v2 <' t_v3)) /\
-               ((World !st interp) |= Possible (t_v2 >' t_v3))
+               ((World !st interp) |= Possible (t_v1 $< t_v2)) /\
+               ((World !st interp) |= Possible (t_v1 $> t_v2)) /\
+               ((World !st interp) |= Possible (t_v1 $< t_v3)) /\
+               ((World !st interp) |= Possible (t_v1 $> t_v3)) /\
+               ((World !st interp) |= Possible (t_v2 $< t_v3)) /\
+               ((World !st interp) |= Possible (t_v2 $> t_v3))
              }
     ensures {
       let p = result in
-      let h = (t_v1 =!' t_v2) \/+ (t_v1 =!' t_v3) \/+ (t_v2 =!' t_v3) in
+      let h = (t_v1 $!= t_v2) $|| (t_v1 $!= t_v3) $|| (t_v2 $!= t_v3) in
       Eq p = compose_pvs h !st &&
       (World !st interp) |= StatB (Eq p) h
     }
     = exec_bartlett (Cons p1 (Cons p2 (Cons p3 Nil))) (Cons d1 (Cons d2 (Cons d3 Nil)))
 end
-

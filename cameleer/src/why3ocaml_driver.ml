@@ -30,7 +30,6 @@ let () =
       ("-.", "infix -.");
       ("/.", "infix /.");
       ("=.", "infix =.");
-      ("=!'", "infix =!'");
       ("<=.", "infix <=.");
       (">=.", "infix >=.");
       ("<.", "infix <.");
@@ -63,6 +62,14 @@ let () =
       ("mixfix ([<-])", "mixfix ([<-])");
       ("~-", "prefix ~-");
       ("|||", "infix |||");
+      ("$<", "infix $<");
+      ("$<=", "infix $<=");
+      ("$>", "infix $>");
+      ("$>=", "infix $>=");
+      ("$=", "infix $=");
+      ("$!=", "infix $!=");
+      ("$&&", "infix $&&");
+      ("$||", "infix $||");
     ]
 
 let query_syntax str = Hstr.find_opt driver str

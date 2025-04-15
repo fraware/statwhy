@@ -1,18 +1,26 @@
 module Fisher_cumulant_test
   use cameleerBHL.CameleerBHL
 
-  val exec_fisher_cumulant_test (p : population) (y : dataset (list real)) : real
+  val exec_fisher_cumulant_test (p_obs : population) (p_null : population) (y : dataset (list real)) : real
   writes { st }
   requires {
-    sampled y p /\
+    sampled y p_obs /\
     length y > 50 /\
-    (World !st interp) |= Possible (is_normal p)
+    match p_null with
+    | NormalD m v ->
+      (World !st interp) |= (mean p_obs $= Real m) /\
+      (World !st interp) |= (var p_obs  $= Real v) /\
+      (World !st interp) |= Possible (p_obs $!=^ (NormalD m v))
+    | _ -> false
+    end
   } ensures {
     let pv = result in
     pvalue result /\
-    exists m v : real_number.
-      Real m = mean p /\ Real v = mean p /\
-    !st = Cons ("fisher_cumulant_test", (p =^! (NormalD m v)), Eq pv) !(old st)
+    match p_null with
+    | NormalD m v ->
+      !st = Cons ("fisher_cumulant_test", (p_obs $!=^ (NormalD m v)), Eq pv) !(old st)
+    | _ -> false (* unreachable *)
+    end
   }
 end
 
@@ -29,5 +37,29 @@ module Ws_test
     let pv = result in
     pvalue result /\
     !st = Cons ("ws_test", (Not (is_normal p)), Eq pv) !(old st)
+  }
+
+  val exec_jacque_bera_test (p : population) (y : dataset (list real)) : real
+  writes { st }
+  requires {
+    sampled y p /\
+    length y > 50 /\
+    (World !st interp) |= Possible (Not (is_normal p))
+  } ensures {
+    let pv = result in
+    pvalue result /\
+    !st = Cons ("jacque_bera_test", (Not (is_normal p)), Eq pv) !(old st)
+  }
+
+  val exec_shapiro_wilk_test (p : population) (y : dataset (list real)) : real
+  writes { st }
+  requires {
+    sampled y p /\
+    length y > 50 /\
+    (World !st interp) |= Possible (Not (is_normal p))
+  } ensures {
+    let pv = result in
+    pvalue result /\
+    !st = Cons ("shapiro_wilk_test", (Not (is_normal p)), Eq pv) !(old st)
   }
 end

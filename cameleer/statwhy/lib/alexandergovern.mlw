@@ -3,8 +3,8 @@ module AlexanderGovern
 
   function alexandergovern_hypothesis (ppls : list population) : formula =
     let terms = map (fun t -> RealT (mean t)) ppls in
-    match combinations terms "=!" with
-      | Cons hd tl -> fold (fun acc t -> acc \/+ t) hd tl
+    match combinations terms "!=" with
+      | Cons hd tl -> fold (fun acc t -> acc $|| t) hd tl
       | Nil -> Atom (Pred "nil" Nil)
     end
 
@@ -15,8 +15,8 @@ module AlexanderGovern
     length ps >= 2 /\ length ys >= 2 &&
     for_all2 (fun p y -> match p with NormalD _ _ -> sampled y p | _ -> false end) ps ys /\
     for_all (fun x -> let (s, t) = x in
-      ((World !st interp) |= Possible (mean s <' mean t) /\
-       (World !st interp) |= Possible (mean s >' mean t)))
+      ((World !st interp) |= Possible (mean s $< mean t) /\
+       (World !st interp) |= Possible (mean s $> mean t)))
       (combinations_poly ps)
   } ensures {
     let pv = result in

@@ -27,18 +27,18 @@ module Dunnett
     match alt with
     | Two -> for_all
                (fun p ->
-                 (World !st interp) |= Possible (mean control_ppl <' mean p) /\
-                 (World !st interp) |= Possible (mean control_ppl >' mean p))
+                 (World !st interp) |= Possible (mean control_ppl $< mean p) /\
+                 (World !st interp) |= Possible (mean control_ppl $> mean p))
                ppls
     | Up -> for_all
               (fun p ->
-                (World !st interp) |= Possible (mean control_ppl >' mean p) /\
-                (World !st interp) |= Not (Possible (mean control_ppl <' mean p)))
+                (World !st interp) |= Possible (mean control_ppl $> mean p) /\
+                (World !st interp) |= Not (Possible (mean control_ppl $< mean p)))
               ppls
     | Low -> for_all
                (fun p ->
-                 (World !st interp) |= Not (Possible (mean control_ppl >' mean p)) /\
-                 (World !st interp) |= Possible (mean control_ppl <' mean p))
+                 (World !st interp) |= Not (Possible (mean control_ppl $> mean p)) /\
+                 (World !st interp) |= Possible (mean control_ppl $< mean p))
              ppls
     end
   } ensures {
@@ -47,9 +47,9 @@ module Dunnett
     let b = length ps in
     (forall i : int. 0 <= i < b -> pvalue (ps[i])) /\
     let cmbs = map (fun t -> match alt with
-                             | Two -> mean control_ppl =!' mean t
-                             | Up -> mean control_ppl >' mean t
-                             | Low -> mean control_ppl <' mean t
+                             | Two -> mean control_ppl $!= mean t
+                             | Up -> mean control_ppl $> mean t
+                             | Low -> mean control_ppl $< mean t
                              end)
                    ppls in
     !st = (cmb_store cmbs ps 0) ++ !(old st)

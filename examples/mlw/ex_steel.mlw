@@ -25,15 +25,15 @@ module Steel_example
                  (fun p -> (World !st interp) |= eq_variance p0 p)
                  (Cons p1 Nil) /\
                for_all
-                 (fun p -> (World !st interp) |= Possible (mean p0 <' mean p) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Possible (mean p0 $< mean p) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 Nil)
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 =!' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 =!' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $!= mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $!= mean p)))
               (enumerate (Cons p1 Nil) 0)
     }
     = exec_steel (Cons p1 Nil) p0 (Cons d1 Nil) c Two
@@ -49,15 +49,15 @@ module Steel_example
                  (fun p -> (World !st interp) |= eq_variance p0 p)
                  (Cons p1 (Cons p2 Nil)) /\
                for_all
-                 (fun p -> (World !st interp) |= Possible (mean p0 <' mean p) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Possible (mean p0 $< mean p) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 Nil))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 =!' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 =!' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $!= mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $!= mean p)))
               (enumerate (Cons p1 (Cons p2 Nil)) 0)
     }
     = exec_steel (Cons p1 (Cons p2 Nil)) p0 (Cons d1 (Cons d2 Nil)) c Two
@@ -74,15 +74,15 @@ module Steel_example
                  (fun p -> (World !st interp) |= eq_variance p0 p)
                  (Cons p1 (Cons p2 (Cons p3 Nil))) /\
                for_all
-                 (fun p -> (World !st interp) |= Possible (mean p0 <' mean p) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Possible (mean p0 $< mean p) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 (Cons p3 Nil)))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 =!' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 =!' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $!= mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $!= mean p)))
               (enumerate (Cons p1 (Cons p2 (Cons p3 Nil))) 0)
     }
     = exec_steel (Cons p1 (Cons p2 (Cons p3 Nil))) p0 (Cons d1 (Cons d2 (Cons d3 Nil))) c Two
@@ -98,15 +98,15 @@ module Steel_example
                  (fun p -> (World !st interp) |= eq_variance p0 p)
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil)))) /\
                for_all
-                 (fun p -> (World !st interp) |= Possible (mean p0 <' mean p) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Possible (mean p0 $< mean p) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil))))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 =!' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 =!' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $!= mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $!= mean p)))
               (enumerate
                 (Cons p1 (Cons p2 (Cons p3 (Cons p4 Nil))))
                 0)
@@ -124,15 +124,15 @@ module Steel_example
                  (fun p -> (World !st interp) |= eq_variance p0 p)
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 Nil))))) /\
                for_all
-                 (fun p -> (World !st interp) |= Possible (mean p0 <' mean p) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Possible (mean p0 $< mean p) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 Nil)))))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 =!' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 =!' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $!= mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $!= mean p)))
               (enumerate
                 (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 Nil)))))
                 0)
@@ -151,15 +151,15 @@ module Steel_example
                  (fun p -> (World !st interp) |= eq_variance p0 p)
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 Nil)))))) /\
                for_all
-                 (fun p -> (World !st interp) |= Possible (mean p0 <' mean p) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Possible (mean p0 $< mean p) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 Nil))))))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 =!' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 =!' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $!= mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $!= mean p)))
               (enumerate
                 (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 Nil))))))
                 0)
@@ -178,15 +178,15 @@ module Steel_example
                  (fun p -> (World !st interp) |= eq_variance p0 p)
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 (Cons p7 Nil))))))) /\
                for_all
-                 (fun p -> (World !st interp) |= Possible (mean p0 <' mean p) /\
-                           (World !st interp) |= Possible (mean p0 >' mean p))
+                 (fun p -> (World !st interp) |= Possible (mean p0 $< mean p) /\
+                           (World !st interp) |= Possible (mean p0 $> mean p))
                  (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 (Cons p7 Nil)))))))
              }
     ensures {
       let ps = result in
       for_all (fun t -> let (i,p) = t in
-                (Eq (ps[i]) = compose_pvs (mean p0 =!' mean p) !st) &&
-                (World !st interp |= StatB (Eq (ps[i])) (mean p0 =!' mean p)))
+                (Eq (ps[i]) = compose_pvs (mean p0 $!= mean p) !st) &&
+                (World !st interp |= StatB (Eq (ps[i])) (mean p0 $!= mean p)))
               (enumerate
                 (Cons p1 (Cons p2 (Cons p3 (Cons p4 (Cons p5 (Cons p6 (Cons p7 Nil)))))))
                 0)

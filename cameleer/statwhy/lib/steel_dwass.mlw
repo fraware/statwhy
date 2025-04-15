@@ -40,15 +40,15 @@ module Steel_Dwass
         (combinations_poly ppls) /\
     for_all
       (fun t -> let (s, t) = t in
-        ((World !st interp) |= Possible (mean s <' mean t) /\
-         (World !st interp) |= Possible (mean s >' mean t)))
+        ((World !st interp) |= Possible (mean s $< mean t) /\
+         (World !st interp) |= Possible (mean s $> mean t)))
       (cmb_term ppls)
   } ensures {
     let ps = result in
     length ps = div2 ((Length.length ppls) * (Length.length ppls - 1)) /\
     let b = length ps in
     (forall i : int. 0 <= i < b -> pvalue (ps[i])) /\
-    let cmbs = combinations (map (fun p -> RealT (mean p)) ppls) "=!" in
+    let cmbs = combinations (map (fun p -> RealT (mean p)) ppls) "!=" in
     !st = (cmb_store cmbs ps 0) ++ !(old st)
   }
 end

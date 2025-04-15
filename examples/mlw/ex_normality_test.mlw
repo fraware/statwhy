@@ -10,14 +10,15 @@ module Fisher_cumulant_test
     is_empty !st /\
     sampled d p1 /\
     length d > 50 /\
-    eq_variance p1 p2 /\ eq_mean p1 p2 /\
-    (World !st interp) |= Possible (p1 =!^ p2)
+    mean p1 = Real (Param "m") /\
+    var p1 = Real (Param "v") /\
+    (World !st interp) |= Possible (p1 $!=^ p2)
   } ensures {
     let p = result in    
-    Eq p = compose_pvs (p1 =!^ p2) !st &&
-    (World !st interp) |= StatB (Eq p) (p1 =!^ p2)
+    Eq p = compose_pvs (p1 $!=^ p2) !st &&
+    (World !st interp) |= StatB (Eq p) (p1 $!=^ p2)
   }
-  = exec_fisher_cumulant_test p1 d
+  = exec_fisher_cumulant_test p1 p2 d
 end
 
 module Ws_test
@@ -32,12 +33,13 @@ module Ws_test
     is_empty !st /\
     sampled d p1 /\
     length d > 50 /\
-    (* eq_variance p1 p2 /\ eq_mean p1 p2 /\ *)
-    (World !st interp) |= Possible (p1 =!^ p2)
+    (World !st interp) |= Possible (Not (is_normal p1))
   } ensures {
     let p = result in
-    Eq p = compose_pvs (p1 =!^ p2) !st &&
-    (World !st interp) |= StatB (Eq p) (p1 =!^ p2)
+    Eq p = compose_pvs (Not (is_normal p1)) !st &&
+    (World !st interp) |= StatB (Eq p) (Not (is_normal p1)) &&
+    ((World !st interp) |= Know (Impl (Not (is_normal p1)) (p1 $!=^ p2))) &&
+    (World !st interp) |= Know  (Disj (StatTau (Eq p) (Not (is_normal p1))) (p1 $!=^ p2))
   }
-  = exec_ws_test p1 p2 d
+  = exec_ws_test p1 d
 end

@@ -3,8 +3,8 @@ module Oneway
 
   function oneway_hypothesis (terms : list population) : formula =
     let terms = map (fun t -> RealT (mean t)) terms in
-    match combinations terms "=!" with
-      | Cons hd tl -> fold (fun acc t -> acc /\* t) hd tl
+    match combinations terms "!=" with
+      | Cons hd tl -> fold (fun acc t -> acc $|| t) hd tl
       | Nil -> Atom (Pred "nil" Nil)
     end
 
@@ -17,8 +17,8 @@ module Oneway
     (forall p q : population. mem p ps /\ mem q ps ->
       (World !st interp) |= eq_variance p q) /\
     (forall s t : population. mem s ps /\ mem t ps /\ not eq_population s t ->
-      ((World !st interp) |= Possible (mean s <' mean t) /\
-       (World !st interp) |= Possible (mean s >' mean t)))
+      ((World !st interp) |= Possible (mean s $< mean t) /\
+       (World !st interp) |= Possible (mean s $> mean t)))
   } ensures {
     let pv = result in
     pvalue result /\

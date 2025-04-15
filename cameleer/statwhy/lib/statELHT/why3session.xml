@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"https://www.why3.org/why3session.dtd">
+<why3session shape_version="6">
+<prover id="0" name="CVC5" version="1.0.6" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="1" name="Z3" version="4.14.1" timelimit="1" steplimit="0" memlimit="1000"/>
+<file format="whyml" proved="true">
+<path name=".."/><path name="statELHT.mlw"/>
+<theory name="LanguageELTH" proved="true">
+ <goal name="tautology_double_negation" proved="true">
+ <proof prover="1"><result status="valid" time="0.021450" steps="153935"/></proof>
+ </goal>
+ <goal name="tautology_excluded_middle" proved="true">
+ <proof prover="1"><result status="valid" time="0.021039" steps="151774"/></proof>
+ </goal>
+ <goal name="tautology_implication" proved="true">
+ <proof prover="1"><result status="valid" time="0.021645" steps="154789"/></proof>
+ </goal>
+ <goal name="tautology_assoc_c" proved="true">
+ <proof prover="1"><result status="valid" time="0.021367" steps="159746"/></proof>
+ </goal>
+ <goal name="tautology_assoc_d" proved="true">
+ <proof prover="1"><result status="valid" time="0.021803" steps="162449"/></proof>
+ </goal>
+ <goal name="tautology_commut_c" proved="true">
+ <proof prover="1"><result status="valid" time="0.019635" steps="153330"/></proof>
+ </goal>
+ <goal name="tautology_commut_d" proved="true">
+ <proof prover="1"><result status="valid" time="0.019511" steps="154211"/></proof>
+ </goal>
+ <goal name="tautology_distr_cd" proved="true">
+ <proof prover="1"><result status="valid" time="0.020120" steps="157402"/></proof>
+ </goal>
+ <goal name="tautology_distr_dc" proved="true">
+ <proof prover="1"><result status="valid" time="0.045243" steps="284866"/></proof>
+ </goal>
+ <goal name="tautology_de_Morgan_nc" proved="true">
+ <proof prover="1"><result status="valid" time="0.019951" steps="157885"/></proof>
+ </goal>
+ <goal name="tautology_de_Morgan_nd" proved="true">
+ <proof prover="1"><result status="valid" time="0.044248" steps="279085"/></proof>
+ </goal>
+ <goal name="tautology_transposition" proved="true">
+ <proof prover="1"><result status="valid" time="0.020297" steps="158648"/></proof>
+ </goal>
+ <goal name="tautology_exportation" proved="true">
+ <proof prover="1"><result status="valid" time="0.021558" steps="163638"/></proof>
+ </goal>
+ <goal name="tautology_absorption_cd" proved="true">
+ <proof prover="1"><result status="valid" time="0.020055" steps="156802"/></proof>
+ </goal>
+ <goal name="tautology_absorption_dc" proved="true">
+ <proof prover="1"><result status="valid" time="0.020256" steps="159658"/></proof>
+ </goal>
+ <goal name="rule_N" proved="true">
+ <proof prover="1"><result status="valid" time="0.019856" steps="158902"/></proof>
+ </goal>
+ <goal name="ax_K" proved="true">
+ <proof prover="1"><result status="valid" time="0.020629" steps="162908"/></proof>
+ </goal>
+ <goal name="ax_T" proved="true">
+ <proof prover="1"><result status="valid" time="0.020585" steps="160114"/></proof>
+ </goal>
+ <goal name="ax_5" proved="true">
+ <proof prover="1"><result status="valid" time="0.020210" steps="160622"/></proof>
+ </goal>
+ <goal name="lem_not_possible" proved="true">
+ <proof prover="1"><result status="valid" time="0.045881" steps="285455"/></proof>
+ </goal>
+ <goal name="lem_know_not" proved="true">
+ <proof prover="1"><result status="valid" time="0.045203" steps="285747"/></proof>
+ </goal>
+ <goal name="lem_not_know" proved="true">
+ <proof prover="1"><result status="valid" time="0.045986" steps="288332"/></proof>
+ </goal>
+ <goal name="lem_possible_not" proved="true">
+ <proof prover="1"><result status="valid" time="0.046780" steps="290592"/></proof>
+ </goal>
+ <goal name="ax_duality_p_k&#39;" proved="true">
+ <proof prover="0"><result status="valid" time="0.049375" steps="33065"/></proof>
+ </goal>
+ <goal name="ax_duality_k_p&#39;" proved="true">
+ <proof prover="0"><result status="valid" time="0.049494" steps="33084"/></proof>
+ </goal>
+ <goal name="ax_duality_p_k&#39;&#39;" proved="true">
+ <proof prover="0"><result status="valid" time="0.054404" steps="34766"/></proof>
+ </goal>
+ <goal name="ax_duality_k_p&#39;&#39;" proved="true">
+ <proof prover="0"><result status="valid" time="0.051712" steps="35389"/></proof>
+ </goal>
+ <goal name="ax_duality_p_k" proved="true">
+ <proof prover="0"><result status="valid" time="0.030345" steps="31236"/></proof>
+ </goal>
+ <goal name="ax_duality_k_p" proved="true">
+ <proof prover="0"><result status="valid" time="0.029281" steps="31287"/></proof>
+ </goal>
+ <goal name="ax_B" proved="true">
+ <proof prover="1"><result status="valid" time="0.028333" steps="199465"/></proof>
+ </goal>
+ <goal name="ax_T_dual" proved="true">
+ <proof prover="1"><result status="valid" time="0.027254" steps="179902"/></proof>
+ </goal>
+ <goal name="lem_duality_1" proved="true">
+ <proof prover="0"><result status="valid" time="0.032153" steps="33618"/></proof>
+ </goal>
+ <goal name="lem_duality_2l" proved="true">
+ <proof prover="1"><result status="valid" time="0.054725" steps="276125"/></proof>
+ </goal>
+ <goal name="lem_duality_2r" proved="true">
+ <proof prover="1"><result status="valid" time="0.052290" steps="276594"/></proof>
+ </goal>
+ <goal name="lem_duality_3l" proved="true">
+ <proof prover="1"><result status="valid" time="0.030396" steps="204502"/></proof>
+ </goal>
+ <goal name="lem_duality_3r" proved="true">
+ <proof prover="1"><result status="valid" time="0.033897" steps="205292"/></proof>
+ </goal>
+ <goal name="lem_duality_4" proved="true">
+ <proof prover="0"><result status="valid" time="0.064294" steps="38777"/></proof>
+ </goal>
+ <goal name="ax_5_not" proved="true">
+ <proof prover="1"><result status="valid" time="0.033305" steps="183353"/></proof>
+ </goal>
+ <goal name="ax_5_not_dual1" proved="true">
+ <proof prover="1"><result status="valid" time="0.025011" steps="184046"/></proof>
+ </goal>
+ <goal name="ax_5_not_dual2" proved="true">
+ <proof prover="1"><result status="valid" time="0.038741" steps="183276"/></proof>
+ </goal>
+ <goal name="ax_5_dual" proved="true">
+ <proof prover="1"><result status="valid" time="0.031973" steps="178412"/></proof>
+ </goal>
+ <goal name="ax_B_box" proved="true">
+ <proof prover="1"><result status="valid" time="0.029058" steps="183567"/></proof>
+ </goal>
+ <goal name="ax_box_5_box" proved="true">
+ <proof prover="1"><result status="valid" time="0.055920" steps="271346"/></proof>
+ </goal>
+ <goal name="lem_dist_dbid" proved="true">
+ <proof prover="1"><result status="valid" time="0.027675" steps="199026"/></proof>
+ </goal>
+ <goal name="lem_dbdibb" proved="true">
+ <proof prover="1"><result status="valid" time="0.063008" steps="294947"/></proof>
+ </goal>
+ <goal name="ax_4" proved="true">
+ <proof prover="1"><result status="valid" time="0.043217" steps="248039"/></proof>
+ </goal>
+ <goal name="know_impl_l" proved="true">
+ <proof prover="1"><result status="valid" time="0.047816" steps="268749"/></proof>
+ </goal>
+ <goal name="know_impl_r" proved="true">
+ <proof prover="1"><result status="valid" time="0.066519" steps="269060"/></proof>
+ </goal>
+ <goal name="ax_K_disj_l" proved="true">
+ <proof prover="1"><result status="valid" time="0.033222" steps="187901"/></proof>
+ </goal>
+ <goal name="know_disj_l" proved="true">
+ <proof prover="1"><result status="valid" time="0.037812" steps="245259"/></proof>
+ </goal>
+ <goal name="ax_K_disj_r" proved="true">
+ <proof prover="1"><result status="valid" time="0.026036" steps="191507"/></proof>
+ </goal>
+ <goal name="know_disj_r" proved="true">
+ <proof prover="1"><result status="valid" time="0.064482" steps="279352"/></proof>
+ </goal>
+ <goal name="tau_implies_stat_believe" proved="true">
+ <proof prover="1"><result status="valid" time="0.033338" steps="178870"/></proof>
+ </goal>
+ <goal name="know_implies_statb" proved="true">
+ <proof prover="1"><result status="valid" time="0.027192" steps="182865"/></proof>
+ </goal>
+ <goal name="BHT" proved="true">
+ <proof prover="1"><result status="valid" time="0.031433" steps="182099"/></proof>
+ </goal>
+ <goal name="lem_SB4_sub1" proved="true">
+ <proof prover="1"><result status="valid" time="0.034232" steps="189932"/></proof>
+ </goal>
+ <goal name="lem_SB4_sub2" proved="true">
+ <proof prover="1"><result status="valid" time="0.029704" steps="190593"/></proof>
+ </goal>
+ <goal name="lem_SB4_sub3" proved="true">
+ <proof prover="1"><result status="valid" time="0.036142" steps="198319"/></proof>
+ </goal>
+ <goal name="lem_SB4_sub4" proved="true">
+ <proof prover="1"><result status="valid" time="0.137902" steps="544228"/></proof>
+ </goal>
+ <goal name="lem_SB4_sub5" proved="true">
+ <proof prover="1"><result status="valid" time="0.046061" steps="201632"/></proof>
+ </goal>
+ <goal name="SB4" proved="true">
+ <proof prover="1"><result status="valid" time="0.042350" steps="242500"/></proof>
+ </goal>
+ <goal name="lem_tau_implies_StatB" proved="true">
+ <proof prover="0"><result status="timeout" time="1.000000" steps="59818"/></proof>
+ <proof prover="1"><result status="timeout" time="1.000000" steps="3577784"/></proof>
+ <transf name="split_vc" proved="true" >
+  <goal name="lem_tau_implies_StatB.0" proved="true">
+  <proof prover="1"><result status="valid" time="0.022691" steps="197765"/></proof>
+  </goal>
+  <goal name="lem_tau_implies_StatB.1" proved="true">
+  <proof prover="0"><result status="valid" time="0.095184" steps="52704"/></proof>
+  </goal>
+  <goal name="lem_tau_implies_StatB.2" proved="true">
+  <proof prover="0"><result status="valid" time="0.093312" steps="50846"/></proof>
+  </goal>
+ </transf>
+ </goal>
+ <goal name="stat_believe_implies_StatB" proved="true">
+ <proof prover="1"><result status="valid" time="0.028308" steps="184805"/></proof>
+ </goal>
+ <goal name="lem_tau_implies_StatB_disj" proved="true">
+ <proof prover="1"><result status="valid" time="0.023298" steps="187069"/></proof>
+ </goal>
+ <goal name="lem_tau_implies_StatB_conj" proved="true">
+ <proof prover="1"><result status="valid" time="0.023040" steps="187725"/></proof>
+ </goal>
+ <goal name="st_invariant" proved="true">
+ <proof prover="0"><result status="valid" time="0.037205" steps="39750"/></proof>
+ </goal>
+ <goal name="st_invariant&#39;" proved="true">
+ <proof prover="0"><result status="valid" time="0.059906" steps="40444"/></proof>
+ </goal>
+</theory>
+</file>
+</why3session>

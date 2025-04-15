@@ -12,14 +12,14 @@ val exec_ftest (ppl1 : population) (ppl2 : population) (y : dataset (list real, 
           ((World !st interp) |= Disj (Not (check_variance ppl1)) (Not (check_variance ppl2))) /\
           match alt with
           | Two ->
-              (World !st interp) |= Possible (var ppl1 <' var ppl2) /\
-              (World !st interp) |= Possible (var ppl1 >' var ppl2)
+              (World !st interp) |= Possible (var ppl1 $< var ppl2) /\
+              (World !st interp) |= Possible (var ppl1 $> var ppl2)
           | Up ->
-              (World !st interp) |= Not (Possible (var ppl1 <' var ppl2)) /\
-              (World !st interp) |= Possible (var ppl1 >' var ppl2)
+              (World !st interp) |= Not (Possible (var ppl1 $< var ppl2)) /\
+              (World !st interp) |= Possible (var ppl1 $> var ppl2)
           | Low ->
-              (World !st interp) |= Possible (var ppl1 <' var ppl2) /\
-              (World !st interp) |= Not (Possible (var ppl1 >' var ppl2))
+              (World !st interp) |= Possible (var ppl1 $< var ppl2) /\
+              (World !st interp) |= Not (Possible (var ppl1 $> var ppl2))
           end
       | _ -> false
       end
@@ -29,9 +29,9 @@ val exec_ftest (ppl1 : population) (ppl2 : population) (y : dataset (list real, 
       let pv = result in
       pvalue result /\
       let h = match alt with
-        | Two -> var ppl1 =!' var ppl2
-        | Up -> var ppl1 >' var ppl2
-        | Low -> var ppl1 <' var ppl2
+        | Two -> var ppl1 $!= var ppl2
+        | Up -> var ppl1 $> var ppl2
+        | Low -> var ppl1 $< var ppl2
       end in !st = !(old st) ++ Cons ("ftest", h, Eq pv) Nil
     }
 end

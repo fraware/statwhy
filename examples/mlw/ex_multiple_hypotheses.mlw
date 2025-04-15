@@ -39,15 +39,15 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0)
     } ensures {
       let p = result in
-      Leq p = compose_pvs ((mean p1 =!' const_term 1.0) \/+ (mean p2 =!' const_term 2.0)) !st &&
-      (* stat_believe (Leq p) ((mean p1 =!' const_term 1.0) \/+ (mean p2 =!' const_term 2.0)) !st && *)
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0) \/+ (mean p2 =!' const_term 2.0))
+      Leq p = compose_pvs ((mean p1 $!= const_term 1.0) $|| (mean p2 $!= const_term 2.0)) !st &&
+      (* stat_believe (Leq p) ((mean p1 $!= const_term 1.0) $|| (mean p2 $!= const_term 2.0)) !st && *)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0) $|| (mean p2 $!= const_term 2.0))
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
       let r2 = exec_ttest_1samp p2 2.0 d2 Two in
@@ -57,15 +57,15 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0)
     } ensures {
       let p = result in
-      Leq p = compose_pvs ((mean p1 =!' const_term 1.0) /\* (mean p2 =!' const_term 2.0)) !st &&
-      (* stat_believe (Leq p) ((mean p1 =!' const_term 1.0) /\* (mean p2 =!' const_term 2.0)) !st && *)
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0) /\* (mean p2 =!' const_term 2.0))
+      Leq p = compose_pvs ((mean p1 $!= const_term 1.0) $&& (mean p2 $!= const_term 2.0)) !st &&
+      (* stat_believe (Leq p) ((mean p1 $!= const_term 1.0) $&& (mean p2 $!= const_term 2.0)) !st && *)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0) $&& (mean p2 $!= const_term 2.0))
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
       let r2 = exec_ttest_1samp p2 2.0 d2 Two in
@@ -78,21 +78,21 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   \/+ (mean p2 =!' const_term 2.0)
-                   \/+ (mean p3 =!' const_term 3.0)) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           \/+ (mean p2 =!' const_term 2.0)
-                                           \/+ (mean p3 =!' const_term 3.0))
+                  ((mean p1 $!= const_term 1.0)
+                   $|| (mean p2 $!= const_term 2.0)
+                   $|| (mean p3 $!= const_term 3.0)) !st &&
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $|| (mean p2 $!= const_term 2.0)
+                                           $|| (mean p3 $!= const_term 3.0))
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
       let r2 = exec_ttest_1samp p2 2.0 d2 Two in
@@ -103,16 +103,16 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0)
     } ensures {
       let p = result in
-      (Leq p) = compose_pvs ((mean p1 =!' const_term 1.0) /\* (mean p2 =!' const_term 2.0) /\* (mean p3 =!' const_term 3.0)) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0) /\* (mean p2 =!' const_term 2.0) /\* (mean p3 =!' const_term 3.0))
+      (Leq p) = compose_pvs ((mean p1 $!= const_term 1.0) $&& (mean p2 $!= const_term 2.0) $&& (mean p3 $!= const_term 3.0)) !st &&
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0) $&& (mean p2 $!= const_term 2.0) $&& (mean p3 $!= const_term 3.0))
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
       let r2 = exec_ttest_1samp p2 2.0 d2 Two in
@@ -125,25 +125,25 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   \/+ (mean p2 =!' const_term 2.0)
-                   \/+ (mean p3 =!' const_term 3.0)
-                   \/+ (mean p4 =!' const_term 4.0)) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           \/+ (mean p2 =!' const_term 2.0)
-                                           \/+ (mean p3 =!' const_term 3.0)
-                                           \/+ (mean p4 =!' const_term 4.0))
+                  ((mean p1 $!= const_term 1.0)
+                   $|| (mean p2 $!= const_term 2.0)
+                   $|| (mean p3 $!= const_term 3.0)
+                   $|| (mean p4 $!= const_term 4.0)) !st &&
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $|| (mean p2 $!= const_term 2.0)
+                                           $|| (mean p3 $!= const_term 3.0)
+                                           $|| (mean p4 $!= const_term 4.0))
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
       let r2 = exec_ttest_1samp p2 2.0 d2 Two in
@@ -155,25 +155,25 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   /\* (mean p2 =!' const_term 2.0)
-                   /\* (mean p3 =!' const_term 3.0)
-                   /\* (mean p4 =!' const_term 4.0)) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           /\* (mean p2 =!' const_term 2.0)
-                                           /\* (mean p3 =!' const_term 3.0)
-                                           /\* (mean p4 =!' const_term 4.0))
+                  ((mean p1 $!= const_term 1.0)
+                   $&& (mean p2 $!= const_term 2.0)
+                   $&& (mean p3 $!= const_term 3.0)
+                   $&& (mean p4 $!= const_term 4.0)) !st &&
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $&& (mean p2 $!= const_term 2.0)
+                                           $&& (mean p3 $!= const_term 3.0)
+                                           $&& (mean p4 $!= const_term 4.0))
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
       let r2 = exec_ttest_1samp p2 2.0 d2 Two in
@@ -185,30 +185,30 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   \/+ (mean p2 =!' const_term 2.0)
-                   \/+ (mean p3 =!' const_term 3.0)
-                   \/+ (mean p4 =!' const_term 4.0)
-                   \/+ (mean p5 =!' const_term 5.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $|| (mean p2 $!= const_term 2.0)
+                   $|| (mean p3 $!= const_term 3.0)
+                   $|| (mean p4 $!= const_term 4.0)
+                   $|| (mean p5 $!= const_term 5.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           \/+ (mean p2 =!' const_term 2.0)
-                                           \/+ (mean p3 =!' const_term 3.0)
-                                           \/+ (mean p4 =!' const_term 4.0)
-                                           \/+ (mean p5 =!' const_term 5.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $|| (mean p2 $!= const_term 2.0)
+                                           $|| (mean p3 $!= const_term 3.0)
+                                           $|| (mean p4 $!= const_term 4.0)
+                                           $|| (mean p5 $!= const_term 5.0)
                                           )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -222,30 +222,30 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   /\* (mean p2 =!' const_term 2.0)
-                   /\* (mean p3 =!' const_term 3.0)
-                   /\* (mean p4 =!' const_term 4.0)
-                   /\* (mean p5 =!' const_term 5.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $&& (mean p2 $!= const_term 2.0)
+                   $&& (mean p3 $!= const_term 3.0)
+                   $&& (mean p4 $!= const_term 4.0)
+                   $&& (mean p5 $!= const_term 5.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           /\* (mean p2 =!' const_term 2.0)
-                                           /\* (mean p3 =!' const_term 3.0)
-                                           /\* (mean p4 =!' const_term 4.0)
-                                           /\* (mean p5 =!' const_term 5.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $&& (mean p2 $!= const_term 2.0)
+                                           $&& (mean p3 $!= const_term 3.0)
+                                           $&& (mean p4 $!= const_term 4.0)
+                                           $&& (mean p5 $!= const_term 5.0)
                                            )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -259,34 +259,34 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   \/+ (mean p2 =!' const_term 2.0)
-                   \/+ (mean p3 =!' const_term 3.0)
-                   \/+ (mean p4 =!' const_term 4.0)
-                   \/+ (mean p5 =!' const_term 5.0)
-                   \/+ (mean p6 =!' const_term 6.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $|| (mean p2 $!= const_term 2.0)
+                   $|| (mean p3 $!= const_term 3.0)
+                   $|| (mean p4 $!= const_term 4.0)
+                   $|| (mean p5 $!= const_term 5.0)
+                   $|| (mean p6 $!= const_term 6.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           \/+ (mean p2 =!' const_term 2.0)
-                                           \/+ (mean p3 =!' const_term 3.0)
-                                           \/+ (mean p4 =!' const_term 4.0)
-                                           \/+ (mean p5 =!' const_term 5.0)
-                                           \/+ (mean p6 =!' const_term 6.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $|| (mean p2 $!= const_term 2.0)
+                                           $|| (mean p3 $!= const_term 3.0)
+                                           $|| (mean p4 $!= const_term 4.0)
+                                           $|| (mean p5 $!= const_term 5.0)
+                                           $|| (mean p6 $!= const_term 6.0)
                                           )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -301,34 +301,34 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   /\* (mean p2 =!' const_term 2.0)
-                   /\* (mean p3 =!' const_term 3.0)
-                   /\* (mean p4 =!' const_term 4.0)
-                   /\* (mean p5 =!' const_term 5.0)
-                   /\* (mean p6 =!' const_term 6.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $&& (mean p2 $!= const_term 2.0)
+                   $&& (mean p3 $!= const_term 3.0)
+                   $&& (mean p4 $!= const_term 4.0)
+                   $&& (mean p5 $!= const_term 5.0)
+                   $&& (mean p6 $!= const_term 6.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           /\* (mean p2 =!' const_term 2.0)
-                                           /\* (mean p3 =!' const_term 3.0)
-                                           /\* (mean p4 =!' const_term 4.0)
-                                           /\* (mean p5 =!' const_term 5.0)
-                                           /\* (mean p6 =!' const_term 6.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $&& (mean p2 $!= const_term 2.0)
+                                           $&& (mean p3 $!= const_term 3.0)
+                                           $&& (mean p4 $!= const_term 4.0)
+                                           $&& (mean p5 $!= const_term 5.0)
+                                           $&& (mean p6 $!= const_term 6.0)
                                            )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -343,38 +343,38 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   \/+ (mean p2 =!' const_term 2.0)
-                   \/+ (mean p3 =!' const_term 3.0)
-                   \/+ (mean p4 =!' const_term 4.0)
-                   \/+ (mean p5 =!' const_term 5.0)
-                   \/+ (mean p6 =!' const_term 6.0)
-                   \/+ (mean p7 =!' const_term 7.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $|| (mean p2 $!= const_term 2.0)
+                   $|| (mean p3 $!= const_term 3.0)
+                   $|| (mean p4 $!= const_term 4.0)
+                   $|| (mean p5 $!= const_term 5.0)
+                   $|| (mean p6 $!= const_term 6.0)
+                   $|| (mean p7 $!= const_term 7.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           \/+ (mean p2 =!' const_term 2.0)
-                                           \/+ (mean p3 =!' const_term 3.0)
-                                           \/+ (mean p4 =!' const_term 4.0)
-                                           \/+ (mean p5 =!' const_term 5.0)
-                                           \/+ (mean p6 =!' const_term 6.0)
-                                           \/+ (mean p7 =!' const_term 7.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $|| (mean p2 $!= const_term 2.0)
+                                           $|| (mean p3 $!= const_term 3.0)
+                                           $|| (mean p4 $!= const_term 4.0)
+                                           $|| (mean p5 $!= const_term 5.0)
+                                           $|| (mean p6 $!= const_term 6.0)
+                                           $|| (mean p7 $!= const_term 7.0)
                                           )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -390,38 +390,38 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   /\* (mean p2 =!' const_term 2.0)
-                   /\* (mean p3 =!' const_term 3.0)
-                   /\* (mean p4 =!' const_term 4.0)
-                   /\* (mean p5 =!' const_term 5.0)
-                   /\* (mean p6 =!' const_term 6.0)
-                   /\* (mean p7 =!' const_term 7.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $&& (mean p2 $!= const_term 2.0)
+                   $&& (mean p3 $!= const_term 3.0)
+                   $&& (mean p4 $!= const_term 4.0)
+                   $&& (mean p5 $!= const_term 5.0)
+                   $&& (mean p6 $!= const_term 6.0)
+                   $&& (mean p7 $!= const_term 7.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           /\* (mean p2 =!' const_term 2.0)
-                                           /\* (mean p3 =!' const_term 3.0)
-                                           /\* (mean p4 =!' const_term 4.0)
-                                           /\* (mean p5 =!' const_term 5.0)
-                                           /\* (mean p6 =!' const_term 6.0)
-                                           /\* (mean p7 =!' const_term 7.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $&& (mean p2 $!= const_term 2.0)
+                                           $&& (mean p3 $!= const_term 3.0)
+                                           $&& (mean p4 $!= const_term 4.0)
+                                           $&& (mean p5 $!= const_term 5.0)
+                                           $&& (mean p6 $!= const_term 6.0)
+                                           $&& (mean p7 $!= const_term 7.0)
                                            )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -437,42 +437,42 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\ sampled d8 p8 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8 <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8 >' const_term 8.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8 $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8 $> const_term 8.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   \/+ (mean p2 =!' const_term 2.0)
-                   \/+ (mean p3 =!' const_term 3.0)
-                   \/+ (mean p4 =!' const_term 4.0)
-                   \/+ (mean p5 =!' const_term 5.0)
-                   \/+ (mean p6 =!' const_term 6.0)
-                   \/+ (mean p7 =!' const_term 7.0)
-                   \/+ (mean p8 =!' const_term 8.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $|| (mean p2 $!= const_term 2.0)
+                   $|| (mean p3 $!= const_term 3.0)
+                   $|| (mean p4 $!= const_term 4.0)
+                   $|| (mean p5 $!= const_term 5.0)
+                   $|| (mean p6 $!= const_term 6.0)
+                   $|| (mean p7 $!= const_term 7.0)
+                   $|| (mean p8 $!= const_term 8.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           \/+ (mean p2 =!' const_term 2.0)
-                                           \/+ (mean p3 =!' const_term 3.0)
-                                           \/+ (mean p4 =!' const_term 4.0)
-                                           \/+ (mean p5 =!' const_term 5.0)
-                                           \/+ (mean p6 =!' const_term 6.0)
-                                           \/+ (mean p7 =!' const_term 7.0)
-                                           \/+ (mean p8 =!' const_term 8.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $|| (mean p2 $!= const_term 2.0)
+                                           $|| (mean p3 $!= const_term 3.0)
+                                           $|| (mean p4 $!= const_term 4.0)
+                                           $|| (mean p5 $!= const_term 5.0)
+                                           $|| (mean p6 $!= const_term 6.0)
+                                           $|| (mean p7 $!= const_term 7.0)
+                                           $|| (mean p8 $!= const_term 8.0)
                                           )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -489,42 +489,42 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\ sampled d8 p8 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8 <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8 >' const_term 8.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8 $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8 $> const_term 8.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   /\* (mean p2 =!' const_term 2.0)
-                   /\* (mean p3 =!' const_term 3.0)
-                   /\* (mean p4 =!' const_term 4.0)
-                   /\* (mean p5 =!' const_term 5.0)
-                   /\* (mean p6 =!' const_term 6.0)
-                   /\* (mean p7 =!' const_term 7.0)
-                   /\* (mean p8 =!' const_term 8.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $&& (mean p2 $!= const_term 2.0)
+                   $&& (mean p3 $!= const_term 3.0)
+                   $&& (mean p4 $!= const_term 4.0)
+                   $&& (mean p5 $!= const_term 5.0)
+                   $&& (mean p6 $!= const_term 6.0)
+                   $&& (mean p7 $!= const_term 7.0)
+                   $&& (mean p8 $!= const_term 8.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           /\* (mean p2 =!' const_term 2.0)
-                                           /\* (mean p3 =!' const_term 3.0)
-                                           /\* (mean p4 =!' const_term 4.0)
-                                           /\* (mean p5 =!' const_term 5.0)
-                                           /\* (mean p6 =!' const_term 6.0)
-                                           /\* (mean p7 =!' const_term 7.0)
-                                           /\* (mean p8 =!' const_term 8.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $&& (mean p2 $!= const_term 2.0)
+                                           $&& (mean p3 $!= const_term 3.0)
+                                           $&& (mean p4 $!= const_term 4.0)
+                                           $&& (mean p5 $!= const_term 5.0)
+                                           $&& (mean p6 $!= const_term 6.0)
+                                           $&& (mean p7 $!= const_term 7.0)
+                                           $&& (mean p8 $!= const_term 8.0)
                                            )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -541,46 +541,46 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\ sampled d8 p8 /\ sampled d9 p9 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8 <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8 >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9 <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9 >' const_term 9.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8 $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8 $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9 $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9 $> const_term 9.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   \/+ (mean p2 =!' const_term 2.0)
-                   \/+ (mean p3 =!' const_term 3.0)
-                   \/+ (mean p4 =!' const_term 4.0)
-                   \/+ (mean p5 =!' const_term 5.0)
-                   \/+ (mean p6 =!' const_term 6.0)
-                   \/+ (mean p7 =!' const_term 7.0)
-                   \/+ (mean p8 =!' const_term 8.0)
-                   \/+ (mean p9 =!' const_term 9.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $|| (mean p2 $!= const_term 2.0)
+                   $|| (mean p3 $!= const_term 3.0)
+                   $|| (mean p4 $!= const_term 4.0)
+                   $|| (mean p5 $!= const_term 5.0)
+                   $|| (mean p6 $!= const_term 6.0)
+                   $|| (mean p7 $!= const_term 7.0)
+                   $|| (mean p8 $!= const_term 8.0)
+                   $|| (mean p9 $!= const_term 9.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           \/+ (mean p2 =!' const_term 2.0)
-                                           \/+ (mean p3 =!' const_term 3.0)
-                                           \/+ (mean p4 =!' const_term 4.0)
-                                           \/+ (mean p5 =!' const_term 5.0)
-                                           \/+ (mean p6 =!' const_term 6.0)
-                                           \/+ (mean p7 =!' const_term 7.0)
-                                           \/+ (mean p8 =!' const_term 8.0)
-                                           \/+ (mean p9 =!' const_term 9.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $|| (mean p2 $!= const_term 2.0)
+                                           $|| (mean p3 $!= const_term 3.0)
+                                           $|| (mean p4 $!= const_term 4.0)
+                                           $|| (mean p5 $!= const_term 5.0)
+                                           $|| (mean p6 $!= const_term 6.0)
+                                           $|| (mean p7 $!= const_term 7.0)
+                                           $|| (mean p8 $!= const_term 8.0)
+                                           $|| (mean p9 $!= const_term 9.0)
                                           )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -598,46 +598,46 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\ sampled d8 p8 /\ sampled d9 p9 /\ 
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8 <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8 >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9 <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9 >' const_term 9.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8 $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8 $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9 $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9 $> const_term 9.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   /\* (mean p2 =!' const_term 2.0)
-                   /\* (mean p3 =!' const_term 3.0)
-                   /\* (mean p4 =!' const_term 4.0)
-                   /\* (mean p5 =!' const_term 5.0)
-                   /\* (mean p6 =!' const_term 6.0)
-                   /\* (mean p7 =!' const_term 7.0)
-                   /\* (mean p8 =!' const_term 8.0)
-                   /\* (mean p9 =!' const_term 9.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $&& (mean p2 $!= const_term 2.0)
+                   $&& (mean p3 $!= const_term 3.0)
+                   $&& (mean p4 $!= const_term 4.0)
+                   $&& (mean p5 $!= const_term 5.0)
+                   $&& (mean p6 $!= const_term 6.0)
+                   $&& (mean p7 $!= const_term 7.0)
+                   $&& (mean p8 $!= const_term 8.0)
+                   $&& (mean p9 $!= const_term 9.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           /\* (mean p2 =!' const_term 2.0)
-                                           /\* (mean p3 =!' const_term 3.0)
-                                           /\* (mean p4 =!' const_term 4.0)
-                                           /\* (mean p5 =!' const_term 5.0)
-                                           /\* (mean p6 =!' const_term 6.0)
-                                           /\* (mean p7 =!' const_term 7.0)
-                                           /\* (mean p8 =!' const_term 8.0)
-                                           /\* (mean p9 =!' const_term 9.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $&& (mean p2 $!= const_term 2.0)
+                                           $&& (mean p3 $!= const_term 3.0)
+                                           $&& (mean p4 $!= const_term 4.0)
+                                           $&& (mean p5 $!= const_term 5.0)
+                                           $&& (mean p6 $!= const_term 6.0)
+                                           $&& (mean p7 $!= const_term 7.0)
+                                           $&& (mean p8 $!= const_term 8.0)
+                                           $&& (mean p9 $!= const_term 9.0)
                                            )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -655,50 +655,50 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\ sampled d8 p8 /\ sampled d9 p9 /\ sampled d10 p10 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8 <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8 >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9 <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9 >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10 <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10 >' const_term 10.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8 $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8 $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9 $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9 $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10 $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10 $> const_term 10.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   \/+ (mean p2 =!' const_term 2.0)
-                   \/+ (mean p3 =!' const_term 3.0)
-                   \/+ (mean p4 =!' const_term 4.0)
-                   \/+ (mean p5 =!' const_term 5.0)
-                   \/+ (mean p6 =!' const_term 6.0)
-                   \/+ (mean p7 =!' const_term 7.0)
-                   \/+ (mean p8 =!' const_term 8.0)
-                   \/+ (mean p9 =!' const_term 9.0)
-                   \/+ (mean p10 =!' const_term 10.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $|| (mean p2 $!= const_term 2.0)
+                   $|| (mean p3 $!= const_term 3.0)
+                   $|| (mean p4 $!= const_term 4.0)
+                   $|| (mean p5 $!= const_term 5.0)
+                   $|| (mean p6 $!= const_term 6.0)
+                   $|| (mean p7 $!= const_term 7.0)
+                   $|| (mean p8 $!= const_term 8.0)
+                   $|| (mean p9 $!= const_term 9.0)
+                   $|| (mean p10 $!= const_term 10.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           \/+ (mean p2 =!' const_term 2.0)
-                                           \/+ (mean p3 =!' const_term 3.0)
-                                           \/+ (mean p4 =!' const_term 4.0)
-                                           \/+ (mean p5 =!' const_term 5.0)
-                                           \/+ (mean p6 =!' const_term 6.0)
-                                           \/+ (mean p7 =!' const_term 7.0)
-                                           \/+ (mean p8 =!' const_term 8.0)
-                                           \/+ (mean p9 =!' const_term 9.0)
-                                           \/+ (mean p10 =!' const_term 10.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $|| (mean p2 $!= const_term 2.0)
+                                           $|| (mean p3 $!= const_term 3.0)
+                                           $|| (mean p4 $!= const_term 4.0)
+                                           $|| (mean p5 $!= const_term 5.0)
+                                           $|| (mean p6 $!= const_term 6.0)
+                                           $|| (mean p7 $!= const_term 7.0)
+                                           $|| (mean p8 $!= const_term 8.0)
+                                           $|| (mean p9 $!= const_term 9.0)
+                                           $|| (mean p10 $!= const_term 10.0)
                                           )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -717,50 +717,50 @@ module Multiple_hypotheses
     requires {
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\ sampled d8 p8 /\ sampled d9 p9 /\ sampled d10 p10 /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8 <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8 >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9 <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9 >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10 <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10 >' const_term 10.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8 $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8 $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9 $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9 $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10 $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10 $> const_term 10.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   /\* (mean p2 =!' const_term 2.0)
-                   /\* (mean p3 =!' const_term 3.0)
-                   /\* (mean p4 =!' const_term 4.0)
-                   /\* (mean p5 =!' const_term 5.0)
-                   /\* (mean p6 =!' const_term 6.0)
-                   /\* (mean p7 =!' const_term 7.0)
-                   /\* (mean p8 =!' const_term 8.0)
-                   /\* (mean p9 =!' const_term 9.0)
-                   /\* (mean p10 =!' const_term 10.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $&& (mean p2 $!= const_term 2.0)
+                   $&& (mean p3 $!= const_term 3.0)
+                   $&& (mean p4 $!= const_term 4.0)
+                   $&& (mean p5 $!= const_term 5.0)
+                   $&& (mean p6 $!= const_term 6.0)
+                   $&& (mean p7 $!= const_term 7.0)
+                   $&& (mean p8 $!= const_term 8.0)
+                   $&& (mean p9 $!= const_term 9.0)
+                   $&& (mean p10 $!= const_term 10.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           /\* (mean p2 =!' const_term 2.0)
-                                           /\* (mean p3 =!' const_term 3.0)
-                                           /\* (mean p4 =!' const_term 4.0)
-                                           /\* (mean p5 =!' const_term 5.0)
-                                           /\* (mean p6 =!' const_term 6.0)
-                                           /\* (mean p7 =!' const_term 7.0)
-                                           /\* (mean p8 =!' const_term 8.0)
-                                           /\* (mean p9 =!' const_term 9.0)
-                                           /\* (mean p10 =!' const_term 10.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $&& (mean p2 $!= const_term 2.0)
+                                           $&& (mean p3 $!= const_term 3.0)
+                                           $&& (mean p4 $!= const_term 4.0)
+                                           $&& (mean p5 $!= const_term 5.0)
+                                           $&& (mean p6 $!= const_term 6.0)
+                                           $&& (mean p7 $!= const_term 7.0)
+                                           $&& (mean p8 $!= const_term 8.0)
+                                           $&& (mean p9 $!= const_term 9.0)
+                                           $&& (mean p10 $!= const_term 10.0)
                                            )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -780,90 +780,90 @@ module Multiple_hypotheses
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\ sampled d8 p8 /\ sampled d9 p9 /\ sampled d10 p10 /\
       sampled d1' p1' /\ sampled d2' p2' /\ sampled d3' p3' /\ sampled d4' p4' /\ sampled d5' p5' /\ sampled d6' p6' /\ sampled d7' p7' /\ sampled d8' p8' /\ sampled d9' p9' /\ sampled d10' p10' /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8 <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8 >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9 <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9 >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10 <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10 >' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p1' <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1' >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2' <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2' >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3' <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3' >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4' <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4' >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5' <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5' >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6' <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6' >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7' <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7' >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8' <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8' >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9' <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9' >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10' <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10' >' const_term 10.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8 $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8 $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9 $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9 $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10 $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10 $> const_term 10.0) /\
+      (World !st interp) |= Possible (mean p1' $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1' $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2' $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2' $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3' $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3' $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4' $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4' $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5' $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5' $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6' $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6' $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7' $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7' $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8' $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8' $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9' $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9' $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10' $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10' $> const_term 10.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   \/+ (mean p2 =!' const_term 2.0)
-                   \/+ (mean p3 =!' const_term 3.0)
-                   \/+ (mean p4 =!' const_term 4.0)
-                   \/+ (mean p5 =!' const_term 5.0)
-                   \/+ (mean p6 =!' const_term 6.0)
-                   \/+ (mean p7 =!' const_term 7.0)
-                   \/+ (mean p8 =!' const_term 8.0)
-                   \/+ (mean p9 =!' const_term 9.0)
-                   \/+ (mean p10 =!' const_term 10.0)
-                   \/+ (mean p1' =!' const_term 1.0)
-                   \/+ (mean p2' =!' const_term 2.0)
-                   \/+ (mean p3' =!' const_term 3.0)
-                   \/+ (mean p4' =!' const_term 4.0)
-                   \/+ (mean p5' =!' const_term 5.0)
-                   \/+ (mean p6' =!' const_term 6.0)
-                   \/+ (mean p7' =!' const_term 7.0)
-                   \/+ (mean p8' =!' const_term 8.0)
-                   \/+ (mean p9' =!' const_term 9.0)
-                   \/+ (mean p10' =!' const_term 10.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $|| (mean p2 $!= const_term 2.0)
+                   $|| (mean p3 $!= const_term 3.0)
+                   $|| (mean p4 $!= const_term 4.0)
+                   $|| (mean p5 $!= const_term 5.0)
+                   $|| (mean p6 $!= const_term 6.0)
+                   $|| (mean p7 $!= const_term 7.0)
+                   $|| (mean p8 $!= const_term 8.0)
+                   $|| (mean p9 $!= const_term 9.0)
+                   $|| (mean p10 $!= const_term 10.0)
+                   $|| (mean p1' $!= const_term 1.0)
+                   $|| (mean p2' $!= const_term 2.0)
+                   $|| (mean p3' $!= const_term 3.0)
+                   $|| (mean p4' $!= const_term 4.0)
+                   $|| (mean p5' $!= const_term 5.0)
+                   $|| (mean p6' $!= const_term 6.0)
+                   $|| (mean p7' $!= const_term 7.0)
+                   $|| (mean p8' $!= const_term 8.0)
+                   $|| (mean p9' $!= const_term 9.0)
+                   $|| (mean p10' $!= const_term 10.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           \/+ (mean p2 =!' const_term 2.0)
-                                           \/+ (mean p3 =!' const_term 3.0)
-                                           \/+ (mean p4 =!' const_term 4.0)
-                                           \/+ (mean p5 =!' const_term 5.0)
-                                           \/+ (mean p6 =!' const_term 6.0)
-                                           \/+ (mean p7 =!' const_term 7.0)
-                                           \/+ (mean p8 =!' const_term 8.0)
-                                           \/+ (mean p9 =!' const_term 9.0)
-                                           \/+ (mean p10 =!' const_term 10.0)
-                                           \/+ (mean p1' =!' const_term 1.0)
-                                           \/+ (mean p2' =!' const_term 2.0)
-                                           \/+ (mean p3' =!' const_term 3.0)
-                                           \/+ (mean p4' =!' const_term 4.0)
-                                           \/+ (mean p5' =!' const_term 5.0)
-                                           \/+ (mean p6' =!' const_term 6.0)
-                                           \/+ (mean p7' =!' const_term 7.0)
-                                           \/+ (mean p8' =!' const_term 8.0)
-                                           \/+ (mean p9' =!' const_term 9.0)
-                                           \/+ (mean p10' =!' const_term 10.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $|| (mean p2 $!= const_term 2.0)
+                                           $|| (mean p3 $!= const_term 3.0)
+                                           $|| (mean p4 $!= const_term 4.0)
+                                           $|| (mean p5 $!= const_term 5.0)
+                                           $|| (mean p6 $!= const_term 6.0)
+                                           $|| (mean p7 $!= const_term 7.0)
+                                           $|| (mean p8 $!= const_term 8.0)
+                                           $|| (mean p9 $!= const_term 9.0)
+                                           $|| (mean p10 $!= const_term 10.0)
+                                           $|| (mean p1' $!= const_term 1.0)
+                                           $|| (mean p2' $!= const_term 2.0)
+                                           $|| (mean p3' $!= const_term 3.0)
+                                           $|| (mean p4' $!= const_term 4.0)
+                                           $|| (mean p5' $!= const_term 5.0)
+                                           $|| (mean p6' $!= const_term 6.0)
+                                           $|| (mean p7' $!= const_term 7.0)
+                                           $|| (mean p8' $!= const_term 8.0)
+                                           $|| (mean p9' $!= const_term 9.0)
+                                           $|| (mean p10' $!= const_term 10.0)
                                           )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -894,90 +894,90 @@ module Multiple_hypotheses
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\ sampled d8 p8 /\ sampled d9 p9 /\ sampled d10 p10 /\
       sampled d1' p1' /\ sampled d2' p2' /\ sampled d3' p3' /\ sampled d4' p4' /\ sampled d5' p5' /\ sampled d6' p6' /\ sampled d7' p7' /\ sampled d8' p8' /\ sampled d9' p9' /\ sampled d10' p10' /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8 <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8 >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9 <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9 >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10 <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10 >' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p1' <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1' >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2' <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2' >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3' <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3' >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4' <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4' >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5' <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5' >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6' <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6' >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7' <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7' >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8' <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8' >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9' <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9' >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10' <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10' >' const_term 10.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8 $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8 $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9 $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9 $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10 $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10 $> const_term 10.0) /\
+      (World !st interp) |= Possible (mean p1' $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1' $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2' $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2' $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3' $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3' $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4' $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4' $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5' $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5' $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6' $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6' $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7' $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7' $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8' $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8' $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9' $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9' $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10' $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10' $> const_term 10.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   /\* (mean p2 =!' const_term 2.0)
-                   /\* (mean p3 =!' const_term 3.0)
-                   /\* (mean p4 =!' const_term 4.0)
-                   /\* (mean p5 =!' const_term 5.0)
-                   /\* (mean p6 =!' const_term 6.0)
-                   /\* (mean p7 =!' const_term 7.0)
-                   /\* (mean p8 =!' const_term 8.0)
-                   /\* (mean p9 =!' const_term 9.0)
-                   /\* (mean p10 =!' const_term 10.0)
-                   /\* (mean p1' =!' const_term 1.0)
-                   /\* (mean p2' =!' const_term 2.0)
-                   /\* (mean p3' =!' const_term 3.0)
-                   /\* (mean p4' =!' const_term 4.0)
-                   /\* (mean p5' =!' const_term 5.0)
-                   /\* (mean p6' =!' const_term 6.0)
-                   /\* (mean p7' =!' const_term 7.0)
-                   /\* (mean p8' =!' const_term 8.0)
-                   /\* (mean p9' =!' const_term 9.0)
-                   /\* (mean p10' =!' const_term 10.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $&& (mean p2 $!= const_term 2.0)
+                   $&& (mean p3 $!= const_term 3.0)
+                   $&& (mean p4 $!= const_term 4.0)
+                   $&& (mean p5 $!= const_term 5.0)
+                   $&& (mean p6 $!= const_term 6.0)
+                   $&& (mean p7 $!= const_term 7.0)
+                   $&& (mean p8 $!= const_term 8.0)
+                   $&& (mean p9 $!= const_term 9.0)
+                   $&& (mean p10 $!= const_term 10.0)
+                   $&& (mean p1' $!= const_term 1.0)
+                   $&& (mean p2' $!= const_term 2.0)
+                   $&& (mean p3' $!= const_term 3.0)
+                   $&& (mean p4' $!= const_term 4.0)
+                   $&& (mean p5' $!= const_term 5.0)
+                   $&& (mean p6' $!= const_term 6.0)
+                   $&& (mean p7' $!= const_term 7.0)
+                   $&& (mean p8' $!= const_term 8.0)
+                   $&& (mean p9' $!= const_term 9.0)
+                   $&& (mean p10' $!= const_term 10.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           /\* (mean p2 =!' const_term 2.0)
-                                           /\* (mean p3 =!' const_term 3.0)
-                                           /\* (mean p4 =!' const_term 4.0)
-                                           /\* (mean p5 =!' const_term 5.0)
-                                           /\* (mean p6 =!' const_term 6.0)
-                                           /\* (mean p7 =!' const_term 7.0)
-                                           /\* (mean p8 =!' const_term 8.0)
-                                           /\* (mean p9 =!' const_term 9.0)
-                                           /\* (mean p10 =!' const_term 10.0)
-                                           /\* (mean p1' =!' const_term 1.0)
-                                           /\* (mean p2' =!' const_term 2.0)
-                                           /\* (mean p3' =!' const_term 3.0)
-                                           /\* (mean p4' =!' const_term 4.0)
-                                           /\* (mean p5' =!' const_term 5.0)
-                                           /\* (mean p6' =!' const_term 6.0)
-                                           /\* (mean p7' =!' const_term 7.0)
-                                           /\* (mean p8' =!' const_term 8.0)
-                                           /\* (mean p9' =!' const_term 9.0)
-                                           /\* (mean p10' =!' const_term 10.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $&& (mean p2 $!= const_term 2.0)
+                                           $&& (mean p3 $!= const_term 3.0)
+                                           $&& (mean p4 $!= const_term 4.0)
+                                           $&& (mean p5 $!= const_term 5.0)
+                                           $&& (mean p6 $!= const_term 6.0)
+                                           $&& (mean p7 $!= const_term 7.0)
+                                           $&& (mean p8 $!= const_term 8.0)
+                                           $&& (mean p9 $!= const_term 9.0)
+                                           $&& (mean p10 $!= const_term 10.0)
+                                           $&& (mean p1' $!= const_term 1.0)
+                                           $&& (mean p2' $!= const_term 2.0)
+                                           $&& (mean p3' $!= const_term 3.0)
+                                           $&& (mean p4' $!= const_term 4.0)
+                                           $&& (mean p5' $!= const_term 5.0)
+                                           $&& (mean p6' $!= const_term 6.0)
+                                           $&& (mean p7' $!= const_term 7.0)
+                                           $&& (mean p8' $!= const_term 8.0)
+                                           $&& (mean p9' $!= const_term 9.0)
+                                           $&& (mean p10' $!= const_term 10.0)
                                           )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -1010,130 +1010,130 @@ module Multiple_hypotheses
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\ sampled d8 p8 /\ sampled d9 p9 /\ sampled d10 p10 /\
       sampled d1' p1' /\ sampled d2' p2' /\ sampled d3' p3' /\ sampled d4' p4' /\ sampled d5' p5' /\ sampled d6' p6' /\ sampled d7' p7' /\ sampled d8' p8' /\ sampled d9' p9' /\ sampled d10' p10' /\
       sampled d1'' p1'' /\ sampled d2'' p2'' /\ sampled d3'' p3'' /\ sampled d4'' p4'' /\ sampled d5'' p5'' /\ sampled d6'' p6'' /\ sampled d7'' p7'' /\ sampled d8'' p8'' /\ sampled d9'' p9'' /\ sampled d10'' p10'' /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8 <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8 >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9 <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9 >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10 <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10 >' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p1' <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1' >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2' <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2' >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3' <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3' >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4' <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4' >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5' <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5' >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6' <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6' >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7' <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7' >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8' <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8' >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9' <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9' >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10' <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10' >' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p1'' <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1'' >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2'' <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2'' >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3'' <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3'' >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4'' <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4'' >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5'' <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5'' >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6'' <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6'' >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7'' <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7'' >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8'' <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8'' >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9'' <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9'' >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10'' <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10'' >' const_term 10.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8 $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8 $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9 $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9 $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10 $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10 $> const_term 10.0) /\
+      (World !st interp) |= Possible (mean p1' $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1' $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2' $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2' $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3' $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3' $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4' $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4' $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5' $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5' $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6' $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6' $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7' $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7' $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8' $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8' $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9' $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9' $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10' $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10' $> const_term 10.0) /\
+      (World !st interp) |= Possible (mean p1'' $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1'' $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2'' $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2'' $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3'' $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3'' $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4'' $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4'' $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5'' $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5'' $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6'' $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6'' $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7'' $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7'' $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8'' $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8'' $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9'' $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9'' $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10'' $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10'' $> const_term 10.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   \/+ (mean p2 =!' const_term 2.0)
-                   \/+ (mean p3 =!' const_term 3.0)
-                   \/+ (mean p4 =!' const_term 4.0)
-                   \/+ (mean p5 =!' const_term 5.0)
-                   \/+ (mean p6 =!' const_term 6.0)
-                   \/+ (mean p7 =!' const_term 7.0)
-                   \/+ (mean p8 =!' const_term 8.0)
-                   \/+ (mean p9 =!' const_term 9.0)
-                   \/+ (mean p10 =!' const_term 10.0)
-                   \/+ (mean p1' =!' const_term 1.0)
-                   \/+ (mean p2' =!' const_term 2.0)
-                   \/+ (mean p3' =!' const_term 3.0)
-                   \/+ (mean p4' =!' const_term 4.0)
-                   \/+ (mean p5' =!' const_term 5.0)
-                   \/+ (mean p6' =!' const_term 6.0)
-                   \/+ (mean p7' =!' const_term 7.0)
-                   \/+ (mean p8' =!' const_term 8.0)
-                   \/+ (mean p9' =!' const_term 9.0)
-                   \/+ (mean p10' =!' const_term 10.0)
-                   \/+ (mean p1'' =!' const_term 1.0)
-                   \/+ (mean p2'' =!' const_term 2.0)
-                   \/+ (mean p3'' =!' const_term 3.0)
-                   \/+ (mean p4'' =!' const_term 4.0)
-                   \/+ (mean p5'' =!' const_term 5.0)
-                   \/+ (mean p6'' =!' const_term 6.0)
-                   \/+ (mean p7'' =!' const_term 7.0)
-                   \/+ (mean p8'' =!' const_term 8.0)
-                   \/+ (mean p9'' =!' const_term 9.0)
-                   \/+ (mean p10'' =!' const_term 10.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $|| (mean p2 $!= const_term 2.0)
+                   $|| (mean p3 $!= const_term 3.0)
+                   $|| (mean p4 $!= const_term 4.0)
+                   $|| (mean p5 $!= const_term 5.0)
+                   $|| (mean p6 $!= const_term 6.0)
+                   $|| (mean p7 $!= const_term 7.0)
+                   $|| (mean p8 $!= const_term 8.0)
+                   $|| (mean p9 $!= const_term 9.0)
+                   $|| (mean p10 $!= const_term 10.0)
+                   $|| (mean p1' $!= const_term 1.0)
+                   $|| (mean p2' $!= const_term 2.0)
+                   $|| (mean p3' $!= const_term 3.0)
+                   $|| (mean p4' $!= const_term 4.0)
+                   $|| (mean p5' $!= const_term 5.0)
+                   $|| (mean p6' $!= const_term 6.0)
+                   $|| (mean p7' $!= const_term 7.0)
+                   $|| (mean p8' $!= const_term 8.0)
+                   $|| (mean p9' $!= const_term 9.0)
+                   $|| (mean p10' $!= const_term 10.0)
+                   $|| (mean p1'' $!= const_term 1.0)
+                   $|| (mean p2'' $!= const_term 2.0)
+                   $|| (mean p3'' $!= const_term 3.0)
+                   $|| (mean p4'' $!= const_term 4.0)
+                   $|| (mean p5'' $!= const_term 5.0)
+                   $|| (mean p6'' $!= const_term 6.0)
+                   $|| (mean p7'' $!= const_term 7.0)
+                   $|| (mean p8'' $!= const_term 8.0)
+                   $|| (mean p9'' $!= const_term 9.0)
+                   $|| (mean p10'' $!= const_term 10.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           \/+ (mean p2 =!' const_term 2.0)
-                                           \/+ (mean p3 =!' const_term 3.0)
-                                           \/+ (mean p4 =!' const_term 4.0)
-                                           \/+ (mean p5 =!' const_term 5.0)
-                                           \/+ (mean p6 =!' const_term 6.0)
-                                           \/+ (mean p7 =!' const_term 7.0)
-                                           \/+ (mean p8 =!' const_term 8.0)
-                                           \/+ (mean p9 =!' const_term 9.0)
-                                           \/+ (mean p10 =!' const_term 10.0)
-                                           \/+ (mean p1' =!' const_term 1.0)
-                                           \/+ (mean p2' =!' const_term 2.0)
-                                           \/+ (mean p3' =!' const_term 3.0)
-                                           \/+ (mean p4' =!' const_term 4.0)
-                                           \/+ (mean p5' =!' const_term 5.0)
-                                           \/+ (mean p6' =!' const_term 6.0)
-                                           \/+ (mean p7' =!' const_term 7.0)
-                                           \/+ (mean p8' =!' const_term 8.0)
-                                           \/+ (mean p9' =!' const_term 9.0)
-                                           \/+ (mean p10' =!' const_term 10.0)
-                                           \/+ (mean p1'' =!' const_term 1.0)
-                                           \/+ (mean p2'' =!' const_term 2.0)
-                                           \/+ (mean p3'' =!' const_term 3.0)
-                                           \/+ (mean p4'' =!' const_term 4.0)
-                                           \/+ (mean p5'' =!' const_term 5.0)
-                                           \/+ (mean p6'' =!' const_term 6.0)
-                                           \/+ (mean p7'' =!' const_term 7.0)
-                                           \/+ (mean p8'' =!' const_term 8.0)
-                                           \/+ (mean p9'' =!' const_term 9.0)
-                                           \/+ (mean p10'' =!' const_term 10.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $|| (mean p2 $!= const_term 2.0)
+                                           $|| (mean p3 $!= const_term 3.0)
+                                           $|| (mean p4 $!= const_term 4.0)
+                                           $|| (mean p5 $!= const_term 5.0)
+                                           $|| (mean p6 $!= const_term 6.0)
+                                           $|| (mean p7 $!= const_term 7.0)
+                                           $|| (mean p8 $!= const_term 8.0)
+                                           $|| (mean p9 $!= const_term 9.0)
+                                           $|| (mean p10 $!= const_term 10.0)
+                                           $|| (mean p1' $!= const_term 1.0)
+                                           $|| (mean p2' $!= const_term 2.0)
+                                           $|| (mean p3' $!= const_term 3.0)
+                                           $|| (mean p4' $!= const_term 4.0)
+                                           $|| (mean p5' $!= const_term 5.0)
+                                           $|| (mean p6' $!= const_term 6.0)
+                                           $|| (mean p7' $!= const_term 7.0)
+                                           $|| (mean p8' $!= const_term 8.0)
+                                           $|| (mean p9' $!= const_term 9.0)
+                                           $|| (mean p10' $!= const_term 10.0)
+                                           $|| (mean p1'' $!= const_term 1.0)
+                                           $|| (mean p2'' $!= const_term 2.0)
+                                           $|| (mean p3'' $!= const_term 3.0)
+                                           $|| (mean p4'' $!= const_term 4.0)
+                                           $|| (mean p5'' $!= const_term 5.0)
+                                           $|| (mean p6'' $!= const_term 6.0)
+                                           $|| (mean p7'' $!= const_term 7.0)
+                                           $|| (mean p8'' $!= const_term 8.0)
+                                           $|| (mean p9'' $!= const_term 9.0)
+                                           $|| (mean p10'' $!= const_term 10.0)
                                           )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -1176,130 +1176,130 @@ module Multiple_hypotheses
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\ sampled d5 p5 /\ sampled d6 p6 /\ sampled d7 p7 /\ sampled d8 p8 /\ sampled d9 p9 /\ sampled d10 p10 /\
       sampled d1' p1' /\ sampled d2' p2' /\ sampled d3' p3' /\ sampled d4' p4' /\ sampled d5' p5' /\ sampled d6' p6' /\ sampled d7' p7' /\ sampled d8' p8' /\ sampled d9' p9' /\ sampled d10' p10' /\
       sampled d1'' p1'' /\ sampled d2'' p2'' /\ sampled d3'' p3'' /\ sampled d4'' p4'' /\ sampled d5'' p5'' /\ sampled d6'' p6'' /\ sampled d7'' p7'' /\ sampled d8'' p8'' /\ sampled d9'' p9'' /\ sampled d10'' p10'' /\
-      (World !st interp) |= Possible (mean p1 <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1 >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2 <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2 >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3 <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3 >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4 <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4 >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5 <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5 >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6 <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6 >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7 <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7 >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8 <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8 >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9 <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9 >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10 <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10 >' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p1' <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1' >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2' <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2' >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3' <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3' >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4' <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4' >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5' <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5' >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6' <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6' >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7' <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7' >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8' <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8' >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9' <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9' >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10' <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10' >' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p1'' <' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p1'' >' const_term 1.0) /\
-      (World !st interp) |= Possible (mean p2'' <' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p2'' >' const_term 2.0) /\
-      (World !st interp) |= Possible (mean p3'' <' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p3'' >' const_term 3.0) /\
-      (World !st interp) |= Possible (mean p4'' <' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p4'' >' const_term 4.0) /\
-      (World !st interp) |= Possible (mean p5'' <' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p5'' >' const_term 5.0) /\
-      (World !st interp) |= Possible (mean p6'' <' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p6'' >' const_term 6.0) /\
-      (World !st interp) |= Possible (mean p7'' <' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p7'' >' const_term 7.0) /\
-      (World !st interp) |= Possible (mean p8'' <' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p8'' >' const_term 8.0) /\
-      (World !st interp) |= Possible (mean p9'' <' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p9'' >' const_term 9.0) /\
-      (World !st interp) |= Possible (mean p10'' <' const_term 10.0) /\
-      (World !st interp) |= Possible (mean p10'' >' const_term 10.0)
+      (World !st interp) |= Possible (mean p1 $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1 $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2 $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2 $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3 $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3 $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4 $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4 $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5 $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5 $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6 $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6 $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7 $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7 $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8 $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8 $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9 $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9 $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10 $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10 $> const_term 10.0) /\
+      (World !st interp) |= Possible (mean p1' $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1' $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2' $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2' $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3' $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3' $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4' $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4' $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5' $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5' $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6' $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6' $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7' $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7' $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8' $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8' $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9' $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9' $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10' $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10' $> const_term 10.0) /\
+      (World !st interp) |= Possible (mean p1'' $< const_term 1.0) /\
+      (World !st interp) |= Possible (mean p1'' $> const_term 1.0) /\
+      (World !st interp) |= Possible (mean p2'' $< const_term 2.0) /\
+      (World !st interp) |= Possible (mean p2'' $> const_term 2.0) /\
+      (World !st interp) |= Possible (mean p3'' $< const_term 3.0) /\
+      (World !st interp) |= Possible (mean p3'' $> const_term 3.0) /\
+      (World !st interp) |= Possible (mean p4'' $< const_term 4.0) /\
+      (World !st interp) |= Possible (mean p4'' $> const_term 4.0) /\
+      (World !st interp) |= Possible (mean p5'' $< const_term 5.0) /\
+      (World !st interp) |= Possible (mean p5'' $> const_term 5.0) /\
+      (World !st interp) |= Possible (mean p6'' $< const_term 6.0) /\
+      (World !st interp) |= Possible (mean p6'' $> const_term 6.0) /\
+      (World !st interp) |= Possible (mean p7'' $< const_term 7.0) /\
+      (World !st interp) |= Possible (mean p7'' $> const_term 7.0) /\
+      (World !st interp) |= Possible (mean p8'' $< const_term 8.0) /\
+      (World !st interp) |= Possible (mean p8'' $> const_term 8.0) /\
+      (World !st interp) |= Possible (mean p9'' $< const_term 9.0) /\
+      (World !st interp) |= Possible (mean p9'' $> const_term 9.0) /\
+      (World !st interp) |= Possible (mean p10'' $< const_term 10.0) /\
+      (World !st interp) |= Possible (mean p10'' $> const_term 10.0)
     } ensures {
       let p = result in
       (Leq p) = compose_pvs
-                  ((mean p1 =!' const_term 1.0)
-                   /\* (mean p2 =!' const_term 2.0)
-                   /\* (mean p3 =!' const_term 3.0)
-                   /\* (mean p4 =!' const_term 4.0)
-                   /\* (mean p5 =!' const_term 5.0)
-                   /\* (mean p6 =!' const_term 6.0)
-                   /\* (mean p7 =!' const_term 7.0)
-                   /\* (mean p8 =!' const_term 8.0)
-                   /\* (mean p9 =!' const_term 9.0)
-                   /\* (mean p10 =!' const_term 10.0)
-                   /\* (mean p1' =!' const_term 1.0)
-                   /\* (mean p2' =!' const_term 2.0)
-                   /\* (mean p3' =!' const_term 3.0)
-                   /\* (mean p4' =!' const_term 4.0)
-                   /\* (mean p5' =!' const_term 5.0)
-                   /\* (mean p6' =!' const_term 6.0)
-                   /\* (mean p7' =!' const_term 7.0)
-                   /\* (mean p8' =!' const_term 8.0)
-                   /\* (mean p9' =!' const_term 9.0)
-                   /\* (mean p10' =!' const_term 10.0)
-                   /\* (mean p1'' =!' const_term 1.0)
-                   /\* (mean p2'' =!' const_term 2.0)
-                   /\* (mean p3'' =!' const_term 3.0)
-                   /\* (mean p4'' =!' const_term 4.0)
-                   /\* (mean p5'' =!' const_term 5.0)
-                   /\* (mean p6'' =!' const_term 6.0)
-                   /\* (mean p7'' =!' const_term 7.0)
-                   /\* (mean p8'' =!' const_term 8.0)
-                   /\* (mean p9'' =!' const_term 9.0)
-                   /\* (mean p10'' =!' const_term 10.0)
+                  ((mean p1 $!= const_term 1.0)
+                   $&& (mean p2 $!= const_term 2.0)
+                   $&& (mean p3 $!= const_term 3.0)
+                   $&& (mean p4 $!= const_term 4.0)
+                   $&& (mean p5 $!= const_term 5.0)
+                   $&& (mean p6 $!= const_term 6.0)
+                   $&& (mean p7 $!= const_term 7.0)
+                   $&& (mean p8 $!= const_term 8.0)
+                   $&& (mean p9 $!= const_term 9.0)
+                   $&& (mean p10 $!= const_term 10.0)
+                   $&& (mean p1' $!= const_term 1.0)
+                   $&& (mean p2' $!= const_term 2.0)
+                   $&& (mean p3' $!= const_term 3.0)
+                   $&& (mean p4' $!= const_term 4.0)
+                   $&& (mean p5' $!= const_term 5.0)
+                   $&& (mean p6' $!= const_term 6.0)
+                   $&& (mean p7' $!= const_term 7.0)
+                   $&& (mean p8' $!= const_term 8.0)
+                   $&& (mean p9' $!= const_term 9.0)
+                   $&& (mean p10' $!= const_term 10.0)
+                   $&& (mean p1'' $!= const_term 1.0)
+                   $&& (mean p2'' $!= const_term 2.0)
+                   $&& (mean p3'' $!= const_term 3.0)
+                   $&& (mean p4'' $!= const_term 4.0)
+                   $&& (mean p5'' $!= const_term 5.0)
+                   $&& (mean p6'' $!= const_term 6.0)
+                   $&& (mean p7'' $!= const_term 7.0)
+                   $&& (mean p8'' $!= const_term 8.0)
+                   $&& (mean p9'' $!= const_term 9.0)
+                   $&& (mean p10'' $!= const_term 10.0)
                   ) !st &&
-      (World !st interp) |= StatB (Leq p) ((mean p1 =!' const_term 1.0)
-                                           /\* (mean p2 =!' const_term 2.0)
-                                           /\* (mean p3 =!' const_term 3.0)
-                                           /\* (mean p4 =!' const_term 4.0)
-                                           /\* (mean p5 =!' const_term 5.0)
-                                           /\* (mean p6 =!' const_term 6.0)
-                                           /\* (mean p7 =!' const_term 7.0)
-                                           /\* (mean p8 =!' const_term 8.0)
-                                           /\* (mean p9 =!' const_term 9.0)
-                                           /\* (mean p10 =!' const_term 10.0)
-                                           /\* (mean p1' =!' const_term 1.0)
-                                           /\* (mean p2' =!' const_term 2.0)
-                                           /\* (mean p3' =!' const_term 3.0)
-                                           /\* (mean p4' =!' const_term 4.0)
-                                           /\* (mean p5' =!' const_term 5.0)
-                                           /\* (mean p6' =!' const_term 6.0)
-                                           /\* (mean p7' =!' const_term 7.0)
-                                           /\* (mean p8' =!' const_term 8.0)
-                                           /\* (mean p9' =!' const_term 9.0)
-                                           /\* (mean p10' =!' const_term 10.0)
-                                           /\* (mean p1'' =!' const_term 1.0)
-                                           /\* (mean p2'' =!' const_term 2.0)
-                                           /\* (mean p3'' =!' const_term 3.0)
-                                           /\* (mean p4'' =!' const_term 4.0)
-                                           /\* (mean p5'' =!' const_term 5.0)
-                                           /\* (mean p6'' =!' const_term 6.0)
-                                           /\* (mean p7'' =!' const_term 7.0)
-                                           /\* (mean p8'' =!' const_term 8.0)
-                                           /\* (mean p9'' =!' const_term 9.0)
-                                           /\* (mean p10'' =!' const_term 10.0)
+      (World !st interp) |= StatB (Leq p) ((mean p1 $!= const_term 1.0)
+                                           $&& (mean p2 $!= const_term 2.0)
+                                           $&& (mean p3 $!= const_term 3.0)
+                                           $&& (mean p4 $!= const_term 4.0)
+                                           $&& (mean p5 $!= const_term 5.0)
+                                           $&& (mean p6 $!= const_term 6.0)
+                                           $&& (mean p7 $!= const_term 7.0)
+                                           $&& (mean p8 $!= const_term 8.0)
+                                           $&& (mean p9 $!= const_term 9.0)
+                                           $&& (mean p10 $!= const_term 10.0)
+                                           $&& (mean p1' $!= const_term 1.0)
+                                           $&& (mean p2' $!= const_term 2.0)
+                                           $&& (mean p3' $!= const_term 3.0)
+                                           $&& (mean p4' $!= const_term 4.0)
+                                           $&& (mean p5' $!= const_term 5.0)
+                                           $&& (mean p6' $!= const_term 6.0)
+                                           $&& (mean p7' $!= const_term 7.0)
+                                           $&& (mean p8' $!= const_term 8.0)
+                                           $&& (mean p9' $!= const_term 9.0)
+                                           $&& (mean p10' $!= const_term 10.0)
+                                           $&& (mean p1'' $!= const_term 1.0)
+                                           $&& (mean p2'' $!= const_term 2.0)
+                                           $&& (mean p3'' $!= const_term 3.0)
+                                           $&& (mean p4'' $!= const_term 4.0)
+                                           $&& (mean p5'' $!= const_term 5.0)
+                                           $&& (mean p6'' $!= const_term 6.0)
+                                           $&& (mean p7'' $!= const_term 7.0)
+                                           $&& (mean p8'' $!= const_term 8.0)
+                                           $&& (mean p9'' $!= const_term 9.0)
+                                           $&& (mean p10'' $!= const_term 10.0)
                                           )
     }
     = let r1 = exec_ttest_1samp p1 1.0 d1 Two in
@@ -1352,14 +1352,14 @@ module Interim_analysis
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\
       non_paired d1 d2 /\ non_paired d1 d3 /\
-      (World !st interp) |= Possible (mean p1 <' mean p2) /\
-      (World !st interp) |= Possible (mean p1 >' mean p2) /\
-      (World !st interp) |= Possible (mean p1 <' mean p3) /\
-      (World !st interp) |= Possible (mean p1 >' mean p3)
+      (World !st interp) |= Possible (mean p1 $< mean p2) /\
+      (World !st interp) |= Possible (mean p1 $> mean p2) /\
+      (World !st interp) |= Possible (mean p1 $< mean p3) /\
+      (World !st interp) |= Possible (mean p1 $> mean p3)
     } ensures {
       let r = result in
-      ((stat_believe (Leq 0.05) (mean p1 =!' mean p2) !st) && (World !st interp) |= (StatB (Leq 0.05) (mean p1 =!' mean p2))) ->
-      (stat_believe (Leq r) ((mean p1 =!' mean p2) /\* (mean p1 =!' mean p3)) !st && (World !st interp) |= (StatB (Leq r) ((mean p1 =!' mean p2) /\* (mean p1 =!' mean p3))))
+      ((stat_believe (Leq 0.05) (mean p1 $!= mean p2) !st) && (World !st interp) |= (StatB (Leq 0.05) (mean p1 $!= mean p2))) ->
+      (stat_believe (Leq r) ((mean p1 $!= mean p2) $&& (mean p1 $!= mean p3)) !st && (World !st interp) |= (StatB (Leq r) ((mean p1 $!= mean p2) $&& (mean p1 $!= mean p3))))
     } raises { Interrupt -> true }
     = let p = exec_ttest_ind_eq p1 p2 (d1, d2) Two in
       if p <=. 0.05 then
@@ -1375,19 +1375,19 @@ module Interim_analysis
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\
       non_paired d1 d2 /\ non_paired d1 d3 /\
-      (World !st interp) |= Possible (mean p1 <' mean p2) /\
-      (World !st interp) |= Possible (mean p1 >' mean p2) /\
-      (World !st interp) |= Possible (mean p1 <' mean p3) /\
-      (World !st interp) |= Possible (mean p1 >' mean p3)
+      (World !st interp) |= Possible (mean p1 $< mean p2) /\
+      (World !st interp) |= Possible (mean p1 $> mean p2) /\
+      (World !st interp) |= Possible (mean p1 $< mean p3) /\
+      (World !st interp) |= Possible (mean p1 $> mean p3)
     } ensures {
       let r = result in
       match r with
-      | A1 _ -> (stat_believe (Leq a1) (mean p1 =!' mean p2) !st)
-      | A2 p -> (stat_believe (Leq p) ((mean p1 =!' mean p2) \/+ (mean p1 =!' mean p3)) !st)
+      | A1 _ -> (stat_believe (Leq a1) (mean p1 $!= mean p2) !st)
+      | A2 p -> (stat_believe (Leq p) ((mean p1 $!= mean p2) $|| (mean p1 $!= mean p3)) !st)
       end && match r with
       | A1 p | A2 p ->
-      (World !st interp) |= Disj (StatB (Leq a1) (mean p1 =!' mean p2))
-                                 (StatB (Leq p) ((mean p1 =!' mean p2) \/+ (mean p1 =!' mean p3))) end
+      (World !st interp) |= Disj (StatB (Leq a1) (mean p1 $!= mean p2))
+                                 (StatB (Leq p) ((mean p1 $!= mean p2) $|| (mean p1 $!= mean p3))) end
     } raises { Interrupt -> true }
     = let p = exec_ttest_ind_eq p1 p2 (d1, d2) Two in
       if p >. a1
@@ -1403,20 +1403,20 @@ module Interim_analysis
       is_empty !st /\
       sampled d1 p1 /\ sampled d2 p2 /\ sampled d3 p3 /\ sampled d4 p4 /\
       non_paired d1 d2 /\ non_paired d1 d3 /\ non_paired d1 d4 /\
-      (World !st interp) |= Possible (mean p1 <' mean p2) /\
-      (World !st interp) |= Not (Possible (mean p1 >' mean p2)) /\
-      (World !st interp) |= Possible (mean p1 <' mean p3) /\
-      (World !st interp) |= Not (Possible (mean p1 >' mean p3)) /\
-      (World !st interp) |= Possible (mean p1 <' mean p4) /\
-      (World !st interp) |= Not (Possible (mean p1 >' mean p4))
+      (World !st interp) |= Possible (mean p1 $< mean p2) /\
+      (World !st interp) |= Not (Possible (mean p1 $> mean p2)) /\
+      (World !st interp) |= Possible (mean p1 $< mean p3) /\
+      (World !st interp) |= Not (Possible (mean p1 $> mean p3)) /\
+      (World !st interp) |= Possible (mean p1 $< mean p4) /\
+      (World !st interp) |= Not (Possible (mean p1 $> mean p4))
     } ensures {
       let r = result in
-      (stat_believe (Leq 0.05) (mean p1 <' mean p2) !st
-       && (World !st interp) |= StatB (Leq 0.05) (mean p1 <' mean p2)) ->
-      (stat_believe (Leq 0.05) (mean p1 <' mean p3) !st
-       && (World !st interp) |= StatB (Leq 0.05) (mean p1 <' mean p3)) ->
-      (stat_believe (Leq 0.05) ((mean p1 <' mean p2) /\* (mean p1 <' mean p3) /\* (mean p1 <' mean p4)) !st
-       && (World !st interp) |= StatB (Leq 0.05) ((mean p1 <' mean p2) /\* (mean p1 <' mean p3) /\* (mean p1 <' mean p4)))
+      (stat_believe (Leq 0.05) (mean p1 $< mean p2) !st
+       && (World !st interp) |= StatB (Leq 0.05) (mean p1 $< mean p2)) ->
+      (stat_believe (Leq 0.05) (mean p1 $< mean p3) !st
+       && (World !st interp) |= StatB (Leq 0.05) (mean p1 $< mean p3)) ->
+      (stat_believe (Leq 0.05) ((mean p1 $< mean p2) $&& (mean p1 $< mean p3) $&& (mean p1 $< mean p4)) !st
+       && (World !st interp) |= StatB (Leq 0.05) ((mean p1 $< mean p2) $&& (mean p1 $< mean p3) $&& (mean p1 $< mean p4)))
     } raises { Interrupt -> true }
     = let p = exec_ttest_ind_eq p1 p2 (d1, d2) Low in
       if p <=. a1 then

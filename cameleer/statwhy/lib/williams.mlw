@@ -35,20 +35,20 @@ module Williams
     | Up ->
       for_all
         (fun p ->
-          (World !st interp) |= Possible (mean control_ppl >' mean p) /\
-          (World !st interp) |= Not (Possible (mean control_ppl <' mean p)))
+          (World !st interp) |= Possible (mean control_ppl $> mean p) /\
+          (World !st interp) |= Not (Possible (mean control_ppl $< mean p)))
         ppls /\
       for_all (fun t -> let (p1, p2) = t in
-                (World !st interp) |= Know (mean p1 <=' mean p2))
+                (World !st interp) |= Know (mean p1 $<= mean p2))
               (combine (ppls ++ (Cons control_ppl Nil)) (tl (ppls ++ (Cons control_ppl Nil))))
     | Low ->
       for_all
         (fun p ->
-          (World !st interp) |= Not (Possible (mean control_ppl >' mean p)) /\
-          (World !st interp) |= Possible (mean control_ppl <' mean p))
+          (World !st interp) |= Not (Possible (mean control_ppl $> mean p)) /\
+          (World !st interp) |= Possible (mean control_ppl $< mean p))
         ppls /\
       for_all (fun t -> let (p1, p2) = t in
-                (World !st interp) |= Know (mean p1 >=' mean p2))
+                (World !st interp) |= Know (mean p1 $>= mean p2))
               (combine ppls (tl ppls))
     end
   } ensures {
@@ -59,8 +59,8 @@ module Williams
     (forall i : int. 0 <= i < (b - 1) -> ps[i] <=. ps[i+1]) /\
     let cmbs = map (fun t -> match alt with
                              | Two -> Atom (Pred "nil" Nil)
-                             | Up -> mean control_ppl >' mean t
-                             | Low -> mean control_ppl <' mean t
+                             | Up -> mean control_ppl $> mean t
+                             | Low -> mean control_ppl $< mean t
                              end)
                    ppls in
     !st = (cmb_store cmbs ps 0) ++ !(old st)

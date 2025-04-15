@@ -177,10 +177,10 @@ module LanguageData
 	       | Possible formula | Know formula
 	       | StatTau pvalue formula | StatB pvalue formula
 
-  let function ( \/+ ) (h1 h2 : formula) : formula = Disj h1 h2
-  meta "rewrite_def" function ( \/+ )
-  let function ( /\* ) (h1 h2 : formula) : formula = Conj h1 h2
-  meta "rewrite_def" function ( /\* )
+  let function ( $|| ) (h1 h2 : formula) : formula = Disj h1 h2
+  meta "rewrite_def" function ( $|| )
+  let function ( $&& ) (h1 h2 : formula) : formula = Conj h1 h2
+  meta "rewrite_def" function ( $&& )
 
   predicate eq_atom (a1: atomic_formula) (a2: atomic_formula)
   =

@@ -15,13 +15,13 @@ module Ttest_ind
     is_empty !st /\
     sampled d1 p1 /\ sampled d2 p2 /\
     non_paired d1 d2 /\
-    (World !st interp) |= Possible (var p1 <' var p2) /\
-    (World !st interp) |= Possible (var p1 >' var p2)
+    (World !st interp) |= Possible (var p1 $< var p2) /\
+    (World !st interp) |= Possible (var p1 $> var p2)
   }
   ensures {
     let p = result in
-    Eq p = compose_pvs (var p1 =!' var p2) !st &&
-    (World !st interp) |= StatB (Eq p) (var p1 =!' var p2)
+    Eq p = compose_pvs (var p1 $!= var p2) !st &&
+    (World !st interp) |= StatB (Eq p) (var p1 $!= var p2)
   }
   = exec_ftest p1 p2 (d1, d2) Two
 end

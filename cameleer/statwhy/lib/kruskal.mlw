@@ -3,8 +3,8 @@ module Kruskal
 
   function kruskal_hypothesis (terms : list population) : formula =
     let terms = map (fun t -> RealT (med t)) terms in
-    match combinations terms "=!" with
-    | Cons hd tl -> fold (fun acc t -> acc \/+ t) hd tl
+    match combinations terms "!=" with
+    | Cons hd tl -> fold (fun acc t -> acc $|| t) hd tl
     | Nil -> Atom (Pred "nil" Nil)
     end
 
@@ -15,8 +15,8 @@ module Kruskal
     length ps >= 2 /\ length ys >= 2 /\
     for_all2 (fun p y -> sampled y p) ps ys /\
     for_all (fun x -> let (s, t) = x in
-      ((World !st interp) |= Possible (med s <' med t) /\
-       (World !st interp) |= Possible (med s >' med t)))
+      ((World !st interp) |= Possible (med s $< med t) /\
+       (World !st interp) |= Possible (med s $> med t)))
       (combinations_poly ps)
   } ensures {
     let pv = result in

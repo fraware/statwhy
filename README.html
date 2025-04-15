@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+<title>README.html</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <style>
+        /* Base styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #f5f5f5;
+        }
+
+        /* Headers */
+        h1, h2, h3 {
+            color: #2c3e50;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+        }
+        h3 {
+            font-size: 1.5rem;
+        }
+
+        /* Code blocks */
+        pre {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+
+        pre code {
+            padding: 0;
+            background: none;
+            border-radius: 0;
+            display: block;
+        }
+
+        code {
+            font-family: 'Source Code Pro', Consolas, Monaco, 'Courier New', monospace;
+            background-color: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+
+        /* Images */
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 2rem auto;
+        }
+
+        /* Links */
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        /* Paragraphs and lists */
+        p {
+            margin: 1rem 0;
+        } 
+        ul, ol {
+            padding-left: 2rem;
+            margin: 1rem 0;
+        }
+        /* Responsive design */
+        @media (max-width: 850px) {
+            body {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+            h3 {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+    
+</head>
+
+<body>
+
+<h1 id="statwhy-v.1.2.0">StatWhy v.1.2.0</h1>
+<p>StatWhy is a software tool for automatically verifying the
+correctness of statistical hypothesis testing programs. In this file, we
+present the structure of this artifact, the resource requirements for
+the tool, and show how to verify the programs that implement the
+hypothesis testing examples addressed in our paper.</p>
+<h2 id="structure-of-this-artifact">Structure of this artifact</h2>
+<p>The structure of this artifact is as follows:</p>
+<pre><code>root/
+├ README.md                        this file
+├ cameleer                         source code of *cameleer*
+│ └ statwhy                        source code of *statwhy*
+│   ├ lib                          core library of statwhy, including the specification
+│   │                              of many hypothesis testing methods
+│   └ ...
+├ doc
+│ └ Statwhy_User_Documentation.pdf user documentation of statwhy
+├ examples                         codes for replicating the results
+│ ├ executed                       log of executing the codes in `examples`
+│ └ mlw                            examples not explained in this file
+└ ...</code></pre>
+<h2 id="resource-requirements">Resource requirements</h2>
+<p>The ova file <code>statwhy.ova</code> for the StatWhy tool only runs
+on systems with an <strong>x86_64</strong> architecture. Other
+architectures such as ARM are not supported. In addition, a system with
+at least 8 GB of RAM and a 4-core CPU is recommended for optimal
+performance in a virtual machine.</p>
+<p>The tool StatWhy has been tested on the following environments:</p>
+<ol type="1">
+<li>MacBook Pro – M2 Max CPU, 96 GB RAM, macOS 15.3.2 (running StatWhy
+natively)</li>
+<li>DELL Precision 5490 – Intel Core Ultra 9 185H, 64 GB RAM, Windows 11
+(using the ova file of this artifact)</li>
+</ol>
+<p>We have provided the execution logs using the second environment at
+<code>examples/executed</code>.</p>
+<h2 id="correctness-of-the-artifact">Correctness of the artifact</h2>
+<p>We have tested the tool StatWhy by (i) checking that StatWhy can
+correctly verify various major hypothesis testing methods in a short
+time in a way that is consistent with standard textbooks on statistics
+and (ii) proving various lemmas on the properties of epistemic logic
+(statELHT.mlw) and on those of hypothesis tests and belief Hoare logic
+(statBHL.mlw).</p>
+<h2 id="getting-started">Getting started</h2>
+<p>After extracting the ZIP file, boot the VM image
+<code>statwhy.ova</code> using VirtualBox. When prompted to log in, use
+the password <code>statwhy</code>.</p>
+<p>The artifact is located on the Desktop of the VM. To access it, open
+a terminal and run:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Desktop/statwhy</span></code></pre></div>
+<p>As an initial test, try running the one-sample t-test program by
+following the instructions in <a
+href="###%20Example%201:%20One-sample%20t-test%20(Section%203.1%20in%20our%20paper)">Example
+1</a> below.</p>
+<h2 id="replicating-the-results-of-the-paper">Replicating the results of
+the paper</h2>
+<p>Move to the <code>examples</code> directory:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Desktop/statwhy/examples</span></code></pre></div>
+<p>This directory includes the examples for replicating the results of
+this paper. The log of running these examples can be found in
+<code>examples/executed</code>.</p>
+<p>In Example 1, we provide a detailed explanation of how to use
+StatWhy. You can run the other examples analogously to Example 1;
+therefore we omit the details of instructions for Example 2 and
+later.</p>
+<h3 id="example-1-one-sample-t-test-section-3.1-in-our-paper">Example 1:
+One-sample t-test (Section 3.1 in our paper)</h3>
+<p>In this example, we demonstrate how to verify a program that conducts
+a one-sample t-test, which is used to compare a population mean with a
+specified value (shown in Section 3.1 in our paper). To verify the OCaml
+program <code>1samp_t_test.ml</code>, run the following command:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> 1samp_t_test.ml</span></code></pre></div>
+<p>This will launch the Why3 IDE as follows:</p>
+<p><img src="./screenshots/1samp_t_test_why3_ide.png?raw=true"
+title="The Why3 IDE screen." /></p>
+<p>There are two verification conditions (VCs) to be discharged:
+example_1samp_t_test’vc (the VC for <code>example_1samp_t_test</code>)
+and example_1samp_t_test_fail’vc (the VC for
+<code>example_1samp_t_test_fail</code>). Right-click on the first goal
+and select ‘StatWhy’ (<strong>Not ‘CVC5 1.2.0’ or the other
+items</strong>), or press ‘4’ after selecting the goal to make StatWhy
+try to discharge the goal. If the prover successfully verifies the goal,
+a check mark will appear as follows.</p>
+<p><img src="./screenshots/1samp_t_test_successful.png?raw=true"
+title="The Why3 IDE screen successfully discharged example_1samp_t_test&#39;vc." /></p>
+<p>The second goal, example_1samp_t_test_fail’vc, is similar to the
+first except that the expression <code>sampled d t_n</code> is missing
+from the requires-clause, i.e., the specification does not describe the
+requirement that the data set <code>d</code> is sampled from a normally
+distributed population. If this requirement is not satisfied, it is not
+appropriate for us to use the t-test.</p>
+<p>By running StatWhy, you can automatically detect that this
+requirement is missing in the annnotation of the program. In fact, if
+you press ‘4’ on example_1samp_t_test_fail’vc, <strong>StatWhy will fail
+to discharge the goal</strong>, as shown below. At this point, StatWhy
+generates sub-goals by applying transformations and attempts to prove
+them. By examining the results of the sub-goals, you can see which
+conditions are missing in the annotation of the program.</p>
+<p><img src="./screenshots/1samp_t_test_timed_out.png?raw=true"
+title="The Why3 IDE screen showing a goal that StatWhy could not discharge." /></p>
+<p><strong>We emphasize that the above screenshot is the intended
+result</strong>, in which several verification conditions are not
+discharged due to the lack of the precondition. In the above screenshot,
+the condition <code>ppl @ d = NormalD ...</code> fails to discharge,
+which corresponds to the definition of the missing precondition
+<code>sampled d t_n</code>.</p>
+<p>To check the execution log we have prepared, run the following
+command:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> executed/1samp_t_test.ml</span></code></pre></div>
+<p>This will load <code>1samp_t_test.ml</code> and launch the Why3 IDE,
+but you will notice that <code>example_1samp_t_test'vc</code> is
+successfully discharged (showing a check mark) while
+<code>example_1samp_t_test_fail'vc</code> has a subgoal that timed
+out.</p>
+<p>For the other examples below, you can check their pre-executed logs
+in <code>statwhy executed/[filename of example]</code> in a similar
+way.</p>
+<ul>
+<li>Approximate execution time: 1.5 min</li>
+</ul>
+<h3 id="example-2-p-value-hacking-section-3.1-in-our-paper">Example 2:
+P-value hacking (Section 3.1 in our paper)</h3>
+<p>In this example, we show that StatWhy can automatically check whether
+the p-values are correctly calculated and prevent p-value hacking (shown
+in Section 3.1 in our paper). Run the following command:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> p_value_hacking.ml</span></code></pre></div>
+<p><strong>The VC, ex_hack’vc, cannot be discharged</strong>; StatWhy
+points out the p-value hacking in the code, which reports a lower
+p-value (<code>min p1 p2</code>) than the actual one
+(<code>p1 + p2</code>). This is implied by the fact that after applying
+several transformations, <code>Leq p = compose_pvs fmlA !st</code> is
+reduced to <code>if p1 &lt; p2 then p1 else p2 = p1 + p2</code>, which
+does not always hold:</p>
+<p><img src="./screenshots/p_value_hacking_incorrect.png?raw=true"
+title="The Why3 IDE screen showing the specific condition that failed to discharge." /></p>
+<p>On the other hand, <code>ex_correct</code>, where the p-value
+<code>p</code> is correctly calculated as <code>p1 + p2</code>, can be
+successfully discharged:</p>
+<p><img src="./screenshots/p_value_hacking_correct.png?raw=true"
+title="The Why3 IDE screen where the correct calculation of p-value is highlighted." /></p>
+<ul>
+<li>Approximate execution time: 1.5 min</li>
+<li>Path to the log file:
+<code>~/Desktop/statwhy/examples/execute/p_value_hacking/</code></li>
+</ul>
+<p>For details, see Section 6.3 of the User Documentation, specifically
+in the subsection ‘p-value hacking.’</p>
+<h3
+id="example-3-multiple-comparison-problem-section-5-in-our-paper">Example
+3: Multiple comparison problem (Section 5 in our paper)</h3>
+<p>In this example, we show a program that performs a multiple
+comparison, i.e., compares more than two groups in hypothesis testing
+(shown in Section 5 in our paper). Run the following command:</p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> compare_with_existing_drugs.ml</span></code></pre></div>
+<p><img
+src="./screenshots/compare_with_existing_drugs.png?raw=true" /></p>
+<p>The VC in this example cannot be immediately discharged, but StatWhy
+automatically splits this VC into smaller ones, applies computations and
+simplifications to them, and discharges them.</p>
+<ul>
+<li>Approximate execution time: 0.5 min</li>
+<li>Path to the log file:
+<code>~/Desktop/statwhy/examples/execute/compare_with_existing_drugs/</code></li>
+</ul>
+<p>See Section 6 of the User Documentation for details.</p>
+<h3
+id="example-4-disjunctive-and-conjunctive-hypotheses-table-1-in-section-5-in-our-paper">Example
+4: Disjunctive and conjunctive hypotheses (Table 1 in Section 5 in our
+paper)</h3>
+<p>In this example, we show a hypothesis testing program for practical
+numbers of disjunctive/conjunctive hypotheses (shown in Table 1 in our
+paper).</p>
+<p>Run the following command:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> multiple_hypotheses.mlw</span></code></pre></div>
+<p>There are two VCs in this example:
+<code>ex_six_hypotheses_disj</code> and
+<code>ex_six_hypotheses_conj</code>. Both of them consists of six
+independent one-sample t-tests, but they differ in how each hypothesis
+is combined. The former VC takes the disjunction of them, while the
+latter takes the conjunction.</p>
+<p><img src="./screenshots/multiple_hypotheses.png?raw=true" /></p>
+<p>These two VCs cannot be immediately discharged, but StatWhy
+automatically splits these VCs into smaller ones and applies
+computations and simplifications to them. Finally, these sub-goals will
+be discharged by the prover.</p>
+<ul>
+<li>Approximate execution time: 1.5 min</li>
+<li>Path to the log file:
+<code>~/Desktop/statwhy/examples/execute/multiple_hypotheses/</code></li>
+<li>Full version of the code for Table 1:
+<code>multiple_hypotheses_full.mlw</code></li>
+</ul>
+<p>We remark that the verification in a virtual machine takes more time
+compared to that on the host system (for creating Table 1).</p>
+<h3
+id="example-5-multiple-comparison-methods-table-2-in-section-5-in-our-paper">Example
+5: Multiple comparison methods (Table 2 in Section 5 in our paper)</h3>
+<p>In this example, we show a program for populat multiple comparison
+methods for a practical number of groups (shown in Table 2 in our
+paper). Run the following command:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> multiple_comparison_methods.mlw</span></code></pre></div>
+<p>The above code performs five kinds of multiple comparison methods
+(Tukey’s HSD test, Dunnett’s test Williams’ test, Steel-Dwass’ test,
+Steel’s test) when comparing five groups.</p>
+<p><img src="./screenshots/multiple_comparison_methods.png" /></p>
+<ul>
+<li>Approximate execution time: 2 min</li>
+<li>Path to the log file:
+<code>~/Desktop/statwhy/examples/execute/multiple_comparison_methods/</code></li>
+<li>Full version of the code for Table 2:
+<code>multiple_comparison_methods_full.mlw</code></li>
+</ul>
+<p>We remark that the verification in a virtual machine takes more time
+compared to that on the host system (for creating Table 2).</p>
+<p>See Section 6 of the User Documentation for details.</p>
+<h2 id="other-examples">Other examples</h2>
+<p>We have implemented various hypothesis testing methods not presented
+in the paper. For details, see the User Documentation.</p>
+
+</body>
+</html>

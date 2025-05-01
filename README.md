@@ -53,6 +53,9 @@ cd ~/Desktop/statwhy
 
 As an initial test, try running the one-sample t-test program by following the instructions in [Example 1](### Example 1: One-sample t-test (Section 3.1 in our paper)) below.
 
+We remark that instead of using the above VM image, you can also install StatWhy from the source code by following the instruction in the User Documentation.
+
+
 ## Replicating the results of the paper
 
 Move to the `examples` directory:
@@ -177,10 +180,12 @@ Finally, these sub-goals will be discharged by the prover.
   - Full version of the code for Table 1: `multiple_hypotheses_full.mlw`
   
 We remark that the verification in a virtual machine takes more time compared to that on the host system (for creating Table 1).
+The execution times shown in Table 1 of our paper are the average values obtained by running each VC 10 times and measuring the times.
+
 
 ### Example 5: Multiple comparison methods (Table 2 in Section 5 in our paper)
 
-In this example, we show a program for populat multiple comparison methods for a practical number of groups (shown in Table 2 in our paper).
+In this example, we show a program for popular multiple comparison methods for a practical number of groups (shown in Table 2 in our paper).
 Run the following command:
 
 ``` bash
@@ -197,10 +202,12 @@ Williams' test, Steel-Dwass' test, Steel's test) when comparing five groups.
   - Full version of the code for Table 2: `multiple_comparison_methods_full.mlw`
  
 We remark that the verification in a virtual machine takes more time compared to that on the host system (for creating Table 2).
+The execution times shown in Table 2 of our paper are the average values obtained by running each VC 10 times and measuring the times.
 
 See Section 6 of the User Documentation for details.
 
-## Other examples
+
+## Other examples on various hypothesis testing methods
 
 We have implemented various hypothesis testing methods not presented in the paper.
 For details, see the User Documentation.

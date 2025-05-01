@@ -74,9 +74,11 @@ You can run the other examples analogously to Example 1; therefore we omit the d
 
 In this example, we demonstrate how to verify a program that conducts a one-sample t-test, which is used to compare a population mean with a specified value (shown in Section 3.1 in our paper).
 To verify the OCaml program `1samp_t_test.ml`, run the following command:
+
 ``` bash
 statwhy 1samp_t_test.ml
 ``` 
+
 This will launch the Why3 IDE as follows:
 
 ![](./screenshots/1samp_t_test_why3_ide.png?raw=true "The Why3 IDE screen.")

@@ -1,0 +1,32 @@
+module Ks_test
+  use cameleerBHL.CameleerBHL
+  use ks.Ks
+
+  let function p1 = UnknownD "p1"
+  let function p2 = NormalD (Param "m") (Param "v")
+  let function p_null = BernoulliD (Const 1.0)
+
+  let ex_ks_1samp (d : list real) : real
+  requires {
+    is_empty !st /\
+    sampled d p1 /\
+    (World !st interp) |= Possible (p1 $!=^ p_null)
+  } ensures {
+    let p = result in
+    Eq p = compose_pvs (p1 $!=^ p_null) !st &&
+    (World !st interp) |= StatB (Eq p) (p1 $!=^ p_null)
+  }
+  = exec_ks_1samp p1 p_null d
+
+  let ex_ks_2samp (d1 d2 : list real) : real
+  requires {
+    is_empty !st /\
+    sampled d1 p1 /\ sampled d2 p2 /\ non_paired d1 d2 /\
+    (World !st interp) |= Possible (p1 $!=^ p2)
+  } ensures {
+    let p = result in
+    Eq p = compose_pvs (p1 $!=^ p2) !st &&
+    (World !st interp) |= StatB (Eq p) (p1 $!=^ p2)
+  }
+  = exec_ks_2samp p1 p2 (d1, d2)
+end

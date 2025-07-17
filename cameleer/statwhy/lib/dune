@@ -9,6 +9,7 @@
   (cameleerReal.mlw as why3/stdlib/cameleerReal.mlw)
   (chisquare.mlw as why3/stdlib/chisquare.mlw)
   (dunnett.mlw as why3/stdlib/dunnett.mlw)
+  (fligner.mlw as why3/stdlib/fligner.mlw)
   (hof.mlw as why3/stdlib/hof.mlw)
   (ftest.mlw as why3/stdlib/ftest.mlw)
   (kruskal.mlw as why3/stdlib/kruskal.mlw)

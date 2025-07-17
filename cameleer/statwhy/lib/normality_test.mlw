@@ -1,6 +1,7 @@
 module Fisher_cumulant_test
   use cameleerBHL.CameleerBHL
 
+  (* Test 20 from "100 Statistical Tests" *)
   val exec_fisher_cumulant_test (p_obs : population) (p_null : population) (y : dataset (list real)) : real
   writes { st }
   requires {
@@ -24,9 +25,10 @@ module Fisher_cumulant_test
   }
 end
 
-module Ws_test
+module Normality_test
   use cameleerBHL.CameleerBHL
 
+  (* Test 33 from "100 Statistical Tests" *)
   val exec_ws_test (p : population) (y : dataset (list real)) : real
   writes { st }
   requires {
@@ -39,11 +41,12 @@ module Ws_test
     !st = Cons ("ws_test", (Not (is_normal p)), Eq pv) !(old st)
   }
 
+  (* Based on scipy.stats.jarque_bera (https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.jarque_bera.html#scipy.stats.jarque_bera) *)
   val exec_jacque_bera_test (p : population) (y : dataset (list real)) : real
   writes { st }
   requires {
     sampled y p /\
-    length y > 50 /\
+    length y >= 2000 /\
     (World !st interp) |= Possible (Not (is_normal p))
   } ensures {
     let pv = result in
@@ -51,11 +54,12 @@ module Ws_test
     !st = Cons ("jacque_bera_test", (Not (is_normal p)), Eq pv) !(old st)
   }
 
+  (* Based on scipy.stats.shapiro (https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html#scipy.stats.shapiro) *)
   val exec_shapiro_wilk_test (p : population) (y : dataset (list real)) : real
   writes { st }
   requires {
     sampled y p /\
-    length y > 50 /\
+    length y >= 5000 /\
     (World !st interp) |= Possible (Not (is_normal p))
   } ensures {
     let pv = result in

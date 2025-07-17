@@ -1,3 +1,8 @@
+(*
+The specification is based on scipy.stats.ks_1samp and scipy.stats.ks_2samp.
+ks_1samp: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks_1samp.html#scipy.stats.ks_1samp
+ks_2samp: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks_2samp.html#scipy.stats.ks_2samp
+*)
 module Ks
   use cameleerBHL.CameleerBHL
 
@@ -5,6 +10,7 @@ module Ks
   writes { st }
   requires {
     sampled y p_obs /\
+    is_known p_null /\
     (World !st interp) |= Possible (p_obs $!=^ p_null)
   } ensures {
     let pv = result in

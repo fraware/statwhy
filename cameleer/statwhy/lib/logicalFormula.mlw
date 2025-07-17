@@ -45,6 +45,33 @@ module LanguageData
     | CategoricalD (list real_number)
     | UnknownD string
 
+  let rec function is_const_list (ss : list real_number) : bool
+  = match ss with
+    | Nil        -> true
+    | Cons s ss' -> match s with
+                    | Const _ -> is_const_list ss'
+                    | _       -> false
+                    end
+    end
+  meta "rewrite_def" function is_const_list
+
+  predicate is_known (ppl : population)
+  = match ppl with
+    | NormalD s1 s2 ->
+      match (s1, s2) with
+      | (Const _, Const _) -> true
+      | _ -> false
+      end
+    | BernoulliD s1 ->
+      match s1 with
+      | Const _ -> true
+      | _ -> false
+      end
+    | CategoricalD ss -> is_const_list ss
+    | _ -> false
+    end
+  meta "rewrite_def" predicate is_known
+
   val function ppl : dataset 'a -> population
 
   type real_term = Real real_number

@@ -23,7 +23,7 @@ end
 
 module Ws_test
   use cameleerBHL.CameleerBHL
-  use normality_test.Ws_test
+  use normality_test.Normality_test
 
   let function p1 = UnknownD "p1"
   let function p2 = NormalD (Param "m") (Param "v")
@@ -42,4 +42,34 @@ module Ws_test
     (World !st interp) |= Know  (Disj (StatTau (Eq p) (Not (is_normal p1))) (p1 $!=^ p2))
   }
   = exec_ws_test p1 d
+
+  let ex_jacque_bera_test (d : list real) : real
+  requires {
+    is_empty !st /\
+    sampled d p1 /\
+    length d > 2000 /\
+    (World !st interp) |= Possible (Not (is_normal p1))
+  } ensures {
+    let p = result in
+    Eq p = compose_pvs (Not (is_normal p1)) !st &&
+    (World !st interp) |= StatB (Eq p) (Not (is_normal p1)) &&
+    ((World !st interp) |= Know (Impl (Not (is_normal p1)) (p1 $!=^ p2))) &&
+    (World !st interp) |= Know  (Disj (StatTau (Eq p) (Not (is_normal p1))) (p1 $!=^ p2))
+  }
+  = exec_jacque_bera_test p1 d
+
+  let ex_shapiro_wilk_test (d : list real) : real
+  requires {
+    is_empty !st /\
+    sampled d p1 /\
+    length d > 5000 /\
+    (World !st interp) |= Possible (Not (is_normal p1))
+  } ensures {
+    let p = result in
+    Eq p = compose_pvs (Not (is_normal p1)) !st &&
+    (World !st interp) |= StatB (Eq p) (Not (is_normal p1)) &&
+    ((World !st interp) |= Know (Impl (Not (is_normal p1)) (p1 $!=^ p2))) &&
+    (World !st interp) |= Know  (Disj (StatTau (Eq p) (Not (is_normal p1))) (p1 $!=^ p2))
+  }
+  = exec_shapiro_wilk_test p1 d
 end

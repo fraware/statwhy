@@ -1,4 +1,4 @@
-# StatWhy v.1.2.0
+# StatWhy v1.2.1
 
 StatWhy is a software tool for automatically verifying the correctness of statistical hypothesis testing programs. In this file, we present the structure of this artifact, the resource requirements for the tool, and show how to verify the programs that implement the hypothesis testing examples addressed in our paper.
 
@@ -9,6 +9,7 @@ The structure of this artifact is as follows:
 ```
 root/
 ├ README.md                        this file
+├ install.sh                       installation script
 ├ cameleer                         source code of *cameleer*
 │ └ statwhy                        source code of *statwhy*
 │   ├ lib                          core library of statwhy, including the specification
@@ -41,6 +42,8 @@ We have tested the tool StatWhy by (i) checking that StatWhy can correctly verif
 
 ## Getting started
 
+### Instruction for v1.2.0 (version for the artifact evaluation)
+
 After extracting the ZIP file, boot the VM image `statwhy.ova` using VirtualBox.
 When prompted to log in, use the password `statwhy`.
 
@@ -53,7 +56,20 @@ cd ~/Desktop/statwhy
 
 As an initial test, try running the one-sample t-test program by following the instructions in [Example 1](### Example 1: One-sample t-test (Section 3.1 in our paper)) below.
 
-We remark that instead of using the above VM image, you can also install StatWhy from the source code by following the instruction in the User Documentation.
+### Instruction for v1.2.1
+
+After the artifact evaluation, we have added several hypothesis tests and examples to the current version of StatWhy v.1.2.1.
+You have to install it from the source code by following the instructions in the User Documentation.
+
+Alternatively, on Ubuntu 24.04.2 LTS, you can install StatWhy by running the following command:
+Run the following command:
+```bash
+source install.sh
+```
+During installation, you will be prompted to enter `y` or `n` multiple times.
+Press `y` when prompted.
+
+After installation, restart the machine or log in again to apply the changes made to `~/.profile`.
 
 
 ## Replicating the results of the paper

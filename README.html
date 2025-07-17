@@ -114,7 +114,7 @@
 
 <body>
 
-<h1 id="statwhy-v.1.2.0">StatWhy v.1.2.0</h1>
+<h1 id="statwhy-v1.2.1">StatWhy v1.2.1</h1>
 <p>StatWhy is a software tool for automatically verifying the
 correctness of statistical hypothesis testing programs. In this file, we
 present the structure of this artifact, the resource requirements for
@@ -124,6 +124,7 @@ hypothesis testing examples addressed in our paper.</p>
 <p>The structure of this artifact is as follows:</p>
 <pre><code>root/
 ├ README.md                        this file
+├ install.sh                       installation script
 ├ cameleer                         source code of *cameleer*
 │ └ statwhy                        source code of *statwhy*
 │   ├ lib                          core library of statwhy, including the specification
@@ -158,6 +159,9 @@ and (ii) proving various lemmas on the properties of epistemic logic
 (statELHT.mlw) and on those of hypothesis tests and belief Hoare logic
 (statBHL.mlw).</p>
 <h2 id="getting-started">Getting started</h2>
+<h3
+id="instruction-for-v1.2.0-version-for-the-artifact-evaluation">Instruction
+for v1.2.0 (version for the artifact evaluation)</h3>
 <p>After extracting the ZIP file, boot the VM image
 <code>statwhy.ova</code> using VirtualBox. When prompted to log in, use
 the password <code>statwhy</code>.</p>
@@ -169,14 +173,24 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="
 following the instructions in <a
 href="###%20Example%201:%20One-sample%20t-test%20(Section%203.1%20in%20our%20paper)">Example
 1</a> below.</p>
-<p>We remark that instead of using the above VM image, you can also
-install StatWhy from the source code by following the instruction in the
+<h3 id="instruction-for-v1.2.1">Instruction for v1.2.1</h3>
+<p>After the artifact evaluation, we have added several hypothesis tests
+and examples to the current version of StatWhy v.1.2.1. You have to
+install it from the source code by following the instructions in the
 User Documentation.</p>
+<p>Alternatively, on Ubuntu 24.04.2 LTS, you can install StatWhy by running the
+following command: Run the following command:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> install.sh</span></code></pre></div>
+<p>During installation, you will be prompted to enter <code>y</code> or
+<code>n</code> multiple times. Press <code>y</code> when prompted.</p>
+<p>After installation, restart the machine or log in again to apply the
+changes made to <code>~/.profile</code>.</p>
 <h2 id="replicating-the-results-of-the-paper">Replicating the results of
 the paper</h2>
 <p>Move to the <code>examples</code> directory:</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Desktop/statwhy/examples</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~/Desktop/statwhy/examples</span></code></pre></div>
 <p>This directory includes the examples for replicating the results of
 this paper. The log of running these examples can be found in
 <code>examples/executed</code>.</p>
@@ -190,8 +204,8 @@ One-sample t-test (Section 3.1 in our paper)</h3>
 a one-sample t-test, which is used to compare a population mean with a
 specified value (shown in Section 3.1 in our paper). To verify the OCaml
 program <code>1samp_t_test.ml</code>, run the following command:</p>
-<div class="sourceCode" id="cb4"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> 1samp_t_test.ml</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> 1samp_t_test.ml</span></code></pre></div>
 <p>This will launch the Why3 IDE as follows:</p>
 <p><img src="./screenshots/1samp_t_test_why3_ide.png?raw=true"
 title="The Why3 IDE screen." /></p>
@@ -228,8 +242,8 @@ which corresponds to the definition of the missing precondition
 <code>sampled d t_n</code>.</p>
 <p>To check the execution log we have prepared, run the following
 command:</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> executed/1samp_t_test.ml</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> executed/1samp_t_test.ml</span></code></pre></div>
 <p>This will load <code>1samp_t_test.ml</code> and launch the Why3 IDE,
 but you will notice that <code>example_1samp_t_test'vc</code> is
 successfully discharged (showing a check mark) while
@@ -246,8 +260,8 @@ P-value hacking (Section 3.1 in our paper)</h3>
 <p>In this example, we show that StatWhy can automatically check whether
 the p-values are correctly calculated and prevent p-value hacking (shown
 in Section 3.1 in our paper). Run the following command:</p>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> p_value_hacking.ml</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> p_value_hacking.ml</span></code></pre></div>
 <p><strong>The VC, ex_hack’vc, cannot be discharged</strong>; StatWhy
 points out the p-value hacking in the code, which reports a lower
 p-value (<code>min p1 p2</code>) than the actual one
@@ -275,8 +289,8 @@ id="example-3-multiple-comparison-problem-section-5-in-our-paper">Example
 <p>In this example, we show a program that performs a multiple
 comparison, i.e., compares more than two groups in hypothesis testing
 (shown in Section 5 in our paper). Run the following command:</p>
-<div class="sourceCode" id="cb7"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> compare_with_existing_drugs.ml</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> compare_with_existing_drugs.ml</span></code></pre></div>
 <p><img
 src="./screenshots/compare_with_existing_drugs.png?raw=true" /></p>
 <p>The VC in this example cannot be immediately discharged, but StatWhy
@@ -296,8 +310,8 @@ paper)</h3>
 numbers of disjunctive/conjunctive hypotheses (shown in Table 1 in our
 paper).</p>
 <p>Run the following command:</p>
-<div class="sourceCode" id="cb8"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> multiple_hypotheses.mlw</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> multiple_hypotheses.mlw</span></code></pre></div>
 <p>There are two VCs in this example:
 <code>ex_six_hypotheses_disj</code> and
 <code>ex_six_hypotheses_conj</code>. Both of them consists of six
@@ -326,8 +340,8 @@ id="example-5-multiple-comparison-methods-table-2-in-section-5-in-our-paper">Exa
 <p>In this example, we show a program for popular multiple comparison
 methods for a practical number of groups (shown in Table 2 in our
 paper). Run the following command:</p>
-<div class="sourceCode" id="cb9"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> multiple_comparison_methods.mlw</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">statwhy</span> multiple_comparison_methods.mlw</span></code></pre></div>
 <p>The above code performs five kinds of multiple comparison methods
 (Tukey’s HSD test, Dunnett’s test Williams’ test, Steel-Dwass’ test,
 Steel’s test) when comparing five groups.</p>

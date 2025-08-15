@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StatWhy - Formally Verified Statistical Testing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-chart-line me-2"></i>StatWhy
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="/docs">Documentation</a>
+                <a class="nav-link" href="/examples">Examples</a>
+                <a class="nav-link" href="/api/docs">API</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 mb-4">Formally Verified Statistical Testing</h1>
+            <p class="lead mb-4">Ensure the correctness of your statistical procedures using mathematical proof</p>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt fa-3x mb-3 text-muted"></i>
+                        <h4>Upload Your Data</h4>
+                        <p class="text-muted">Drag and drop your CSV, Excel, or JSON file here</p>
+                        <input type="file" id="fileInput" accept=".csv,.xlsx,.xls,.json" style="display: none;">
+                        <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                            Choose File
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h3><i class="fas fa-shield-alt text-primary me-2"></i>Mathematical Proof</h3>
+                    <p>Every statistical procedure is formally verified using Why3 and Cameleer</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h3><i class="fas fa-flask text-success me-2"></i>Clinical Trials</h3>
+                    <p>FDA-compliant statistical verification for medical research</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <h3><i class="fas fa-chart-bar text-warning me-2"></i>Financial Modeling</h3>
+                    <p>Verify statistical models for regulatory compliance</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5" id="verificationSection" style="display: none;">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Verification Parameters</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label class="form-label">Statistical Test</label>
+                                <select class="form-select" id="testType">
+                                    <option value="">Select a test...</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Significance Level (α)</label>
+                                <input type="number" class="form-control" id="alpha" value="0.05" step="0.01" min="0" max="1">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Timeout (seconds)</label>
+                                <input type="number" class="form-control" id="timeout" value="300" min="60" max="3600">
+                            </div>
+                        </div>
+                        <button class="btn btn-success mt-3" onclick="verifyTest()">
+                            <i class="fas fa-play me-2"></i>Start Verification
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4" id="resultSection" style="display: none;">
+            <div class="col-md-12">
+                <div class="result-card">
+                    <h4>Verification Results</h4>
+                    <div id="resultContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load supported tests
+        fetch('/api/tests')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const select = document.getElementById('testType');
+                    data.tests.forEach(test => {
+                        const option = document.createElement('option');
+                        option.value = test.id;
+                        option.textContent = test.name;
+                        select.appendChild(option);
+                    });
+                }
+            });
+
+        // File upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#667eea';
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.borderColor = '#ddd';
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+
+        function handleFile(file) {
+            uploadArea.innerHTML = `
+                <i class="fas fa-check-circle fa-3x mb-3 text-success"></i>
+                <h4>File Selected</h4>
+                <p class="text-muted">${file.name}</p>
+                <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                    Change File
+                </button>
+            `;
+            document.getElementById('verificationSection').style.display = 'block';
+        }
+
+        async function verifyTest() {
+            const testType = document.getElementById('testType').value;
+            const alpha = document.getElementById('alpha').value;
+            const timeout = document.getElementById('timeout').value;
+            const file = fileInput.files[0];
+
+            if (!testType || !file) {
+                alert('Please select a test type and upload a file');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('test_type', testType);
+            formData.append('alpha', alpha);
+            formData.append('timeout', timeout);
+            formData.append('data_file', file);
+
+            try {
+                const response = await fetch('/api/verify', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                displayResult(result);
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Verification failed: ' + error.message);
+            }
+        }
+
+        function displayResult(result) {
+            const resultSection = document.getElementById('resultSection');
+            const resultContent = document.getElementById('resultContent');
+
+            if (result.success) {
+                resultContent.innerHTML = `
+                    <div class="alert alert-success">
+                        <h5><i class="fas fa-check-circle me-2"></i>Verification Successful!</h5>
+                        <p>All verification conditions were satisfied.</p>
+                        <details>
+                            <summary>View Details</summary>
+                            <pre class="mt-2">${JSON.stringify(result.result, null, 2)}</pre>
+                        </details>
+                    </div>
+                `;
+            } else {
+                resultContent.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h5><i class="fas fa-times-circle me-2"></i>Verification Failed</h5>
+                        <p>${result.error || 'Unknown error occurred'}</p>
+                    </div>
+                `;
+            }
+
+            resultSection.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

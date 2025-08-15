@@ -1,0 +1,75 @@
+================================================================================
+STATWHY PERFORMANCE BENCHMARK REPORT
+================================================================================
+
+Generated: 20250814_165258
+Total Benchmarks: 6
+
+OVERALL SUMMARY
+----------------------------------------
+Total Operations: 211
+Overall Success Rate: 100.00%
+Total Execution Time: 2.14s
+
+SINGLE_THREADED
+---------------
+  Operations: 75
+  Success Rate: 100.00%
+  Avg Execution Time: 0.007s
+  Throughput: 136.489 ops/sec
+  Memory Peak: 0.5 MB
+  Cache Hit Rate: 0.00%
+  Parallel Efficiency: 100.00%
+
+MULTI_THREADED
+--------------
+  Operations: 20
+  Success Rate: 100.00%
+  Avg Execution Time: 0.013s
+  Throughput: 75.634 ops/sec
+  Memory Peak: 0.4 MB
+  Cache Hit Rate: 0.00%
+  Parallel Efficiency: 29.93%
+
+CACHE_PERFORMANCE
+-----------------
+  Operations: 9
+  Success Rate: 100.00%
+  Avg Execution Time: 0.004s
+  Throughput: 250.551 ops/sec
+  Memory Peak: 0.0 MB
+  Cache Hit Rate: 66.67%
+  Parallel Efficiency: 100.00%
+
+LOAD_TESTING
+------------
+  Operations: 86
+  Success Rate: 100.00%
+  Avg Execution Time: 0.008s
+  Throughput: 130.914 ops/sec
+  Memory Peak: 0.5 MB
+  Cache Hit Rate: 0.00%
+  Parallel Efficiency: 100.00%
+
+MEMORY_EFFICIENCY
+-----------------
+  Operations: 15
+  Success Rate: 100.00%
+  Avg Execution Time: 0.032s
+  Throughput: 30.775 ops/sec
+  Memory Peak: 1.7 MB
+  Cache Hit Rate: 0.00%
+  Parallel Efficiency: 100.00%
+
+EDGE_CASES
+----------
+  Operations: 6
+  Success Rate: 100.00%
+  Avg Execution Time: 0.025s
+  Throughput: 40.361 ops/sec
+  Memory Peak: 0.5 MB
+  Cache Hit Rate: 0.00%
+  Parallel Efficiency: 100.00%
+
+PERFORMANCE RECOMMENDATIONS
+----------------------------------------

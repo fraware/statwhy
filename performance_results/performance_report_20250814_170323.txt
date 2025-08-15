@@ -1,0 +1,93 @@
+================================================================================
+STATWHY PERFORMANCE BENCHMARK REPORT
+================================================================================
+
+Generated: 20250814_170323
+Total Benchmarks: 7
+
+OVERALL SUMMARY
+----------------------------------------
+Total Operations: 250
+Overall Success Rate: 91.60%
+Total Execution Time: 7.41s
+Average Throughput: 33.7 ops/sec
+
+SINGLE_THREADED
+-----------------
+  Operations: 75
+  Success Rate: 93.33%
+  Avg Execution Time: 0.009s
+  Throughput: 111.196 ops/sec
+  Memory Peak: 1.0 MB
+  Cache Hit Rate: 0.0%
+  Parallel Efficiency: 100.00%
+  Workload Balance: 100.00%
+
+MULTI_THREADED
+----------------
+  Operations: 20
+  Success Rate: 80.00%
+  Avg Execution Time: 0.016s
+  Throughput: 63.308 ops/sec
+  Memory Peak: 0.4 MB
+  Cache Hit Rate: 0.0%
+  Parallel Efficiency: 100.00%
+  Workload Balance: 100.00%
+
+CACHE_PERFORMANCE
+-------------------
+  Operations: 9
+  Success Rate: 66.67%
+  Avg Execution Time: 0.004s
+  Throughput: 275.331 ops/sec
+  Memory Peak: 0.2 MB
+  Cache Hit Rate: 66.7%
+  Parallel Efficiency: 100.00%
+  Workload Balance: 100.00%
+
+LOAD_TESTING
+--------------
+  Operations: 86
+  Success Rate: 100.00%
+  Avg Execution Time: 0.014s
+  Throughput: 73.666 ops/sec
+  Memory Peak: 0.7 MB
+  Cache Hit Rate: 0.0%
+  Parallel Efficiency: 100.00%
+  Workload Balance: 100.00%
+
+MEMORY_EFFICIENCY
+-------------------
+  Operations: 45
+  Success Rate: 80.00%
+  Avg Execution Time: 0.042s
+  Throughput: 23.725 ops/sec
+  Memory Peak: 2.4 MB
+  Cache Hit Rate: 0.0%
+  Parallel Efficiency: 100.00%
+  Workload Balance: 100.00%
+
+EDGE_CASES
+------------
+  Operations: 6
+  Success Rate: 100.00%
+  Avg Execution Time: 0.554s
+  Throughput: 1.806 ops/sec
+  Memory Peak: 2.8 MB
+  Cache Hit Rate: 0.0%
+  Parallel Efficiency: 100.00%
+  Workload Balance: 100.00%
+
+ADVANCED_PARALLEL
+-------------------
+  Operations: 9
+  Success Rate: 100.00%
+  Avg Execution Time: 0.000s
+  Throughput: 0.000 ops/sec
+  Memory Peak: 0.0 MB
+  Cache Hit Rate: 0.0%
+  Parallel Efficiency: 0.00%
+  Workload Balance: 0.00%
+
+PERFORMANCE RECOMMENDATIONS
+----------------------------------------

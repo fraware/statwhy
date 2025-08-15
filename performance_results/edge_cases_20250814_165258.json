@@ -1,0 +1,89 @@
+{
+  "benchmark_name": "Edge Case Performance",
+  "total_operations": 6,
+  "successful_operations": 6,
+  "failed_operations": 0,
+  "average_execution_time": 0.024776577949523926,
+  "median_execution_time": 0.01634383201599121,
+  "p95_execution_time": 0.0602533221244812,
+  "p99_execution_time": 0.06992992162704469,
+  "throughput_ops_per_second": 40.36069880341223,
+  "memory_peak_mb": 0.48046875,
+  "cpu_peak_percent": 50.4,
+  "cache_hit_rate": 0.0,
+  "parallel_efficiency": 1.0,
+  "detailed_metrics": [
+    {
+      "operation": "verification",
+      "test_type": "ttest",
+      "data_size": 10,
+      "execution_time": 0.006033420562744141,
+      "memory_usage": 0.00390625,
+      "cpu_usage": 0.0,
+      "success": true,
+      "error_message": null,
+      "cache_hit": false,
+      "parallel_workers": 1
+    },
+    {
+      "operation": "verification",
+      "test_type": "ttest",
+      "data_size": 10000,
+      "execution_time": 0.07234907150268555,
+      "memory_usage": 0.48046875,
+      "cpu_usage": 50.4,
+      "success": true,
+      "error_message": null,
+      "cache_hit": false,
+      "parallel_workers": 1
+    },
+    {
+      "operation": "verification",
+      "test_type": "ttest",
+      "data_size": 1000,
+      "execution_time": 0.013623237609863281,
+      "memory_usage": 0.0,
+      "cpu_usage": 48.85,
+      "success": true,
+      "error_message": null,
+      "cache_hit": false,
+      "parallel_workers": 1
+    },
+    {
+      "operation": "verification",
+      "test_type": "ttest",
+      "data_size": 1000,
+      "execution_time": 0.01718449592590332,
+      "memory_usage": 0.09765625,
+      "cpu_usage": 0.0,
+      "success": true,
+      "error_message": null,
+      "cache_hit": false,
+      "parallel_workers": 1
+    },
+    {
+      "operation": "verification",
+      "test_type": "ttest",
+      "data_size": 1000,
+      "execution_time": 0.015503168106079102,
+      "memory_usage": 0.25390625,
+      "cpu_usage": 0.0,
+      "success": true,
+      "error_message": null,
+      "cache_hit": false,
+      "parallel_workers": 1
+    },
+    {
+      "operation": "verification",
+      "test_type": "ttest",
+      "data_size": 1000,
+      "execution_time": 0.023966073989868164,
+      "memory_usage": 0.26171875,
+      "cpu_usage": 25.2,
+      "success": true,
+      "error_message": null,
+      "cache_hit": false,
+      "parallel_workers": 1
+    }
+  ]
+}

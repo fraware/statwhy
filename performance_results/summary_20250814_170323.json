@@ -1,0 +1,84 @@
+{
+  "timestamp": "20250814_170323",
+  "benchmarks": [
+    "single_threaded",
+    "multi_threaded",
+    "cache_performance",
+    "load_testing",
+    "memory_efficiency",
+    "edge_cases",
+    "advanced_parallel"
+  ],
+  "summary": {
+    "single_threaded": {
+      "total_operations": 75,
+      "success_rate": 0.9333333333333333,
+      "average_execution_time": 0.008993118149893625,
+      "throughput_ops_per_second": 111.196137238765,
+      "memory_peak_mb": 0.97265625,
+      "cache_hit_rate": 0.0,
+      "parallel_efficiency": 1.0,
+      "workload_balance": 1.0
+    },
+    "multi_threaded": {
+      "total_operations": 20,
+      "success_rate": 0.8,
+      "average_execution_time": 0.015795841813087463,
+      "throughput_ops_per_second": 63.307800358665375,
+      "memory_peak_mb": 0.3828125,
+      "cache_hit_rate": 0.0,
+      "parallel_efficiency": 1.0,
+      "workload_balance": 1.0
+    },
+    "cache_performance": {
+      "total_operations": 9,
+      "success_rate": 0.6666666666666666,
+      "average_execution_time": 0.0036319891611735025,
+      "throughput_ops_per_second": 275.33121813527055,
+      "memory_peak_mb": 0.21875,
+      "cache_hit_rate": 0.6666666666666666,
+      "parallel_efficiency": 1.0,
+      "workload_balance": 1.0
+    },
+    "load_testing": {
+      "total_operations": 86,
+      "success_rate": 1.0,
+      "average_execution_time": 0.013574752696724826,
+      "throughput_ops_per_second": 73.66616706330639,
+      "memory_peak_mb": 0.65625,
+      "cache_hit_rate": 0.0,
+      "parallel_efficiency": 1.0,
+      "workload_balance": 1.0
+    },
+    "memory_efficiency": {
+      "total_operations": 45,
+      "success_rate": 0.8,
+      "average_execution_time": 0.04214946428934733,
+      "throughput_ops_per_second": 23.72509394509044,
+      "memory_peak_mb": 2.421875,
+      "cache_hit_rate": 0.0,
+      "parallel_efficiency": 1.0,
+      "workload_balance": 1.0
+    },
+    "edge_cases": {
+      "total_operations": 6,
+      "success_rate": 1.0,
+      "average_execution_time": 0.5535974105199178,
+      "throughput_ops_per_second": 1.8063668308362166,
+      "memory_peak_mb": 2.7578125,
+      "cache_hit_rate": 0.0,
+      "parallel_efficiency": 1.0,
+      "workload_balance": 1.0
+    },
+    "advanced_parallel": {
+      "total_operations": 9,
+      "success_rate": 1.0,
+      "average_execution_time": 0.0,
+      "throughput_ops_per_second": 0.0,
+      "memory_peak_mb": 0.0,
+      "cache_hit_rate": 0.0,
+      "parallel_efficiency": 0.0,
+      "workload_balance": 0.0
+    }
+  }
+}

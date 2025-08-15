@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StatWhy - Formally Verified Statistical Testing</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-chart-line me-2"></i>
+                <strong>StatWhy</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/examples">
+                            <i class="fas fa-graduation-cap me-1"></i>Examples
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/docs">
+                            <i class="fas fa-book me-1"></i>Documentation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/docs">
+                            <i class="fas fa-code me-1"></i>API
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showAbout()">
+                            <i class="fas fa-info-circle me-1"></i>About
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section py-5">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-4">
+                        Formally Verified Statistical Testing
+                    </h1>
+                    <p class="lead mb-4">
+                        Ensure the mathematical correctness of your statistical procedures using 
+                        <strong>formal verification</strong> powered by Why3 and Cameleer.
+                    </p>
+                    <div class="hero-badges mb-4">
+                        <span class="badge bg-success me-2">
+                            <i class="fas fa-shield-alt me-1"></i>Mathematically Proven
+                        </span>
+                        <span class="badge bg-info me-2">
+                            <i class="fas fa-flask me-1"></i>Research Ready
+                        </span>
+                        <span class="badge bg-warning me-2">
+                            <i class="fas fa-industry me-1"></i>Industry Compliant
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Upload Section -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-8">
+                <div class="card shadow-lg">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fas fa-upload me-2"></i>Verify Your Statistical Procedure
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form id="verificationForm" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="testType" class="form-label">
+                                        <strong>Statistical Test</strong>
+                                    </label>
+                                    <select class="form-select" id="testType" name="test_type" required>
+                                        <option value="">Select a test...</option>
+                                        <optgroup label="Basic Tests">
+                                            <option value="ttest">t-Test (One/Two Sample)</option>
+                                            <option value="anova">ANOVA</option>
+                                            <option value="chi2">Chi-Square Test</option>
+                                        </optgroup>
+                                        <optgroup label="Non-Parametric Tests">
+                                            <option value="wilcoxon">Wilcoxon Signed-Rank</option>
+                                            <option value="mann-whitney">Mann-Whitney U</option>
+                                            <option value="kruskal">Kruskal-Wallis</option>
+                                        </optgroup>
+                                        <optgroup label="Variance Tests">
+                                            <option value="bartlett">Bartlett's Test</option>
+                                            <option value="fligner">Fligner-Killeen Test</option>
+                                        </optgroup>
+                                        <optgroup label="Post-Hoc Tests">
+                                            <option value="tukey">Tukey's HSD</option>
+                                            <option value="dunnett">Dunnett's Test</option>
+                                            <option value="steel">Steel's Test</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="alpha" class="form-label">
+                                        <strong>Significance Level (α)</strong>
+                                    </label>
+                                    <select class="form-select" id="alpha" name="alpha">
+                                        <option value="0.01">0.01 (99% confidence)</option>
+                                        <option value="0.05" selected>0.05 (95% confidence)</option>
+                                        <option value="0.10">0.10 (90% confidence)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="dataFile" class="form-label">
+                                    <strong>Data File</strong>
+                                </label>
+                                <div class="upload-area" id="uploadArea">
+                                    <div class="upload-content">
+                                        <i class="fas fa-cloud-upload-alt fa-3x mb-3 text-muted"></i>
+                                        <h5>Drag & Drop Your Data</h5>
+                                        <p class="text-muted mb-3">
+                                            Supports CSV, Excel (.xlsx, .xls), and JSON formats
+                                        </p>
+                                        <input type="file" id="dataFile" name="data_file" 
+                                               accept=".csv,.xlsx,.xls,.json" style="display: none;" required>
+                                        <button type="button" class="btn btn-outline-primary" 
+                                                onclick="document.getElementById('dataFile').click()">
+                                            <i class="fas fa-folder-open me-2"></i>Choose File
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-text">
+                                    <i class="fas fa-info-circle me-1"></i>
+                                    Your data will be processed securely and never stored permanently.
+                                </div>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary btn-lg" id="verifyBtn">
+                                    <i class="fas fa-check-circle me-2"></i>Verify Procedure
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="row mb-5">
+            <div class="col-lg-4 mb-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-shield-alt fa-3x text-primary"></i>
+                    </div>
+                    <h4>Mathematical Proof</h4>
+                    <p class="text-muted">
+                        Every statistical procedure is formally verified using Why3 and Cameleer, 
+                        ensuring mathematical correctness beyond traditional testing.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-flask fa-3x text-success"></i>
+                    </div>
+                    <h4>Research Excellence</h4>
+                    <p class="text-muted">
+                        Meet the highest standards for peer-reviewed research with 
+                        formally verified statistical procedures and transparent assumptions.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="feature-card text-center p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="fas fa-industry fa-3x text-warning"></i>
+                    </div>
+                    <h4>Industry Compliance</h4>
+                    <p class="text-muted">
+                        Ensure regulatory compliance in clinical trials, financial modeling, 
+                        and quality control with mathematically proven procedures.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Use Cases Section -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="text-center mb-4">
+                    <i class="fas fa-briefcase me-2"></i>Real-World Applications
+                </h3>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="use-case-card p-3 text-center">
+                    <i class="fas fa-heartbeat fa-2x text-danger mb-3"></i>
+                    <h5>Clinical Trials</h5>
+                    <p class="small text-muted">
+                        FDA compliance, patient safety, and reliable drug efficacy assessment
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="use-case-card p-3 text-center">
+                    <i class="fas fa-chart-line fa-2x text-success mb-3"></i>
+                    <h5>Financial Risk</h5>
+                    <p class="small text-muted">
+                        Regulatory compliance, portfolio analysis, and risk assessment
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="use-case-card p-3 text-center">
+                    <i class="fas fa-cogs fa-2x text-warning mb-3"></i>
+                    <h5>Quality Control</h5>
+                    <p class="small text-muted">
+                        Six Sigma compliance, production monitoring, and process validation
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="use-case-card p-3 text-center">
+                    <i class="fas fa-microscope fa-2x text-info mb-3"></i>
+                    <h5>Research</h5>
+                    <p class="small text-muted">
+                        Peer review standards, reproducibility, and scientific rigor
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div class="modal fade" id="resultsModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-chart-bar me-2"></i>Verification Results
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="resultsContent">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Modal -->
+    <div class="modal fade" id="aboutModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-info-circle me-2"></i>About StatWhy
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>What is StatWhy?</h6>
+                    <p>
+                        StatWhy is a revolutionary tool that brings formal verification to statistical analysis. 
+                        Using mathematical proof systems (Why3 and Cameleer), it ensures that statistical procedures 
+                        meet all theoretical requirements before being applied to real data.
+                    </p>
+                    
+                    <h6>Why Formal Verification?</h6>
+                    <p>
+                        Traditional statistical software only checks if tests can be computed, not whether they 
+                        should be used. Formal verification ensures:
+                    </p>
+                    <ul>
+                        <li>All assumptions are mathematically verified</li>
+                        <li>Procedures are theoretically sound</li>
+                        <li>Results are reliable and reproducible</li>
+                        <li>Compliance with regulatory standards</li>
+                    </ul>
+                    
+                    <h6>Technology Stack</h6>
+                    <p>
+                        Built on proven formal verification tools:
+                    </p>
+                    <ul>
+                        <li><strong>Why3:</strong> Platform for deductive program verification</li>
+                        <li><strong>Cameleer:</strong> OCaml code verification using Why3</li>
+                        <li><strong>Python:</strong> User-friendly interface and data processing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">
+                <i class="fas fa-chart-line me-2"></i>
+                StatWhy - Formally Verified Statistical Testing
+            </p>
+            <p class="small text-muted mb-0">
+                Powered by Why3 and Cameleer | Open Source | MIT License
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>

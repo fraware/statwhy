@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examples & Tutorials - StatWhy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-chart-line me-2"></i>
+                <strong>StatWhy</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/examples">
+                            <i class="fas fa-graduation-cap me-1"></i>Examples
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/docs">
+                            <i class="fas fa-book me-1"></i>Documentation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/api/docs">
+                            <i class="fas fa-code me-1"></i>API
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h1 class="display-4 fw-bold mb-4">
+                        <i class="fas fa-graduation-cap me-3"></i>Examples & Tutorials
+                    </h1>
+                    <p class="lead mb-4">
+                        Learn how formal verification ensures statistical procedures meet all mathematical requirements. 
+                        Each example demonstrates the power of mathematical proof in statistical analysis.
+                    </p>
+                    <div class="alert alert-info">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        <strong>Educational Focus:</strong> These examples show why formal verification matters 
+                        and how it prevents incorrect statistical conclusions.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters -->
+    <div class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="categoryFilter" class="form-label">
+                                    <strong>Category</strong>
+                                </label>
+                                <select class="form-select" id="categoryFilter">
+                                    <option value="">All Categories</option>
+                                    <option value="clinical">Clinical Trials</option>
+                                    <option value="financial">Financial Risk</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="research">Research</option>
+                                    <option value="education">Education</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="difficultyFilter" class="form-label">
+                                    <strong>Difficulty</strong>
+                                </label>
+                                <select class="form-select" id="difficultyFilter">
+                                    <option value="">All Levels</option>
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="testFilter" class="form-label">
+                                    <strong>Test Type</strong>
+                                </label>
+                                <select class="form-select" id="testFilter">
+                                    <option value="">All Tests</option>
+                                    <option value="ttest">t-Test</option>
+                                    <option value="anova">ANOVA</option>
+                                    <option value="chi2">Chi-Square</option>
+                                    <option value="wilcoxon">Wilcoxon</option>
+                                    <option value="mann-whitney">Mann-Whitney</option>
+                                    <option value="kruskal">Kruskal-Wallis</option>
+                                    <option value="bartlett">Bartlett</option>
+                                    <option value="tukey">Tukey</option>
+                                    <option value="dunnett">Dunnett</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Examples Grid -->
+    <div class="container mt-5">
+        <div class="row" id="examplesGrid">
+            <!-- Examples will be populated here -->
+        </div>
+    </div>
+
+    <!-- Example Detail Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalTitle">
+                        <i class="fas fa-chart-bar me-2"></i>Example Details
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="exampleModalBody">
+                    <!-- Example details will be populated here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="runExampleBtn">
+                        <i class="fas fa-play me-2"></i>Run Example
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Why Formal Verification Section -->
+    <section class="bg-light py-5 mt-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <h2 class="text-center mb-5">
+                        <i class="fas fa-question-circle me-3"></i>Why Formal Verification Matters
+                    </h2>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 border-danger">
+                                <div class="card-header bg-danger text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>Traditional Approach
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <i class="fas fa-times text-danger me-2"></i>
+                                            Only checks if tests can be computed
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-times text-danger me-2"></i>
+                                            Assumes user knows all assumptions
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-times text-danger me-2"></i>
+                                            No verification of mathematical soundness
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-times text-danger me-2"></i>
+                                            Risk of incorrect conclusions
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 border-success">
+                                <div class="card-header bg-success text-white">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-check-circle me-2"></i>StatWhy Approach
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            Mathematically proves test validity
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            Verifies all assumptions automatically
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            Ensures theoretical soundness
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            Guarantees reliable results
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <div class="alert alert-warning">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            <strong>Key Insight:</strong> Formal verification catches errors that traditional 
+                            statistical software cannot detect, ensuring your analysis is mathematically sound.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">
+                <i class="fas fa-chart-line me-2"></i>
+                StatWhy - Formally Verified Statistical Testing
+            </p>
+            <p class="small text-muted mb-0">
+                Powered by Why3 and Cameleer | Open Source | MIT License
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="/static/examples.js"></script>
+</body>
+</html>

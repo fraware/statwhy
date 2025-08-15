@@ -1,0 +1,61 @@
+{
+  "timestamp": "20250814_165258",
+  "benchmarks": [
+    "single_threaded",
+    "multi_threaded",
+    "cache_performance",
+    "load_testing",
+    "memory_efficiency",
+    "edge_cases"
+  ],
+  "summary": {
+    "single_threaded": {
+      "total_operations": 75,
+      "success_rate": 1.0,
+      "average_execution_time": 0.007326599756876628,
+      "throughput_ops_per_second": 136.48896257249706,
+      "memory_peak_mb": 0.47265625,
+      "cache_hit_rate": 0.0
+    },
+    "multi_threaded": {
+      "total_operations": 20,
+      "success_rate": 1.0,
+      "average_execution_time": 0.013221549987792968,
+      "throughput_ops_per_second": 75.63409743360407,
+      "memory_peak_mb": 0.37890625,
+      "cache_hit_rate": 0.0
+    },
+    "cache_performance": {
+      "total_operations": 9,
+      "success_rate": 1.0,
+      "average_execution_time": 0.0039912064870198565,
+      "throughput_ops_per_second": 250.5508054399554,
+      "memory_peak_mb": 0.01171875,
+      "cache_hit_rate": 0.6666666666666666
+    },
+    "load_testing": {
+      "total_operations": 86,
+      "success_rate": 1.0,
+      "average_execution_time": 0.00763857364654541,
+      "throughput_ops_per_second": 130.9144935000078,
+      "memory_peak_mb": 0.5,
+      "cache_hit_rate": 0.0
+    },
+    "memory_efficiency": {
+      "total_operations": 15,
+      "success_rate": 1.0,
+      "average_execution_time": 0.03249348004659017,
+      "throughput_ops_per_second": 30.77540474477245,
+      "memory_peak_mb": 1.6875,
+      "cache_hit_rate": 0.0
+    },
+    "edge_cases": {
+      "total_operations": 6,
+      "success_rate": 1.0,
+      "average_execution_time": 0.024776577949523926,
+      "throughput_ops_per_second": 40.36069880341223,
+      "memory_peak_mb": 0.48046875,
+      "cache_hit_rate": 0.0
+    }
+  }
+}

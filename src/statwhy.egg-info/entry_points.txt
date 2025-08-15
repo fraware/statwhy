@@ -1,0 +1,2 @@
+[console_scripts]
+statwhy = statwhy.cli:main
